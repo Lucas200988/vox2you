@@ -35,12 +35,12 @@ export async function getDashboardStats() {
     }),
   ])
 
-  const lowStockCount = materialsData.filter(m => {
-    const pending = m.saleItems.reduce((s, i) => s + i.quantity, 0)
+  const lowStockCount = materialsData.filter((m: { stockCurrent: number; stockMinimum: number; saleItems: { quantity: number }[] }) => {
+    const pending = m.saleItems.reduce((s: number, i: { quantity: number }) => s + i.quantity, 0)
     return (m.stockCurrent - pending) <= m.stockMinimum
   }).length
 
-  const totalStockUnits = materialsData.reduce((s, m) => s + m.stockCurrent, 0)
+  const totalStockUnits = materialsData.reduce((s: number, m: { stockCurrent: number }) => s + m.stockCurrent, 0)
 
   return {
     totalMaterials,
