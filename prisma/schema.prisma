@@ -1,0 +1,182 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  gestor
+  administrador
+  vendedor
+}
+
+enum SaleStatus {
+  pendente
+  entregue
+  cancelado
+}
+
+enum SaleItemStatus {
+  pendente
+  entregue
+  cancelado
+}
+
+enum SaleType {
+  escola
+  franqueadora
+}
+
+enum MovementType {
+  entrada
+  venda_lancada
+  entrega
+  cancelamento
+  ajuste
+  pedido_franqueadora
+}
+
+enum PurchaseOrderStatus {
+  aguardando
+  recebido
+  cancelado
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  role      UserRole
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  sales          Sale[]          @relation("SellerSales")
+  stockEntries   StockEntry[]
+  deliveries     Delivery[]
+  stockMovements StockMovement[]
+  purchaseOrders PurchaseOrder[]
+
+  @@map("users")
+}
+
+model Material {
+  id           String  @id @default(uuid())
+  name         String
+  code         String  @unique
+  type         String
+  stockCurrent Int     @default(0) @map("stock_current")
+  stockMinimum Int     @default(0) @map("stock_minimum")
+  active       Boolean @default(true)
+  notes        String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  stockEntries   StockEntry[]
+  saleItems      SaleItem[]
+  stockMovements StockMovement[]
+  purchaseOrders PurchaseOrder[]
+
+  @@map("materials")
+}
+
+model StockEntry {
+  id            String   @id @default(uuid())
+  materialId    String   @map("material_id")
+  quantity      Int
+  entryDate     DateTime @map("entry_date")
+  responsibleId String   @map("responsible_id")
+  notes         String?
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  material    Material @relation(fields: [materialId], references: [id])
+  responsible User     @relation(fields: [responsibleId], references: [id])
+
+  @@map("stock_entries")
+}
+
+model Sale {
+  id           String     @id @default(uuid())
+  studentName  String     @map("student_name")
+  studentPhone String?    @map("student_phone")
+  course       String
+  saleType     SaleType   @default(escola) @map("sale_type")
+  sellerId     String     @map("seller_id")
+  saleDate     DateTime   @map("sale_date")
+  status       SaleStatus @default(pendente)
+  notes        String?
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+
+  seller         User            @relation("SellerSales", fields: [sellerId], references: [id])
+  items          SaleItem[]
+  stockMovements StockMovement[]
+
+  @@map("sales")
+}
+
+model SaleItem {
+  id         String         @id @default(uuid())
+  saleId     String         @map("sale_id")
+  materialId String         @map("material_id")
+  quantity   Int
+  status     SaleItemStatus @default(pendente)
+
+  sale     Sale     @relation(fields: [saleId], references: [id])
+  material Material @relation(fields: [materialId], references: [id])
+  delivery Delivery?
+
+  @@map("sale_items")
+}
+
+model Delivery {
+  id            String   @id @default(uuid())
+  saleItemId    String   @unique @map("sale_item_id")
+  deliveredById String   @map("delivered_by")
+  deliveryDate  DateTime @default(now()) @map("delivery_date")
+  notes         String?
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  saleItem    SaleItem @relation(fields: [saleItemId], references: [id])
+  deliveredBy User     @relation(fields: [deliveredById], references: [id])
+
+  @@map("deliveries")
+}
+
+model PurchaseOrder {
+  id            String              @id @default(uuid())
+  materialId    String              @map("material_id")
+  quantity      Int
+  orderDate     DateTime            @map("order_date")
+  expectedDate  DateTime?           @map("expected_date")
+  receivedDate  DateTime?           @map("received_date")
+  status        PurchaseOrderStatus @default(aguardando)
+  responsibleId String              @map("responsible_id")
+  notes         String?
+  createdAt     DateTime            @default(now()) @map("created_at")
+  updatedAt     DateTime            @updatedAt @map("updated_at")
+
+  material    Material @relation(fields: [materialId], references: [id])
+  responsible User     @relation(fields: [responsibleId], references: [id])
+
+  @@map("purchase_orders")
+}
+
+model StockMovement {
+  id         String       @id @default(uuid())
+  type       MovementType
+  materialId String       @map("material_id")
+  quantity   Int
+  saleId     String?      @map("sale_id")
+  userId     String       @map("user_id")
+  notes      String?
+  createdAt  DateTime     @default(now()) @map("created_at")
+
+  material Material @relation(fields: [materialId], references: [id])
+  sale     Sale?    @relation(fields: [saleId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+
+  @@map("stock_movements")
+}
