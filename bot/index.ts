@@ -1,7 +1,6 @@
 import { Client, LocalAuth } from 'whatsapp-web.js'
 import qrcode from 'qrcode-terminal'
-import { processMessage } from './processor'
-import { handleIntent } from './handler'
+import { chat } from './agent'
 import * as dotenv from 'dotenv'
 
 dotenv.config()
@@ -34,19 +33,19 @@ client.on('authenticated', () => {
 })
 
 client.on('ready', () => {
-  const groupInfo = WHATSAPP_GROUP_ID ? ` (grupo: ${WHATSAPP_GROUP_ID})` : ' (todos os grupos)'
-  console.log(`✅ Bot WhatsApp pronto${groupInfo}`)
+  const scope = WHATSAPP_GROUP_ID ? `grupo ${WHATSAPP_GROUP_ID}` : 'todos os grupos'
+  console.log(`✅ Vivi pronta — monitorando ${scope}`)
 })
 
 client.on('disconnected', (reason) => {
-  console.log('⚠️  Bot desconectado:', reason)
+  console.log('⚠️  Desconectado:', reason)
 })
 
 client.on('message', async (msg) => {
   if (msg.fromMe) return
 
-  const chat = await msg.getChat()
-  if (!chat.isGroup) return
+  const chat_ = await msg.getChat()
+  if (!chat_.isGroup) return
 
   if (WHATSAPP_GROUP_ID && msg.from !== WHATSAPP_GROUP_ID) return
 
@@ -57,14 +56,12 @@ client.on('message', async (msg) => {
   console.log(`📨 [${new Date().toLocaleTimeString()}] ${contact.pushname}: "${text}"`)
 
   try {
-    const intent = await processMessage(text)
-    console.log(`🧠 Intenção: ${intent.action}`)
-
-    const response = await handleIntent(intent, BOT_USER_ID)
-    await msg.reply(response)
+    // Usa o id do chat como chave da sessão (cada grupo tem seu contexto)
+    const reply = await chat(msg.from, text, BOT_USER_ID)
+    await msg.reply(reply)
   } catch (err) {
     console.error('❌ Erro:', err instanceof Error ? err.message : err)
-    await msg.reply('❌ Erro ao processar o comando. Tente novamente.')
+    await msg.reply('❌ Ocorreu um erro. Tente novamente em instantes.')
   }
 })
 
