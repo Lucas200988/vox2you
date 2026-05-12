@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/prisma'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { ShoppingCart, Plus, School, Building2 } from 'lucide-react'
+import { ShoppingCart, Plus, Package, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import { formatDate } from '@/lib/utils'
 
@@ -58,7 +58,7 @@ export default async function SalesPage() {
         <div className="space-y-3">
           {sales.map(sale => {
             const st = statusConfig[sale.status]
-            const isFranqueadora = (sale as any).saleType === 'franqueadora'
+            const isFranqueadora = sale.saleType === 'franqueadora'
             return (
               <Card key={sale.id}>
                 <CardContent className="p-5">
@@ -71,12 +71,12 @@ export default async function SalesPage() {
                         </span>
                         <Badge variant={st.variant}>{st.label}</Badge>
                         {isFranqueadora ? (
-                          <span className="flex items-center gap-1 text-xs text-purple-600 font-medium">
-                            <Building2 className="h-3 w-3" /> Franqueadora
+                          <span className="flex items-center gap-1 text-xs text-purple-600 font-medium bg-purple-50 px-2 py-0.5 rounded-full">
+                            <ExternalLink className="h-3 w-3" /> Kit na franqueadora
                           </span>
                         ) : (
-                          <span className="flex items-center gap-1 text-xs text-blue-600 font-medium">
-                            <School className="h-3 w-3" /> Escola
+                          <span className="flex items-center gap-1 text-xs text-blue-600 font-medium bg-blue-50 px-2 py-0.5 rounded-full">
+                            <Package className="h-3 w-3" /> Kit do estoque
                           </span>
                         )}
                       </div>
@@ -90,16 +90,22 @@ export default async function SalesPage() {
                         <p className="mt-2 text-xs text-slate-500 bg-slate-50 rounded px-2 py-1.5">{sale.notes}</p>
                       )}
                     </div>
+
                     <div className="flex items-center gap-2 flex-shrink-0">
-                      {sale.items.map(item => (
-                        <Badge key={item.id} variant={
-                          item.status === 'entregue' ? 'success' :
-                          item.status === 'cancelado' ? 'secondary' : 'warning'
-                        }>
-                          {item.status === 'entregue' ? 'Entregue' :
-                           item.status === 'cancelado' ? 'Cancelado' : 'Pendente'}
-                        </Badge>
-                      ))}
+                      {isFranqueadora ? (
+                        <span className="text-xs text-slate-400 italic">sem movimentação de estoque</span>
+                      ) : (
+                        sale.items.map(item => (
+                          <Badge key={item.id} variant={
+                            item.status === 'entregue' ? 'success' :
+                            item.status === 'cancelado' ? 'secondary' : 'warning'
+                          }>
+                            {item.material.name}{' '}
+                            {item.status === 'entregue' ? '✓' :
+                             item.status === 'cancelado' ? '✗' : '⏳'}
+                          </Badge>
+                        ))
+                      )}
                     </div>
                   </div>
                 </CardContent>

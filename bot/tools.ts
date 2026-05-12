@@ -10,16 +10,23 @@ const prisma = new PrismaClient({ adapter })
 export const TOOL_DEFINITIONS: Anthropic.Tool[] = [
   {
     name: 'launch_sale',
-    description: 'Lança uma venda no sistema. Use quando tiver: nome do aluno, curso, canal (escola ou franqueadora) e os materiais com quantidade.',
+    description: `Lança uma venda no sistema. Existem dois fluxos:
+1. saleType="escola": kit sai do estoque da escola → items obrigatório → admin entrega → sai do estoque.
+2. saleType="franqueadora": aluno compra o kit direto no site da franqueadora → NÃO afeta o estoque → items não é necessário.
+Sempre pergunte se o aluno vai receber o kit da escola ou vai comprar direto na franqueadora.`,
     input_schema: {
       type: 'object' as const,
       properties: {
         studentName: { type: 'string', description: 'Nome completo do aluno' },
         course: { type: 'string', description: 'Nome do curso' },
-        saleType: { type: 'string', enum: ['escola', 'franqueadora'], description: 'Canal: escola (padrão) ou franqueadora' },
+        saleType: {
+          type: 'string',
+          enum: ['escola', 'franqueadora'],
+          description: 'escola = kit do estoque da escola; franqueadora = aluno compra kit direto no site da franqueadora',
+        },
         items: {
           type: 'array',
-          description: 'Lista de materiais da venda',
+          description: 'Materiais da venda — obrigatório quando saleType="escola", omitir quando saleType="franqueadora"',
           items: {
             type: 'object',
             properties: {
@@ -30,7 +37,7 @@ export const TOOL_DEFINITIONS: Anthropic.Tool[] = [
           },
         },
       },
-      required: ['studentName', 'course', 'saleType', 'items'],
+      required: ['studentName', 'course', 'saleType'],
     },
   },
   {
@@ -116,7 +123,27 @@ export async function executeTool(name: string, input: ToolInput, botUserId: str
         studentName: string
         course: string
         saleType: 'escola' | 'franqueadora'
-        items: { materialName: string; quantity: number }[]
+        items?: { materialName: string; quantity: number }[]
+      }
+
+      if (saleType === 'franqueadora') {
+        // Aluno compra o kit direto na franqueadora — sem impacto no estoque
+        await prisma.sale.create({
+          data: {
+            studentName,
+            course,
+            saleType: 'franqueadora',
+            sellerId: botUserId,
+            saleDate: new Date(),
+            status: 'entregue',
+          },
+        })
+        return `Venda lançada. Aluno: ${studentName} | Curso: ${course} | Kit: aluno compra direto na franqueadora (sem movimentação de estoque)`
+      }
+
+      // saleType === 'escola': kit do estoque da escola
+      if (!items || items.length === 0) {
+        throw new Error('Para vendas com kit do estoque, informe os materiais e quantidades.')
       }
 
       const resolvedItems = await Promise.all(
@@ -134,7 +161,7 @@ export async function executeTool(name: string, input: ToolInput, botUserId: str
           data: {
             studentName,
             course,
-            saleType,
+            saleType: 'escola',
             sellerId: botUserId,
             saleDate: new Date(),
             status: 'pendente',
@@ -162,7 +189,7 @@ export async function executeTool(name: string, input: ToolInput, botUserId: str
       })
 
       const itemsText = resolvedItems.map((i) => `${i.quantity}x ${i.name}`).join(', ')
-      return `Venda lançada com sucesso. Aluno: ${studentName} | Curso: ${course} | Canal: ${saleType} | Itens: ${itemsText}`
+      return `Venda lançada. Aluno: ${studentName} | Curso: ${course} | Kit do estoque reservado: ${itemsText} (entrega pendente)`
     }
 
     case 'confirm_delivery': {

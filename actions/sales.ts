@@ -21,58 +21,75 @@ export async function createSale(data: {
 }) {
   const user = await getAuthUser()
 
-  if (!data.items || data.items.length === 0) {
-    return { error: 'Adicione ao menos um material à venda.' }
-  }
+  if (data.saleType === 'escola') {
+    // Kit do estoque da escola: reserva materiais e cria pendência de entrega
+    if (!data.items || data.items.length === 0) {
+      return { error: 'Adicione ao menos um material à venda.' }
+    }
 
-  await prisma.$transaction(async tx => {
-    const sale = await tx.sale.create({
+    await prisma.$transaction(async tx => {
+      const sale = await tx.sale.create({
+        data: {
+          studentName: data.studentName,
+          studentPhone: data.studentPhone,
+          course: data.course,
+          saleType: data.saleType,
+          sellerId: user.id,
+          saleDate: new Date(data.saleDate),
+          status: 'pendente',
+          notes: data.notes,
+          items: {
+            create: data.items.map(item => ({
+              materialId: item.materialId,
+              quantity: item.quantity,
+              status: 'pendente',
+            })),
+          },
+        },
+      })
+
+      for (const item of data.items) {
+        await tx.stockMovement.create({
+          data: {
+            type: 'venda_lancada',
+            materialId: item.materialId,
+            quantity: -item.quantity,
+            saleId: sale.id,
+            userId: user.id,
+            notes: `Venda para ${data.studentName}`,
+          },
+        })
+      }
+    })
+
+    const materials = await prisma.material.findMany({
+      where: { id: { in: data.items.map(i => i.materialId) } },
+      select: { id: true, name: true },
+    })
+    const nameById = Object.fromEntries(materials.map(m => [m.id, m.name]))
+    const itemsText = data.items.map(i => `${i.quantity}x ${nameById[i.materialId] ?? i.materialId}`).join(', ')
+    notifyGroup(`🖥️ *${user.name}* lançou uma venda pelo sistema\n👤 ${data.studentName} — ${data.course} (Escola)\n📦 ${itemsText} reservado do estoque`)
+  } else {
+    // Franqueadora direta: aluno compra o kit no site, sem impacto no estoque da escola
+    await prisma.sale.create({
       data: {
         studentName: data.studentName,
         studentPhone: data.studentPhone,
         course: data.course,
-        saleType: data.saleType,
+        saleType: 'franqueadora',
         sellerId: user.id,
         saleDate: new Date(data.saleDate),
-        status: 'pendente',
+        status: 'entregue', // sem kit para entregar pela escola
         notes: data.notes,
-        items: {
-          create: data.items.map(item => ({
-            materialId: item.materialId,
-            quantity: item.quantity,
-            status: 'pendente',
-          })),
-        },
       },
     })
 
-    for (const item of data.items) {
-      await tx.stockMovement.create({
-        data: {
-          type: 'venda_lancada',
-          materialId: item.materialId,
-          quantity: -item.quantity,
-          saleId: sale.id,
-          userId: user.id,
-          notes: `Venda para ${data.studentName}`,
-        },
-      })
-    }
-  })
+    notifyGroup(`🖥️ *${user.name}* lançou uma venda pelo sistema\n👤 ${data.studentName} — ${data.course}\n📋 Kit comprado pelo aluno direto na franqueadora (sem impacto no estoque)`)
+  }
 
   revalidatePath('/sales')
   revalidatePath('/pending-deliveries')
   revalidatePath('/dashboard')
-
-  const materials = await prisma.material.findMany({
-    where: { id: { in: data.items.map(i => i.materialId) } },
-    select: { id: true, name: true },
-  })
-  const nameById = Object.fromEntries(materials.map(m => [m.id, m.name]))
-  const itemsText = data.items.map(i => `${i.quantity}x ${nameById[i.materialId] ?? i.materialId}`).join(', ')
-  const canal = data.saleType === 'escola' ? 'Escola' : 'Franqueadora'
-  notifyGroup(`🖥️ *${user.name}* lançou uma venda pelo sistema\n👤 ${data.studentName} — ${data.course} (${canal})\n📦 ${itemsText}`)
-
   return { success: true }
 }
 
