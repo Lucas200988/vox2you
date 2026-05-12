@@ -132,7 +132,7 @@ export async function buildWeeklyReport(): Promise<string> {
     lines.push('')
   }
 
-  lines.push('_Relatório gerado automaticamente pela Vivi_ 🤖')
+  lines.push('_Relatório gerado automaticamente pela Claudia_ 🤖')
 
   return lines.join('\n')
 }

@@ -36,7 +36,7 @@ client.on('authenticated', () => {
 
 client.on('ready', () => {
   const scope = WHATSAPP_GROUP_ID ? `grupo ${WHATSAPP_GROUP_ID}` : 'todos os grupos'
-  console.log(`✅ Vivi pronta — monitorando ${scope}`)
+  console.log(`✅ Claudia pronta — monitorando ${scope}`)
 
   // Relatório semanal toda segunda-feira às 8h (horário de Brasília)
   cron.schedule('0 8 * * 1', async () => {
@@ -69,6 +69,16 @@ client.on('message', async (msg) => {
 
   const contact = await msg.getContact()
   console.log(`📨 [${new Date().toLocaleTimeString()}] ${contact.pushname}: "${text || '[imagem]'}"`)
+
+  // Comando on-demand para relatório semanal
+  if (text.toLowerCase() === '/relatorio') {
+    if (!WHATSAPP_GROUP_ID) {
+      await msg.reply('⚠️ WHATSAPP_GROUP_ID não configurado.')
+      return
+    }
+    await sendWeeklyReport(client, WHATSAPP_GROUP_ID)
+    return
+  }
 
   try {
     let imageData: { base64: string; mimeType: string } | undefined

@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Truck, CheckCircle, AlertTriangle, Users, ShoppingCart, Package } from 'lucide-react'
 import Link from 'next/link'
+import { DashboardRefresher } from '@/components/dashboard-refresher'
 
 const PRODUCTS = ['MASTER', 'ACADEMY', 'INTENSIVOX']
 
@@ -42,6 +43,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-6">
+      <DashboardRefresher />
       <div>
         <h1 className="text-2xl font-bold text-slate-900">
           Olá, {dbUser?.name?.split(' ')[0]} 👋
