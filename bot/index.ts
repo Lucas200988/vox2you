@@ -1,6 +1,8 @@
 import { Client, LocalAuth } from 'whatsapp-web.js'
 import qrcode from 'qrcode-terminal'
+import cron from 'node-cron'
 import { chat } from './agent'
+import { sendWeeklyReport } from './report'
 import * as dotenv from 'dotenv'
 
 dotenv.config()
@@ -35,6 +37,17 @@ client.on('authenticated', () => {
 client.on('ready', () => {
   const scope = WHATSAPP_GROUP_ID ? `grupo ${WHATSAPP_GROUP_ID}` : 'todos os grupos'
   console.log(`✅ Vivi pronta — monitorando ${scope}`)
+
+  // Relatório semanal toda segunda-feira às 8h (horário de Brasília)
+  cron.schedule('0 8 * * 1', async () => {
+    if (!WHATSAPP_GROUP_ID) {
+      console.log('⚠️ WHATSAPP_GROUP_ID não configurado — relatório semanal não enviado')
+      return
+    }
+    await sendWeeklyReport(client, WHATSAPP_GROUP_ID)
+  }, { timezone: 'America/Sao_Paulo' })
+
+  console.log('📅 Relatório semanal agendado para segunda-feira às 8h (Brasília)')
 })
 
 client.on('disconnected', (reason) => {
@@ -50,14 +63,25 @@ client.on('message', async (msg) => {
   if (WHATSAPP_GROUP_ID && msg.from !== WHATSAPP_GROUP_ID) return
 
   const text = msg.body.trim()
-  if (!text) return
+  const hasImage = msg.hasMedia && ['image'].includes(msg.type)
+
+  if (!text && !hasImage) return
 
   const contact = await msg.getContact()
-  console.log(`📨 [${new Date().toLocaleTimeString()}] ${contact.pushname}: "${text}"`)
+  console.log(`📨 [${new Date().toLocaleTimeString()}] ${contact.pushname}: "${text || '[imagem]'}"`)
 
   try {
-    // Usa o id do chat como chave da sessão (cada grupo tem seu contexto)
-    const reply = await chat(msg.from, text, BOT_USER_ID)
+    let imageData: { base64: string; mimeType: string } | undefined
+
+    if (hasImage) {
+      const media = await msg.downloadMedia()
+      if (media?.data && media?.mimetype) {
+        imageData = { base64: media.data, mimeType: media.mimetype.split(';')[0] }
+        console.log(`🖼️ Imagem recebida: ${imageData.mimeType}`)
+      }
+    }
+
+    const reply = await chat(msg.from, text, BOT_USER_ID!, imageData)
     await msg.reply(reply)
   } catch (err) {
     console.error('❌ Erro:', err instanceof Error ? err.message : err)

@@ -16,6 +16,7 @@ Regras importantes:
 - Se o canal não for mencionado, pergunte — não assuma
 - Se a quantidade não for informada, pergunte — não assuma 1
 - Você também pode consultar o estoque quando perguntarem
+- Quando receber uma foto, analise o conteúdo e extraia informações relevantes para estoque (ex: nota fiscal, lista de materiais, comprovante de entrega)
 
 Fale sempre em português, de forma natural e direta.`
 
@@ -39,9 +40,26 @@ function getSession(chatId: string): Session {
   return fresh
 }
 
-export async function chat(chatId: string, userMessage: string, botUserId: string): Promise<string> {
+export async function chat(
+  chatId: string,
+  userMessage: string,
+  botUserId: string,
+  imageData?: { base64: string; mimeType: string }
+): Promise<string> {
   const session = getSession(chatId)
-  session.messages.push({ role: 'user', content: userMessage })
+
+  if (imageData) {
+    const content: Anthropic.MessageParam['content'] = [
+      {
+        type: 'image',
+        source: { type: 'base64', media_type: imageData.mimeType as 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp', data: imageData.base64 },
+      },
+      ...(userMessage ? [{ type: 'text' as const, text: userMessage }] : [{ type: 'text' as const, text: 'O que você vê nessa imagem? Extraia informações relevantes para o controle de estoque.' }]),
+    ]
+    session.messages.push({ role: 'user', content })
+  } else {
+    session.messages.push({ role: 'user', content: userMessage })
+  }
 
   const MAX_ITERATIONS = 8
   let iterations = 0
