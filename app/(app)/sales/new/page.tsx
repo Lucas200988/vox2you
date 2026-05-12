@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { ArrowLeft, Loader2, ShoppingCart, CheckCircle, School, Building2 } from 'lucide-react'
+import { ArrowLeft, Loader2, ShoppingCart, CheckCircle, Package, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import type { Material } from '@prisma/client'
@@ -46,13 +46,16 @@ export default function NewSalePage() {
   }
 
   const selectedMaterial = materials.find(m => m.name === form.course)
+  const isEscola = form.saleType === 'escola'
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!selectedMaterial) {
+
+    if (isEscola && !selectedMaterial) {
       setError('Material não encontrado para este curso.')
       return
     }
+
     setLoading(true)
     setError('')
 
@@ -63,7 +66,9 @@ export default function NewSalePage() {
       saleType: form.saleType,
       saleDate: form.saleDate,
       notes: form.notes || undefined,
-      items: [{ materialId: selectedMaterial.id, quantity: 1 }],
+      items: isEscola && selectedMaterial
+        ? [{ materialId: selectedMaterial.id, quantity: 1 }]
+        : [],
     })
 
     if (result?.error) {
@@ -91,16 +96,18 @@ export default function NewSalePage() {
       {success && (
         <div className="rounded-xl bg-green-50 border border-green-200 px-5 py-4 text-green-800 font-medium flex items-center gap-3">
           <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-          Venda lançada! Kit reservado e marcado como pendente de entrega.
+          {isEscola
+            ? 'Venda lançada! Kit reservado e marcado como pendente de entrega.'
+            : 'Venda lançada! Registrado que o aluno comprará o kit diretamente na franqueadora.'}
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
 
-        {/* Tipo de venda */}
+        {/* Kit */}
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Como o aluno comprou? *</CardTitle>
+            <CardTitle className="text-base">Como o aluno receberá o kit? *</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 gap-3">
@@ -108,40 +115,44 @@ export default function NewSalePage() {
                 type="button"
                 onClick={() => setField('saleType', 'escola')}
                 className={cn(
-                  'flex flex-col items-center gap-2 rounded-xl border-2 p-4 transition-all',
-                  form.saleType === 'escola'
+                  'flex flex-col items-start gap-1.5 rounded-xl border-2 p-4 text-left transition-all',
+                  isEscola
                     ? 'border-blue-500 bg-blue-50'
                     : 'border-slate-200 bg-white hover:border-slate-300'
                 )}
               >
-                <School className={cn('h-7 w-7', form.saleType === 'escola' ? 'text-blue-600' : 'text-slate-400')} />
-                <span className={cn('font-semibold text-sm', form.saleType === 'escola' ? 'text-blue-700' : 'text-slate-600')}>
-                  Pela Escola
+                <Package className={cn('h-6 w-6', isEscola ? 'text-blue-600' : 'text-slate-400')} />
+                <span className={cn('font-semibold text-sm', isEscola ? 'text-blue-700' : 'text-slate-600')}>
+                  Kit do estoque
                 </span>
-                <span className="text-xs text-slate-400 text-center">Kit sai do estoque da escola</span>
+                <span className="text-xs text-slate-400 leading-snug">
+                  Kit reservado e entregue pelo admin
+                </span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setField('saleType', 'franqueadora')}
                 className={cn(
-                  'flex flex-col items-center gap-2 rounded-xl border-2 p-4 transition-all',
-                  form.saleType === 'franqueadora'
+                  'flex flex-col items-start gap-1.5 rounded-xl border-2 p-4 text-left transition-all',
+                  !isEscola
                     ? 'border-purple-500 bg-purple-50'
                     : 'border-slate-200 bg-white hover:border-slate-300'
                 )}
               >
-                <Building2 className={cn('h-7 w-7', form.saleType === 'franqueadora' ? 'text-purple-600' : 'text-slate-400')} />
-                <span className={cn('font-semibold text-sm', form.saleType === 'franqueadora' ? 'text-purple-700' : 'text-slate-600')}>
-                  Pela Franqueadora
+                <ExternalLink className={cn('h-6 w-6', !isEscola ? 'text-purple-600' : 'text-slate-400')} />
+                <span className={cn('font-semibold text-sm', !isEscola ? 'text-purple-700' : 'text-slate-600')}>
+                  Aluno compra na franqueadora
                 </span>
-                <span className="text-xs text-slate-400 text-center">Kit do aluno vem a caminho</span>
+                <span className="text-xs text-slate-400 leading-snug">
+                  Aluno compra o kit direto no site
+                </span>
               </button>
             </div>
 
-            {form.saleType === 'franqueadora' && (
-              <div className="mt-3 rounded-lg bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-800">
-                O kit do aluno ainda vai chegar. Se precisar entregar do seu estoque agora, o sistema vai registrar e repor quando chegar.
+            {!isEscola && (
+              <div className="mt-3 rounded-lg bg-purple-50 border border-purple-200 px-4 py-3 text-sm text-purple-800">
+                O kit não sai do estoque da escola. A venda é registrada apenas para controle.
               </div>
             )}
           </CardContent>
@@ -199,9 +210,11 @@ export default function NewSalePage() {
                       )}
                     >
                       <span className="font-bold text-sm">{course}</span>
-                      <span className={cn('text-xs mt-1', stock <= (mat?.stockMinimum ?? 5) ? 'text-red-500 font-medium' : 'text-slate-400')}>
-                        {stock} em estoque
-                      </span>
+                      {isEscola && (
+                        <span className={cn('text-xs mt-1', stock <= (mat?.stockMinimum ?? 5) ? 'text-red-500 font-medium' : 'text-slate-400')}>
+                          {stock} em estoque
+                        </span>
+                      )}
                     </button>
                   )
                 })}
@@ -233,11 +246,19 @@ export default function NewSalePage() {
           </CardContent>
         </Card>
 
-        {/* Resumo automático */}
+        {/* Resumo */}
         {form.course && (
-          <div className="rounded-xl bg-slate-50 border border-slate-200 px-4 py-3 text-sm text-slate-700 flex items-center gap-2">
+          <div className={cn(
+            'rounded-xl border px-4 py-3 text-sm flex items-center gap-2',
+            isEscola
+              ? 'bg-slate-50 border-slate-200 text-slate-700'
+              : 'bg-purple-50 border-purple-200 text-purple-800'
+          )}>
             <span className={cn('h-2.5 w-2.5 rounded-full flex-shrink-0', courseColors[form.course]?.dot)} />
-            Kit <strong>{form.course}</strong> será reservado automaticamente — 1 unidade marcada como pendente de entrega.
+            {isEscola
+              ? <>Kit <strong>{form.course}</strong> reservado do estoque — entrega pendente pelo admin.</>
+              : <>Venda de <strong>{form.course}</strong> registrada — kit comprado pelo aluno na franqueadora, sem movimentação de estoque.</>
+            }
           </div>
         )}
 

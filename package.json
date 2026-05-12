@@ -7,9 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "bot": "tsx bot/index.ts",
+    "setup:bot": "tsx scripts/setup-bot.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.95.2",
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
     "@radix-ui/react-alert-dialog": "^1.1.15",
@@ -30,22 +33,28 @@
     "date-fns": "^4.1.0",
     "lucide-react": "^1.14.0",
     "next": "16.2.6",
+    "node-cron": "^4.2.1",
     "pg": "^8.20.0",
     "prisma": "^7.8.0",
+    "qrcode-terminal": "^0.12.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "tailwind-merge": "^3.6.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "whatsapp-web.js": "^1.34.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/node-cron": "^3.0.11",
+    "@types/qrcode-terminal": "^0.12.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "dotenv": "^17.4.2",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }

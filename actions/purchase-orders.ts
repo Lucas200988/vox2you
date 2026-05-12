@@ -2,6 +2,7 @@
 
 import { prisma } from '@/lib/prisma'
 import { getAuthUser } from './auth'
+import { notifyGroup } from '@/lib/notify'
 import { revalidatePath } from 'next/cache'
 
 export async function getPurchaseOrders() {
@@ -50,6 +51,10 @@ export async function createPurchaseOrder(data: {
 
   revalidatePath('/purchase-orders')
   revalidatePath('/dashboard')
+
+  const material = await prisma.material.findUnique({ where: { id: data.materialId }, select: { name: true } })
+  notifyGroup(`🖥️ *${user.name}* criou um pedido à franqueadora pelo sistema\n📋 ${data.quantity}x ${material?.name ?? data.materialId}`)
+
   return { success: true }
 }
 
@@ -86,6 +91,10 @@ export async function receivePurchaseOrder(id: string, notes?: string) {
   revalidatePath('/purchase-orders')
   revalidatePath('/dashboard')
   revalidatePath('/materials')
+
+  const material = await prisma.material.findUnique({ where: { id: order.materialId }, select: { name: true } })
+  notifyGroup(`🖥️ *${user.name}* recebeu pedido da franqueadora pelo sistema\n📦 ${order.quantity}x ${material?.name ?? order.materialId} chegou ao estoque`)
+
   return { success: true }
 }
 
@@ -103,5 +112,9 @@ export async function cancelPurchaseOrder(id: string) {
   })
 
   revalidatePath('/purchase-orders')
+
+  const material = await prisma.material.findUnique({ where: { id: order.materialId }, select: { name: true } })
+  notifyGroup(`🖥️ *${user.name}* cancelou pedido à franqueadora pelo sistema\n📋 ${material?.name ?? order.materialId}`)
+
   return { success: true }
 }

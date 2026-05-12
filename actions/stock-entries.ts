@@ -2,6 +2,7 @@
 
 import { prisma } from '@/lib/prisma'
 import { getAuthUser } from './auth'
+import { notifyGroup } from '@/lib/notify'
 import { revalidatePath } from 'next/cache'
 
 export async function createStockEntry(data: {
@@ -47,6 +48,10 @@ export async function createStockEntry(data: {
   revalidatePath('/stock-entries')
   revalidatePath('/materials')
   revalidatePath('/dashboard')
+
+  const material = await prisma.material.findUnique({ where: { id: data.materialId }, select: { name: true } })
+  notifyGroup(`🖥️ *${user.name}* registrou entrada de estoque pelo sistema\n📦 ${data.quantity}x ${material?.name ?? data.materialId}`)
+
   return { success: true }
 }
 

@@ -2,6 +2,7 @@
 
 import { prisma } from '@/lib/prisma'
 import { getAuthUser } from './auth'
+import { notifyGroup } from '@/lib/notify'
 import { revalidatePath } from 'next/cache'
 
 export async function getPendingDeliveries() {
@@ -97,5 +98,8 @@ export async function confirmDelivery(saleItemId: string, notes?: string) {
   revalidatePath('/pending-deliveries')
   revalidatePath('/materials')
   revalidatePath('/dashboard')
+
+  notifyGroup(`🖥️ *${user.name}* confirmou entrega pelo sistema\n👤 ${saleItem.sale.studentName} — ${saleItem.quantity}x ${saleItem.material.name}`)
+
   return { success: true }
 }
