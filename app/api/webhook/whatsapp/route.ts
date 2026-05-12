@@ -100,8 +100,8 @@ export async function POST(req: NextRequest) {
       processedIds.add(msgId)
       // Limpa IDs antigos para não crescer infinitamente
       if (processedIds.size > 500) {
-        const first = processedIds.values().next().value
-        processedIds.delete(first)
+        const first = processedIds.values().next().value as string | undefined
+        if (first) processedIds.delete(first)
       }
     }
 
