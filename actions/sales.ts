@@ -2,6 +2,7 @@
 
 import { prisma } from '@/lib/prisma'
 import { getAuthUser } from './auth'
+import { notifyGroup } from '@/lib/notify'
 import { revalidatePath } from 'next/cache'
 
 export interface SaleItemInput {
@@ -62,6 +63,16 @@ export async function createSale(data: {
   revalidatePath('/sales')
   revalidatePath('/pending-deliveries')
   revalidatePath('/dashboard')
+
+  const materials = await prisma.material.findMany({
+    where: { id: { in: data.items.map(i => i.materialId) } },
+    select: { id: true, name: true },
+  })
+  const nameById = Object.fromEntries(materials.map(m => [m.id, m.name]))
+  const itemsText = data.items.map(i => `${i.quantity}x ${nameById[i.materialId] ?? i.materialId}`).join(', ')
+  const canal = data.saleType === 'escola' ? 'Escola' : 'Franqueadora'
+  notifyGroup(`🖥️ *${user.name}* lançou uma venda pelo sistema\n👤 ${data.studentName} — ${data.course} (${canal})\n📦 ${itemsText}`)
+
   return { success: true }
 }
 
@@ -119,5 +130,8 @@ export async function cancelSale(saleId: string) {
   revalidatePath('/sales')
   revalidatePath('/pending-deliveries')
   revalidatePath('/dashboard')
+
+  notifyGroup(`🖥️ *${user.name}* cancelou a venda de *${sale.studentName}* pelo sistema`)
+
   return { success: true }
 }

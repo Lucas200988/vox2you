@@ -3,6 +3,7 @@ import qrcode from 'qrcode-terminal'
 import cron from 'node-cron'
 import { chat } from './agent'
 import { sendWeeklyReport } from './report'
+import { startNotifyServer } from './notify-server'
 import * as dotenv from 'dotenv'
 
 dotenv.config()
@@ -48,6 +49,12 @@ client.on('ready', () => {
   }, { timezone: 'America/Sao_Paulo' })
 
   console.log('📅 Relatório semanal agendado para segunda-feira às 8h (Brasília)')
+
+  if (WHATSAPP_GROUP_ID) {
+    startNotifyServer(client, WHATSAPP_GROUP_ID)
+  } else {
+    console.log('⚠️ WHATSAPP_GROUP_ID não configurado — notify server desabilitado')
+  }
 })
 
 client.on('disconnected', (reason) => {
