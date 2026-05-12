@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "postinstall": "prisma generate",
-    "bot": "tsx bot/index.ts"
+    "bot": "tsx bot/index.ts",
+    "setup:bot": "tsx scripts/setup-bot.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.2",
@@ -46,6 +47,7 @@
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/node-cron": "^3.0.11",
+    "@types/qrcode-terminal": "^0.12.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "dotenv": "^17.4.2",
