@@ -11,6 +11,7 @@ const movementConfig: Record<string, { label: string; variant: 'success' | 'warn
   entrega: { label: 'Entrega', variant: 'default', sign: '−' },
   cancelamento: { label: 'Cancelamento', variant: 'secondary', sign: '+' },
   ajuste: { label: 'Ajuste', variant: 'secondary', sign: '±' },
+  pedido_franqueadora: { label: 'Ped. Franqueadora', variant: 'secondary', sign: '−' },
 }
 
 export default async function HistoryPage() {
@@ -50,7 +51,7 @@ export default async function HistoryPage() {
               </thead>
               <tbody>
                 {movements.map(m => {
-                  const config = movementConfig[m.type]
+                  const config = movementConfig[m.type] ?? { label: m.type, variant: 'secondary' as const, sign: '' }
                   const isPositive = m.quantity > 0
                   return (
                     <tr key={m.id} className="border-b border-slate-100 hover:bg-slate-50">
