@@ -6,7 +6,7 @@ import { sendGroupMessage } from '@/lib/whatsapp'
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 const GROUP_ID = process.env.WHATSAPP_GROUP_ID!
 
-// IDs de mensagens já processadas (evita duplicatas de message + message.any)
+// IDs de mensagens já processadas (evita duplicatas)
 const processedIds = new Set<string>()
 
 // Confirmações pendentes em memória (expira em 5 minutos)
@@ -17,6 +17,7 @@ const pendingConfirmations = new Map<string, {
   quantity: number
   messageText: string
   expiresAt: number
+  waitingForNames?: boolean  // aguardando nomes dos alunos
 }>()
 
 // Encontra material mais próximo pelo nome usando Claude
@@ -71,12 +72,23 @@ async function registrarMovimentacao(
     await prisma.$transaction(async tx => {
       await tx.material.update({ where: { id: materialId }, data: { stockCurrent: { decrement: quantity } } })
       await tx.stockMovement.create({
-        data: { type: 'entrega', materialId, quantity, userId: systemUserId, notes: `Saída via WhatsApp: "${messageText}"` },
+        data: { type: 'entrega', materialId, quantity, userId: systemUserId, notes: messageText },
       })
     })
   }
 
   return prisma.material.findUnique({ where: { id: materialId }, select: { name: true, stockCurrent: true } })
+}
+
+// Pergunta os nomes dos alunos para uma entrega
+async function pedirNomesAlunos(materialName: string, quantity: number) {
+  await sendGroupMessage(GROUP_ID,
+    `🤖 *Claudia* — Assistente de Estoque\n\n` +
+    `📋 Entrega de *${quantity}x ${materialName}* identificada!\n\n` +
+    `👥 Para quem foi entregue? Informe o nome dos alunos (separados por vírgula):\n\n` +
+    `_Ex: João Silva, Maria Souza, Pedro Lima_\n\n` +
+    `_(Ou responda *não* para cancelar)_`
+  )
 }
 
 export async function POST(req: NextRequest) {
@@ -90,7 +102,7 @@ export async function POST(req: NextRequest) {
     const payload = body.payload
     if (!payload) return NextResponse.json({ ok: true })
 
-    // Deduplicação — ignora se já processou essa mensagem
+    // Deduplicação
     const msgId = payload.id as string
     if (msgId && processedIds.has(msgId)) {
       console.log('[Webhook] Duplicata ignorada:', msgId)
@@ -98,7 +110,6 @@ export async function POST(req: NextRequest) {
     }
     if (msgId) {
       processedIds.add(msgId)
-      // Limpa IDs antigos para não crescer infinitamente
       if (processedIds.size > 500) {
         const first = processedIds.values().next().value as string | undefined
         if (first) processedIds.delete(first)
@@ -116,33 +127,73 @@ export async function POST(req: NextRequest) {
     const systemUser = await prisma.user.findFirst({ where: { role: 'gestor', active: true } })
     if (!systemUser) return NextResponse.json({ ok: true })
 
-    // ── Resposta de confirmação ────────────────────────────────────────
-    const isConfirm = /^(sim|s|confirma|confirmar|ok|yes|isso|correto)$/i.test(messageText)
     const isCancel = /^(não|nao|n|cancelar|cancela|errado)$/i.test(messageText)
 
-    if (isConfirm || isCancel) {
-      const pending = pendingConfirmations.get(GROUP_ID)
-      if (pending && pending.expiresAt > Date.now()) {
+    // ── Verificar confirmações pendentes ──────────────────────────────
+    const pending = pendingConfirmations.get(GROUP_ID)
+
+    if (pending && pending.expiresAt > Date.now()) {
+
+      // ── Aguardando nomes dos alunos ───────────────────────────────
+      if (pending.waitingForNames) {
+        if (isCancel) {
+          pendingConfirmations.delete(GROUP_ID)
+          await sendGroupMessage(GROUP_ID, `🤖 *Claudia* — Assistente de Estoque\n\n❌ Registro cancelado.`)
+          return NextResponse.json({ ok: true })
+        }
+
+        // Qualquer outra mensagem é tratada como nomes
+        const nomes = messageText
+          .split(/[,;\n]+/)
+          .map(s => s.trim())
+          .filter(s => s.length > 1)
+
+        if (nomes.length === 0) {
+          await sendGroupMessage(GROUP_ID,
+            `🤖 *Claudia* — Assistente de Estoque\n\n⚠️ Não consegui identificar os nomes. Por favor, informe separados por vírgula.\n\n_Ex: João Silva, Maria Souza_`)
+          return NextResponse.json({ ok: true })
+        }
+
         pendingConfirmations.delete(GROUP_ID)
+        const notes = `Saída via WhatsApp | Alunos: ${nomes.join(', ')}`
+        const updated = await registrarMovimentacao('entrega', pending.materialId, pending.quantity, notes, systemUser.id)
+
+        await sendGroupMessage(GROUP_ID,
+          `🤖 *Claudia* — Assistente de Estoque\n\n` +
+          `✅ *Entrega registrada!*\n\n` +
+          `📦 Material: ${updated?.name}\n` +
+          `➖ Quantidade: ${pending.quantity} unidades\n` +
+          `👥 Alunos: ${nomes.join(', ')}\n` +
+          `📊 Estoque atual: ${updated?.stockCurrent} unidades`
+        )
+        return NextResponse.json({ ok: true })
+      }
+
+      // ── Confirmação normal (sim/não) para entradas ────────────────
+      const isConfirm = /^(sim|s|confirma|confirmar|ok|yes|isso|correto)$/i.test(messageText)
+
+      if (isConfirm || isCancel) {
+        pendingConfirmations.delete(GROUP_ID)
+
         if (isCancel) {
           await sendGroupMessage(GROUP_ID, `🤖 *Claudia* — Assistente de Estoque\n\n❌ Registro cancelado.`)
           return NextResponse.json({ ok: true })
         }
+
+        // Confirma entrada
         const updated = await registrarMovimentacao(pending.type, pending.materialId, pending.quantity, pending.messageText, systemUser.id)
-        const emoji = pending.type === 'entrada' ? '➕' : '➖'
-        const label = pending.type === 'entrada' ? 'Entrada' : 'Saída'
         await sendGroupMessage(GROUP_ID,
           `🤖 *Claudia* — Assistente de Estoque\n\n` +
-          `✅ *${label} registrada!*\n\n` +
+          `✅ *Entrada registrada!*\n\n` +
           `📦 Material: ${updated?.name}\n` +
-          `${emoji} Quantidade: ${pending.quantity} unidades\n` +
+          `➕ Quantidade: ${pending.quantity} unidades\n` +
           `📊 Estoque atual: ${updated?.stockCurrent} unidades`
         )
         return NextResponse.json({ ok: true })
       }
     }
 
-    // ── Comandos diretos ───────────────────────────────────────────────
+    // ── Comando /adiciona ─────────────────────────────────────────────
     const addMatch = messageText.match(/^\/adiciona\s+(\d+)\s+(.+)$/i)
     if (addMatch) {
       const quantity = parseInt(addMatch[1])
@@ -159,6 +210,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true })
     }
 
+    // ── Comando /retirada ─────────────────────────────────────────────
     const removeMatch = messageText.match(/^\/retirada\s+(\d+)\s+(.+)$/i)
     if (removeMatch) {
       const quantity = parseInt(removeMatch[1])
@@ -169,12 +221,22 @@ export async function POST(req: NextRequest) {
         await sendGroupMessage(GROUP_ID, `🤖 *Claudia* — Assistente de Estoque\n\n⚠️ Material "*${materialSearch}*" não encontrado.\nUse /materiais para ver a lista.`)
         return NextResponse.json({ ok: true })
       }
-      const updated = await registrarMovimentacao('entrega', found.materialId, quantity, messageText, systemUser.id)
-      await sendGroupMessage(GROUP_ID,
-        `🤖 *Claudia* — Assistente de Estoque\n\n✅ *Saída registrada!*\n\n📦 Material: ${updated?.name}\n➖ Retirado: ${quantity} unidades\n📊 Estoque atual: ${updated?.stockCurrent} unidades`)
+
+      // Pede nomes dos alunos antes de registrar
+      pendingConfirmations.set(GROUP_ID, {
+        type: 'entrega',
+        materialId: found.materialId,
+        materialName: found.materialName || '',
+        quantity,
+        messageText,
+        expiresAt: Date.now() + 5 * 60 * 1000,
+        waitingForNames: true,
+      })
+      await pedirNomesAlunos(found.materialName || materialSearch, quantity)
       return NextResponse.json({ ok: true })
     }
 
+    // ── Comando /estoque ──────────────────────────────────────────────
     if (/^\/estoque$/i.test(messageText)) {
       const materials = await prisma.material.findMany({ where: { active: true }, select: { name: true, stockCurrent: true, stockMinimum: true }, orderBy: { name: 'asc' } })
       const lines = materials.map(m => `• ${m.name}: *${m.stockCurrent}* unid${m.stockCurrent <= m.stockMinimum ? ' ⚠️' : ''}`).join('\n')
@@ -182,6 +244,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true })
     }
 
+    // ── Comando /materiais ────────────────────────────────────────────
     if (/^\/materiais$/i.test(messageText)) {
       const materials = await prisma.material.findMany({ where: { active: true }, select: { name: true, code: true }, orderBy: { name: 'asc' } })
       const lines = materials.map(m => `• ${m.name} (${m.code})`).join('\n')
@@ -190,7 +253,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true })
     }
 
-    // ── Linguagem natural (IA) ─────────────────────────────────────────
+    // ── Linguagem natural (IA) ────────────────────────────────────────
     const materials = await prisma.material.findMany({ where: { active: true }, select: { id: true, name: true, code: true, stockCurrent: true }, orderBy: { name: 'asc' } })
     const materialsText = materials.map(m => `- ID: ${m.id} | Código: ${m.code} | Nome: ${m.name} | Estoque: ${m.stockCurrent}`).join('\n')
 
@@ -225,28 +288,36 @@ Regras:
     try { parsed = JSON.parse(aiText) } catch { return NextResponse.json({ ok: true }) }
 
     if (parsed.type === 'other' || !parsed.materialId || !parsed.quantity) return NextResponse.json({ ok: true })
-
-    const movType = parsed.type === 'entrada' ? 'entrada' : 'entrega'
-    const label = parsed.type === 'entrada' ? 'Entrada' : 'Saída'
-    const emoji = parsed.type === 'entrada' ? '➕' : '➖'
-
     if (parsed.confidence === 'low') return NextResponse.json({ ok: true })
 
+    // ── Entrega detectada → pedir nomes dos alunos ────────────────────
+    if (parsed.type === 'saida') {
+      pendingConfirmations.set(GROUP_ID, {
+        type: 'entrega',
+        materialId: parsed.materialId,
+        materialName: parsed.materialName || '',
+        quantity: parsed.quantity,
+        messageText,
+        expiresAt: Date.now() + 5 * 60 * 1000,
+        waitingForNames: true,
+      })
+      await pedirNomesAlunos(parsed.materialName || '', parsed.quantity)
+      return NextResponse.json({ ok: true })
+    }
+
+    // ── Entrada detectada → registrar ou confirmar ────────────────────
     if (parsed.confidence === 'high') {
-      // Registra direto
-      const updated = await registrarMovimentacao(movType, parsed.materialId, parsed.quantity, messageText, systemUser.id)
+      const updated = await registrarMovimentacao('entrada', parsed.materialId, parsed.quantity, messageText, systemUser.id)
       await sendGroupMessage(GROUP_ID,
         `🤖 *Claudia* — Assistente de Estoque\n\n` +
-        `✅ *${label} registrada automaticamente!*\n\n` +
+        `✅ *Entrada registrada automaticamente!*\n\n` +
         `📦 Material: ${updated?.name}\n` +
-        `${emoji} Quantidade: ${parsed.quantity} unidades\n` +
+        `➕ Quantidade: ${parsed.quantity} unidades\n` +
         `📊 Estoque atual: ${updated?.stockCurrent} unidades\n\n` +
         `_Não foi isso? Responda *não* para cancelar._`
       )
-
-      // Guarda como confirmação pendente por 2 min (para permitir cancelamento)
       pendingConfirmations.set(GROUP_ID, {
-        type: movType,
+        type: 'entrada',
         materialId: parsed.materialId,
         materialName: parsed.materialName || '',
         quantity: parsed.quantity,
@@ -254,21 +325,20 @@ Regras:
         expiresAt: Date.now() + 2 * 60 * 1000,
       })
     } else {
-      // Confidence medium — pede confirmação
+      // Confidence medium → pede confirmação
       pendingConfirmations.set(GROUP_ID, {
-        type: movType,
+        type: 'entrada',
         materialId: parsed.materialId,
         materialName: parsed.materialName || '',
         quantity: parsed.quantity,
         messageText,
         expiresAt: Date.now() + 5 * 60 * 1000,
       })
-
       await sendGroupMessage(GROUP_ID,
         `🤖 *Claudia* — Assistente de Estoque\n\n` +
-        `🤔 Entendi que houve uma *${label.toLowerCase()}* de estoque:\n\n` +
+        `🤔 Entendi que houve uma *entrada* de estoque:\n\n` +
         `📦 Material: *${parsed.materialName}*\n` +
-        `${emoji} Quantidade: *${parsed.quantity}* unidades\n\n` +
+        `➕ Quantidade: *${parsed.quantity}* unidades\n\n` +
         `Está correto? Responda *sim* para confirmar ou *não* para cancelar.`
       )
     }
