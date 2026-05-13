@@ -3,7 +3,7 @@
 import { prisma } from '@/lib/prisma'
 import { getAuthUser } from './auth'
 import { revalidatePath } from 'next/cache'
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function getUsers() {
   const user = await getAuthUser()
@@ -21,7 +21,7 @@ export async function createUser(data: {
   const user = await getAuthUser()
   if (user.role !== 'gestor') throw new Error('Sem permissão')
 
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   const existing = await prisma.user.findUnique({ where: { email: data.email } })
   if (existing) return { error: 'E-mail já cadastrado.' }
