@@ -52,11 +52,12 @@ model User {
   active    Boolean  @default(true)
   createdAt DateTime @default(now()) @map("created_at")
 
-  sales          Sale[]          @relation("SellerSales")
-  stockEntries   StockEntry[]
-  deliveries     Delivery[]
-  stockMovements StockMovement[]
-  purchaseOrders PurchaseOrder[]
+  sales                 Sale[]                @relation("SellerSales")
+  stockEntries          StockEntry[]
+  deliveries            Delivery[]
+  stockMovements        StockMovement[]
+  purchaseOrders        PurchaseOrder[]
+  financialTransactions FinancialTransaction[]
 
   @@map("users")
 }
@@ -162,6 +163,30 @@ model PurchaseOrder {
   responsible User     @relation(fields: [responsibleId], references: [id])
 
   @@map("purchase_orders")
+}
+
+enum TransactionType {
+  receita
+  despesa
+}
+
+model FinancialTransaction {
+  id             String          @id @default(uuid())
+  description    String
+  type           TransactionType
+  category       String
+  amount         Decimal         @db.Decimal(10, 2)
+  date           DateTime
+  referenceMonth Int             @map("reference_month")
+  referenceYear  Int             @map("reference_year")
+  notes          String?
+  createdById    String          @map("created_by_id")
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
+
+  createdBy User @relation(fields: [createdById], references: [id])
+
+  @@map("financial_transactions")
 }
 
 model StockMovement {

@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
   LayoutDashboard, Package, PackagePlus, ShoppingCart,
-  Truck, History, BarChart3, Users, LogOut, BookOpen, Menu, X, ClipboardList
+  Truck, History, BarChart3, Users, LogOut, BookOpen, Menu, X, ClipboardList, Wallet
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
@@ -29,6 +29,7 @@ const navItems: NavItem[] = [
   { href: '/materials',       label: 'Materiais',              icon: Package,         roles: ['gestor', 'administrador'] },
   { href: '/history',         label: 'Histórico',              icon: History,         roles: ['gestor', 'administrador'] },
   { href: '/replenishment',   label: 'Reposição',              icon: BarChart3,       roles: ['gestor'] },
+  { href: '/balancete',       label: 'Balancete',              icon: Wallet,          roles: ['gestor', 'administrador'] },
   { href: '/users',           label: 'Usuários',               icon: Users,           roles: ['gestor'] },
 ]
 
