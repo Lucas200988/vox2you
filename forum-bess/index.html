@@ -200,12 +200,13 @@ section{position:relative}
 .topic .td{font-size:11px;color:rgba(255,255,255,.4);line-height:1.5}
 
 /* COMPANIES */
-.companies{display:grid;grid-template-columns:repeat(4,1fr)}
-.company{padding:28px 20px;text-align:center;border-right:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
-.company:nth-child(4n){border-right:none}
-.company-icon{width:44px;height:44px;background:rgba(0,200,83,.07);border:1px solid rgba(0,200,83,.18);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:var(--g);margin:0 auto 12px;padding:0 6px}
-.company .cn{font-size:12px;font-weight:700;margin-bottom:3px}
-.company .cc{font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.5px}
+.companies{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.company{padding:28px 18px;text-align:center;background:rgba(255,255,255,.04);border:1px solid rgba(0,200,83,.12);border-radius:12px;position:relative;overflow:hidden;transition:.2s}
+.company::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--g),var(--gl));opacity:.65}
+.company:hover{background:rgba(0,200,83,.06);border-color:rgba(0,200,83,.35);transform:translateY(-3px)}
+.company-icon{width:56px;height:56px;background:rgba(0,200,83,.1);border:1px solid rgba(0,200,83,.28);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--g);margin:0 auto 14px;padding:0 6px}
+.company .cn{font-size:13px;font-weight:800;margin-bottom:4px}
+.company .cc{font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.5px}
 
 /* NUM GRID */
 .numgrid{display:grid;grid-template-columns:repeat(4,1fr)}
@@ -265,7 +266,7 @@ footer{background:#070F1A;padding:44px 80px;border-top:1px solid rgba(255,255,25
       <span class="logo-chip"><img class="logo-img mutua" src="logo-mutua.png" alt="Mútua"/></span>
     </span>
   </div>
-  <a href="mailto:amee.mt@gmail.com" class="nav-cta">⚡ Quero Patrocinar</a>
+  <a href="https://wa.me/5565984633872?text=Ol%C3%A1!%20Tenho%20interesse%20em%20patrocinar%20o%20F%C3%B3rum%20BESS%202026" target="_blank" rel="noopener" class="nav-cta">⚡ Quero Patrocinar</a>
 </nav>
 
 <!-- ═══ HERO CAPA ═══ -->
@@ -434,86 +435,57 @@ footer{background:#070F1A;padding:44px 80px;border-top:1px solid rgba(255,255,25
         </h2>
         <div class="gline"></div>
         <p style="font-size:15px;color:rgba(255,255,255,.65);line-height:1.9;margin-bottom:32px">
-          Programação de alto nível elaborada com especialistas do setor. Sem conteúdo genérico — cada apresentação traz casos reais, dados de mercado e aplicações práticas para o contexto brasileiro.
+          Um encontro técnico focado e direto ao ponto, no fim da tarde/noite — pensado para reunir os profissionais em atividade. Conteúdo aplicado sobre o sistema BESS, do conceito ao dimensionamento e especificação.
         </p>
         <div style="display:flex;flex-direction:column;gap:12px">
-          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">🎤</span> Keynotes com líderes do setor nacional</div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">🔬</span> Painéis técnicos com cases reais de BESS</div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">🏭</span> Workshop prático: dimensionamento de sistemas</div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">🤝</span> Rodadas B2B pré-agendadas</div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">🏪</span> Área de exposição de tecnologias</div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">🥂</span> Happy hour exclusivo patrocinadores</div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">🎤</span> Abertura oficial com ABEE-MT, CREA-MT e Mútua</div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">📚</span> Mini curso: introdução ao sistema BESS</div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">📐</span> Dimensionamento e especificações técnicas</div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">🏪</span> Exposição de tecnologias dos patrocinadores</div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">🤝</span> Networking com especificadores e decisores</div>
+        </div>
+        <div class="insight" style="margin-top:28px">
+          <div class="itag">Mesma programação nas 2 cidades</div>
+          <p>O evento acontece em <strong style="color:var(--w)">Cuiabá (28/09)</strong> e <strong style="color:var(--w)">Rondonópolis (30/09)</strong>, com a mesma grade — dobrando o alcance da sua marca.</p>
         </div>
       </div>
       <div>
         <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden">
           <div style="background:rgba(0,200,83,.08);border-bottom:1px solid rgba(0,200,83,.15);padding:16px 24px;display:flex;align-items:center;gap:12px">
             <span style="font-size:14px">📅</span>
-            <span style="font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--g)">Programação Prevista — Cuiabá 28/09</span>
+            <span style="font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--g)">Programação — 28/09 Cuiabá · 30/09 Rondonópolis</span>
           </div>
           <div style="padding:8px 24px">
             <div class="agenda-item">
-              <div class="a-time">08h00</div>
+              <div class="a-time">17h30<div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:500;margin-top:2px">30 min</div></div>
               <div class="a-body">
-                <div style="margin-bottom:6px"><span class="a-type net">Credenciamento</span></div>
-                <div class="a-title">Credenciamento & Welcome Coffee</div>
-                <div class="a-desc">Recepcão dos participantes com networking e exposição de patrocinadores</div>
+                <div style="margin-bottom:6px"><span class="a-type key">Abertura</span></div>
+                <div class="a-title">Credenciamento</div>
+                <div class="a-desc">Recepção e credenciamento dos participantes, com exposição dos patrocinadores</div>
               </div>
             </div>
             <div class="agenda-item">
-              <div class="a-time">09h00</div>
+              <div class="a-time">18h30<div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:500;margin-top:2px">1h30</div></div>
               <div class="a-body">
-                <div style="margin-bottom:6px"><span class="a-type key">Keynote</span></div>
-                <div class="a-title">Abertura Oficial — ABEE-MT + CREA-MT + Mútua</div>
-                <div class="a-desc">Panorama do mercado de armazenamento e oportunidades em Mato Grosso</div>
+                <div style="margin-bottom:6px"><span class="a-type pan">Palestra</span></div>
+                <div class="a-title">Mini Curso — Introdução e apresentação do sistema BESS</div>
+                <div class="a-desc">Fundamentos, conceitos e aplicações do armazenamento de energia</div>
               </div>
             </div>
             <div class="agenda-item">
-              <div class="a-time">09h30</div>
+              <div class="a-time">20h00<div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:500;margin-top:2px">30 min</div></div>
               <div class="a-body">
-                <div style="margin-bottom:6px"><span class="a-type key">Keynote Patrocinador</span></div>
-                <div class="a-title">BESS no Brasil: tecnologias, custos e ROI real</div>
-                <div class="a-desc">Apresentação técnica exclusiva — cota Master ou Diamante</div>
+                <div style="margin-bottom:6px"><span class="a-type net">Intervalo</span></div>
+                <div class="a-title">Intervalo</div>
+                <div class="a-desc">Coffee break e networking com expositores e patrocinadores</div>
               </div>
             </div>
             <div class="agenda-item">
-              <div class="a-time">10h30</div>
+              <div class="a-time">20h30<div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:500;margin-top:2px">1h30</div></div>
               <div class="a-body">
-                <div style="margin-bottom:6px"><span class="a-type pan">Painel</span></div>
-                <div class="a-title">Peak Shaving & Mercado Livre — Cases reais MT</div>
-                <div class="a-desc">Projetos implantados, resultados medidos, lições aprendidas</div>
-              </div>
-            </div>
-            <div class="agenda-item">
-              <div class="a-time">12h00</div>
-              <div class="a-body">
-                <div style="margin-bottom:6px"><span class="a-type net">Networking</span></div>
-                <div class="a-title">Almoço de Networking</div>
-                <div class="a-desc">Refeição com patrocinadores e expositores — área exclusiva Master/Diamante</div>
-              </div>
-            </div>
-            <div class="agenda-item">
-              <div class="a-time">14h00</div>
-              <div class="a-body">
-                <div style="margin-bottom:6px"><span class="a-type wkp">Workshop</span></div>
-                <div class="a-title">Dimensionamento BESS: da especificação ao comissionamento</div>
-                <div class="a-desc">Prático, hands-on, com engenheiros especificadores</div>
-              </div>
-            </div>
-            <div class="agenda-item">
-              <div class="a-time">15h30</div>
-              <div class="a-body">
-                <div style="margin-bottom:6px"><span class="a-type pan">Painel</span></div>
-                <div class="a-title">Grid Forming, Microgrids e EMS — O futuro da rede</div>
-                <div class="a-desc">IA, automação e novos modelos de negócio para BESS</div>
-              </div>
-            </div>
-            <div class="agenda-item">
-              <div class="a-time">17h00</div>
-              <div class="a-body">
-                <div style="margin-bottom:6px"><span class="a-type net">VIP</span></div>
-                <div class="a-title">Happy Hour Patrocinadores</div>
-                <div class="a-desc">Coquetel exclusivo para patrocinadores, palestrantes e convidados especiais</div>
+                <div style="margin-bottom:6px"><span class="a-type pan">Palestra</span></div>
+                <div class="a-title">Dimensionamento e especificações</div>
+                <div class="a-desc">Aplicação prática: como dimensionar e especificar sistemas BESS</div>
               </div>
             </div>
           </div>
@@ -753,7 +725,7 @@ footer{background:#070F1A;padding:44px 80px;border-top:1px solid rgba(255,255,25
       <div class="sl" style="text-align:center">Planos de Patrocínio</div>
       <h2>Escolha seu nível<br><span>de investimento</span></h2>
       <div class="gline" style="margin:16px auto 16px"></div>
-      <p>Cinco planos desenhados para maximizar o retorno comercial de cada patrocinador — do lançamento do evento até o pós-evento</p>
+      <p>Seis planos desenhados para maximizar o retorno comercial de cada patrocinador — do lançamento do evento até o pós-evento</p>
     </div>
 
     <!-- TABELA COMPARATIVA -->
@@ -767,6 +739,7 @@ footer{background:#070F1A;padding:44px 80px;border-top:1px solid rgba(255,255,25
             <th style="color:var(--ouro)">🏅 OURO</th>
             <th style="color:var(--prata)">🥈 PRATA</th>
             <th style="color:var(--bronze)">🥉 BRONZE</th>
+            <th style="color:#4DB6AC">🤝 APOIADOR</th>
           </tr>
           <tr>
             <td></td>
@@ -775,22 +748,23 @@ footer{background:#070F1A;padding:44px 80px;border-top:1px solid rgba(255,255,25
             <td style="text-align:center"><span class="cmp-price" style="color:var(--ouro)">R$12.000</span><br><small style="color:rgba(255,255,255,.4);font-size:10px">3 vagas</small></td>
             <td style="text-align:center"><span class="cmp-price" style="color:var(--prata)">R$7.000</span><br><small style="color:rgba(255,255,255,.4);font-size:10px">5 vagas</small></td>
             <td style="text-align:center"><span class="cmp-price" style="color:var(--bronze)">R$3.500</span><br><small style="color:rgba(255,255,255,.4);font-size:10px">8 vagas</small></td>
+            <td style="text-align:center"><span class="cmp-price" style="color:#4DB6AC">R$1.000</span><br><small style="color:rgba(255,255,255,.4);font-size:10px">apoio</small></td>
           </tr>
         </thead>
         <tbody>
-          <tr><td>Naming rights do evento</td><td class="col-master"><span class="yes">✓</span></td><td class="col-dia"><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
-          <tr><td>Keynote no palco (20 min)</td><td class="col-master"><span class="yes">✓ 2 cidades</span></td><td class="col-dia"><span class="yes">✓ 1 cidade</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
-          <tr><td>Painel técnico (10 min)</td><td class="col-master"><span class="yes">✓</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
-          <tr><td>Stand de exposição</td><td class="col-master"><span class="yes">12m²</span></td><td class="col-dia"><span class="yes">9m²</span></td><td><span class="yes">6m²</span></td><td><span class="yes">Mesa 2m</span></td><td><span class="no">—</span></td></tr>
-          <tr><td>Inscrições gratuitas</td><td class="col-master"><span class="yes">5 VIP</span></td><td class="col-dia"><span class="yes">3</span></td><td><span class="yes">2</span></td><td><span class="yes">1</span></td><td><span class="yes">1</span></td></tr>
-          <tr><td>Logo no crachá</td><td class="col-master"><span class="yes">✓ Destaque</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
-          <tr><td>Logo no banner principal</td><td class="col-master"><span class="yes">✓ Grande</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
-          <tr><td>Logo no site do evento</td><td class="col-master"><span class="yes">✓ Topo</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td></div></td></tr>
-          <tr><td>Mailing pós-evento</td><td class="col-master"><span class="yes">✓</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
-          <tr><td>Kit no participante</td><td class="col-master"><span class="yes">✓</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
-          <tr><td>Happy hour VIP</td><td class="col-master"><span class="yes">✓</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
-          <tr><td>Rodadas B2B</td><td class="col-master"><span class="yes">✓ Prioridade</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
-          <tr><td>Menção nas redes sociais</td><td class="col-master"><span class="yes">✓ Exclusivo</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>Naming rights do evento</td><td class="col-master"><span class="yes">✓</span></td><td class="col-dia"><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Keynote no palco (20 min)</td><td class="col-master"><span class="yes">✓ 2 cidades</span></td><td class="col-dia"><span class="yes">✓ 1 cidade</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Painel técnico (10 min)</td><td class="col-master"><span class="yes">✓</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Stand de exposição</td><td class="col-master"><span class="yes">12m²</span></td><td class="col-dia"><span class="yes">9m²</span></td><td><span class="yes">6m²</span></td><td><span class="yes">Mesa 2m</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Inscrições / convites</td><td class="col-master"><span class="yes">5 VIP</span></td><td class="col-dia"><span class="yes">3</span></td><td><span class="yes">2</span></td><td><span class="yes">1</span></td><td><span class="yes">1</span></td><td><span class="yes">2</span></td></tr>
+          <tr><td>Logo no crachá</td><td class="col-master"><span class="yes">✓ Destaque</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Logo no banner principal</td><td class="col-master"><span class="yes">✓ Grande</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Logo no site do evento</td><td class="col-master"><span class="yes">✓ Topo</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>Mailing pós-evento</td><td class="col-master"><span class="yes">✓</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Kit no participante</td><td class="col-master"><span class="yes">✓</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Happy hour VIP</td><td class="col-master"><span class="yes">✓</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Rodadas B2B</td><td class="col-master"><span class="yes">✓ Prioridade</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Menção nas redes sociais</td><td class="col-master"><span class="yes">✓ Exclusivo</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -850,10 +824,10 @@ footer{background:#070F1A;padding:44px 80px;border-top:1px solid rgba(255,255,25
   </div>
 </section>
 
-<!-- COTAS OURO / PRATA / BRONZE em cards menores -->
+<!-- COTAS OURO / PRATA / BRONZE / APOIADOR em cards menores -->
 <section class="sec" style="background:var(--n)">
   <div class="sec-inner">
-    <div class="g3" style="align-items:start">
+    <div class="g4" style="align-items:start">
 
       <!-- OURO -->
       <div style="background:rgba(255,167,38,.05);border:1px solid rgba(255,167,38,.2);border-radius:16px;padding:40px 32px;position:relative;overflow:hidden">
@@ -911,18 +885,34 @@ footer{background:#070F1A;padding:44px 80px;border-top:1px solid rgba(255,255,25
         </div>
         <a href="mailto:amee.mt@gmail.com?subject=Interesse Cota BRONZE — Forum BESS 2026" style="display:block;text-align:center;background:rgba(255,138,101,.08);border:1px solid rgba(255,138,101,.3);color:var(--bronze);font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:14px;border-radius:4px;text-decoration:none">Quero Cota Bronze</a>
       </div>
+
+      <!-- APOIADOR -->
+      <div style="background:rgba(77,182,172,.05);border:1px solid rgba(77,182,172,.2);border-radius:16px;padding:40px 32px;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#4DB6AC,transparent)"></div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:5px;color:#4DB6AC;margin-bottom:10px">COTA 06</div>
+        <div style="font-size:36px;font-weight:900;color:#4DB6AC;letter-spacing:-1px;line-height:.9;margin-bottom:16px">APOIADOR</div>
+        <div style="font-size:28px;font-weight:900;margin-bottom:4px">R$ 1.000</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:28px">Cota de apoio — ideal para começar</div>
+        <div style="height:1px;background:rgba(77,182,172,.18);margin-bottom:24px"></div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
+          <div class="qitem"><div class="qdot" style="background:#4DB6AC"></div><span>Logo no site do evento</span></div>
+          <div class="qitem"><div class="qdot" style="background:#4DB6AC"></div><span>2 convites para o evento</span></div>
+        </div>
+        <a href="https://wa.me/5565984633872?text=Ol%C3%A1!%20Tenho%20interesse%20na%20Cota%20Apoiador%20do%20F%C3%B3rum%20BESS%202026" target="_blank" rel="noopener" style="display:block;text-align:center;background:rgba(77,182,172,.12);border:1px solid rgba(77,182,172,.35);color:#4DB6AC;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:14px;border-radius:4px;text-decoration:none">Quero Apoiar</a>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ EMPRESAS ALVO ═══ -->
-<section class="sec" style="background:var(--p)">
-  <div class="sec-inner">
+<!-- ═══ PARCEIROS ESTRATÉGICOS ═══ -->
+<section class="sec" style="background:linear-gradient(180deg,var(--n) 0%,var(--p) 100%);position:relative;overflow:hidden">
+  <div style="position:absolute;top:-120px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse,rgba(0,200,83,.1),transparent 70%);pointer-events:none"></div>
+  <div class="sec-inner" style="position:relative">
     <div class="sec-head">
-      <div class="sl" style="text-align:center">Empresas-alvo</div>
-      <h2>Parceiros <span>Estratégicos Ideais</span></h2>
+      <div style="display:inline-block;background:rgba(0,200,83,.12);border:1px solid rgba(0,200,83,.4);border-radius:4px;padding:7px 18px;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--g);margin-bottom:20px">⚡ Parceiros Estratégicos</div>
+      <h2 style="font-size:clamp(28px,4vw,52px)">A sua marca ao lado <span>das líderes globais</span></h2>
       <div class="gline" style="margin:16px auto 16px"></div>
-      <p>Empresas que lideram o setor global de armazenamento de energia — e que têm no Fórum BESS 2026 o canal mais direto para o mercado de MT</p>
+      <p style="font-size:16px">Estas são as empresas que dominam o setor global de armazenamento de energia. O Fórum BESS 2026 é o <strong style="color:var(--w)">canal mais direto</strong> para posicionar sua marca ao lado delas no mercado de Mato Grosso — o que mais cresce em energia solar no Brasil.</p>
     </div>
     <div class="companies">
       <div class="company"><div class="company-icon">HW</div><div class="cn">Huawei Digital Power</div><div class="cc">Inversores & BESS</div></div>
@@ -937,6 +927,10 @@ footer{background:#070F1A;padding:44px 80px;border-top:1px solid rgba(255,255,25
       <div class="company"><div class="company-icon">GW</div><div class="cn">GoodWe</div><div class="cc">Inversores Híbridos</div></div>
       <div class="company"><div class="company-icon">MO</div><div class="cn">Moura</div><div class="cc">Baterias Nacionais</div></div>
       <div class="company"><div class="company-icon">CS</div><div class="cn">Canadian Solar</div><div class="cc">Módulos & BESS</div></div>
+    </div>
+    <div style="text-align:center;margin-top:48px">
+      <p style="font-size:14px;color:rgba(255,255,255,.55);margin-bottom:24px">É fabricante, integrador ou distribuidor de BESS? <strong style="color:var(--w)">Este é o seu lugar.</strong></p>
+      <a href="https://wa.me/5565984633872?text=Ol%C3%A1!%20Quero%20ser%20parceiro%2Fpatrocinador%20do%20F%C3%B3rum%20BESS%202026" target="_blank" rel="noopener" class="btn-green">Quero ser Parceiro do Evento</a>
     </div>
   </div>
 </section>
