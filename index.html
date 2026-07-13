@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Fórum BESS 2026 — Seja Patrocinador · ABEE-MT</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--g:#00C853;--gl:#00E676;--p:#082A43;--n:#0D1B2A;--gr:#F4F6F8;--w:#fff;--gold:#FFD700;--dia:#B9F2FF;--ouro:#FFA726;--prata:#CFD8DC;--bronze:#FF8A65}
+html{scroll-behavior:smooth}
+body{font-family:'Montserrat',system-ui,sans-serif;background:var(--n);color:var(--w);overflow-x:hidden;-webkit-font-smoothing:antialiased;padding-top:60px}
+img{display:block;max-width:100%}
+a{color:inherit}
+section{position:relative}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:999;background:rgba(8,26,42,0.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,200,83,0.25);height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;gap:16px}
+#nav .logos{display:flex;align-items:center;gap:20px}
+#nav .logo-pill{display:flex;align-items:center;gap:8px;text-decoration:none}
+#nav .logo-chip{background:#fff;border-radius:7px;padding:4px 8px;display:flex;align-items:center;justify-content:center}
+#nav .logo-img{height:26px;width:auto;object-fit:contain;display:block}
+#nav .logo-img.abee{height:30px}
+#nav .pname{font-size:11px;font-weight:700;color:rgba(255,255,255,.8)}
+.logo-chip{background:#fff;border-radius:8px;padding:8px 12px;display:inline-flex;align-items:center;justify-content:center}
+#nav .sep{width:1px;height:24px;background:rgba(255,255,255,.1)}
+#nav .nav-cta{background:linear-gradient(135deg,var(--g),var(--gl));color:var(--n);font-weight:800;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 24px;border-radius:4px;text-decoration:none;white-space:nowrap;box-shadow:0 4px 16px rgba(0,200,83,.3);border:none;cursor:pointer;font-family:inherit}
+@media(max-width:768px){#nav{padding:0 20px}#nav .pname,#nav .sep{display:none}#nav .logos{gap:10px}}
+
+/* HEROES */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+.hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.35) saturate(.7)}
+.hero-ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,27,42,.2) 0%,rgba(8,42,67,.5) 40%,rgba(13,27,42,.97) 100%)}
+.hero-top{position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--g),var(--gl),var(--g))}
+.hero-content{position:relative;z-index:10;padding:80px 64px 100px;max-width:1000px}
+.tag{display:inline-block;background:rgba(0,200,83,.1);border:1px solid rgba(0,200,83,.4);border-radius:2px;padding:6px 16px;font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--g)}
+.gline{width:48px;height:4px;background:linear-gradient(90deg,var(--g),var(--gl));border-radius:2px;margin-bottom:32px}
+.sl{font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:48px}
+.sl.d{color:rgba(8,42,67,.3)}
+
+/* BOTÕES */
+.btn-green{background:linear-gradient(135deg,var(--g),var(--gl));color:var(--n);font-weight:800;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:16px 40px;border-radius:4px;text-decoration:none;display:inline-block;box-shadow:0 8px 32px rgba(0,200,83,.3);border:none;cursor:pointer;font-family:inherit}
+.btn-outline{border:2px solid var(--g);color:var(--g);font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:14px 32px;border-radius:4px;text-decoration:none;display:inline-block;background:transparent}
+
+/* DATE CHIPS */
+.dates{display:flex;gap:20px;flex-wrap:wrap;margin-top:40px}
+.dchip{background:rgba(255,255,255,.06);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:20px 28px}
+.dchip .day{font-size:38px;font-weight:900;line-height:1}
+.dchip .mo{font-size:12px;font-weight:700;color:var(--g);letter-spacing:2px}
+.dchip .yr{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:1px}
+.dchip .city{font-size:13px;color:rgba(255,255,255,.6);margin-top:6px;font-weight:500}
+
+/* GRID HELPERS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+
+/* SECTIONS PADS */
+.sec{padding:100px 80px}
+.sec-inner{max-width:1200px;margin:0 auto}
+.sec-head{text-align:center;margin-bottom:72px}
+.sec-head h2{font-size:clamp(26px,3.5vw,48px);font-weight:900;margin-bottom:16px}
+.sec-head h2 span{color:var(--g)}
+.sec-head p{font-size:15px;color:rgba(255,255,255,.55);max-width:580px;margin:0 auto;line-height:1.8}
+.sec-head .gline{margin:16px auto 0}
+
+/* CTA FLUTUANTE */
+.cta-strip{background:linear-gradient(90deg,var(--g),var(--gl));padding:24px 80px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.cta-strip p{font-size:clamp(13px,2vw,17px);font-weight:800;color:var(--n)}
+.cta-strip small{font-size:12px;font-weight:600;color:rgba(13,27,42,.65);display:block;margin-top:4px}
+.cta-strip a{background:var(--n);color:var(--w);font-weight:800;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:14px 32px;border-radius:4px;text-decoration:none;white-space:nowrap;flex-shrink:0}
+
+/* CARDS */
+.card-dark{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:36px 28px}
+.card-light{background:var(--w);border-radius:12px;padding:36px 28px;box-shadow:0 4px 24px rgba(8,42,67,.08)}
+.card-light .metric{font-size:11px;font-weight:700;color:var(--g);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.card-light .ctitle{font-size:17px;font-weight:700;color:var(--p);margin-bottom:10px}
+.card-light .cdesc{font-size:14px;color:#718096;line-height:1.7}
+.card-light .cicon{font-size:30px;margin-bottom:16px}
+.card-light{border-bottom:4px solid var(--g)}
+
+/* STAT BOX */
+.sbox{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:24px}
+.sbox .v{font-size:30px;font-weight:900;color:var(--g);line-height:1}
+.sbox .u{font-size:11px;color:rgba(255,255,255,.4);margin-top:3px}
+.sbox .l{font-size:12px;color:rgba(255,255,255,.6);margin-top:8px;line-height:1.5}
+
+/* BARS */
+.brow{margin-bottom:20px}
+.brow .bh{display:flex;justify-content:space-between;margin-bottom:7px}
+.brow .bn{font-size:13px;color:rgba(255,255,255,.8);font-weight:500}
+.brow .bp{font-size:13px;color:var(--g);font-weight:700}
+.brow .bt{background:rgba(255,255,255,.06);border-radius:4px;height:7px}
+.brow .bf{height:100%;background:linear-gradient(90deg,var(--g),var(--gl));border-radius:4px}
+
+/* FLOW */
+.flow{display:flex;flex-direction:column;align-items:center}
+.fnode{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:13px 26px;min-width:280px}
+.fnode.hl{background:rgba(0,200,83,.1);border-color:rgba(0,200,83,.45);box-shadow:0 0 40px rgba(0,200,83,.15)}
+.fnode .fi{font-size:20px}
+.fnode .fl{font-size:13px;font-weight:500;color:rgba(255,255,255,.8)}
+.fnode.hl .fl{color:var(--g);font-weight:700}
+.farr{width:2px;height:18px;background:rgba(255,255,255,.12);border-radius:1px}
+
+/* TIMELINE */
+.tl-item{display:grid;grid-template-columns:110px 1fr;gap:28px}
+.tl-meta{text-align:right;padding-top:4px}
+.tl-phase{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--g);text-transform:uppercase}
+.tl-date{font-size:12px;color:#718096;margin-top:4px}
+.tl-body{border-left:2px solid #E2E8F0;padding-left:28px;padding-bottom:36px;position:relative}
+.tl-body.act{border-left-color:var(--g)}
+.tl-body::before{content:'';position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:#CBD5E0;border:2px solid #CBD5E0}
+.tl-body.act::before{background:var(--g);border-color:var(--g)}
+.tl-title{font-size:15px;font-weight:700;color:var(--p);margin-bottom:6px}
+.tl-desc{font-size:13px;color:#718096;line-height:1.7}
+
+/* AGENDA */
+.agenda-item{display:flex;gap:24px;align-items:flex-start;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.agenda-item:last-child{border-bottom:none}
+.a-time{font-size:13px;font-weight:700;color:var(--g);min-width:80px;padding-top:2px}
+.a-type{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border-radius:3px;white-space:nowrap}
+.a-type.key{background:rgba(0,200,83,.15);color:var(--g)}
+.a-type.pan{background:rgba(130,177,255,.12);color:#82B1FF}
+.a-type.net{background:rgba(255,193,7,.1);color:#FFC107}
+.a-type.wkp{background:rgba(255,138,101,.1);color:#FF8A65}
+.a-body{flex:1}
+.a-title{font-size:15px;font-weight:700;margin-bottom:4px}
+.a-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6}
+
+/* COMPARATIVO COTAS */
+.cmp-table{width:100%;border-collapse:collapse;font-size:13px}
+.cmp-table th{padding:16px 20px;text-align:center;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;border-bottom:2px solid rgba(255,255,255,.08)}
+.cmp-table td{padding:14px 20px;text-align:center;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;color:rgba(255,255,255,.7)}
+.cmp-table tr:last-child td{border-bottom:none}
+.cmp-table td:first-child{text-align:left;font-weight:600;color:rgba(255,255,255,.85)}
+.cmp-table .yes{color:var(--g);font-size:16px}
+.cmp-table .no{color:rgba(255,255,255,.2);font-size:16px}
+.cmp-table .col-master{background:rgba(255,215,0,.05)}
+.cmp-table .col-dia{background:rgba(185,242,255,.03)}
+.cmp-price{font-size:16px;font-weight:900}
+
+/* QUOTA CARDS */
+.qsec{padding:72px 80px;border-top:1px solid rgba(255,255,255,.04)}
+.qcard{max-width:1000px;margin:0 auto;border-radius:16px;padding:56px 60px;position:relative;overflow:hidden}
+.qcard .qtop{position:absolute;top:0;left:0;right:0;height:3px}
+.qcard .qh{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:start;margin-bottom:40px}
+.qcard .qlabel{font-size:10px;font-weight:700;letter-spacing:6px;text-transform:uppercase;margin-bottom:10px}
+.qcard .qlevel{font-size:clamp(40px,5vw,68px);font-weight:900;line-height:.95;letter-spacing:-2px}
+.qcard .qi-label{font-size:10px;color:rgba(255,255,255,.35);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;text-align:right}
+.qcard .qi-price{font-size:clamp(26px,3.5vw,44px);font-weight:900;text-align:right}
+.qcard .vbadge{display:inline-block;border-radius:4px;padding:4px 12px;font-size:11px;font-weight:700;margin-top:8px}
+.qcard .qdiv{height:1px;margin-bottom:36px}
+.qcard .qb{display:grid;gap:12px 36px}
+.qcard .qitem{display:flex;align-items:flex-start;gap:12px}
+.qcard .qdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:7px}
+.qcard .qitem span{font-size:14px;color:rgba(255,255,255,.75);line-height:1.6}
+
+/* CONTATO */
+.contact-item{display:flex;align-items:center;gap:18px;margin-bottom:20px}
+.contact-icon{width:44px;height:44px;flex-shrink:0;background:rgba(0,200,83,.08);border:1px solid rgba(0,200,83,.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.clabel{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:2px;text-transform:uppercase;margin-bottom:2px}
+.cval{font-size:15px;font-weight:600}
+
+/* URGÊNCIA */
+.urgencia{background:linear-gradient(90deg,var(--g),var(--gl));padding:22px 80px;text-align:center}
+.urgencia p{font-size:clamp(13px,1.8vw,17px);font-weight:800;color:var(--n);margin-bottom:4px}
+.urgencia small{font-size:12px;color:rgba(13,27,42,.65);font-weight:600}
+
+/* INSIGHT BOX */
+.insight{background:rgba(0,200,83,.07);border:1px solid rgba(0,200,83,.22);border-radius:10px;padding:24px 28px;margin-top:32px}
+.insight .itag{font-size:11px;font-weight:700;color:var(--g);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.insight p{font-size:14px;color:rgba(255,255,255,.8);line-height:1.7}
+
+/* FOTO BADGE */
+.photowrap{position:relative}
+.photowrap img{width:100%;border-radius:12px;filter:brightness(.82)}
+.pbadge{position:absolute;bottom:20px;left:20px;right:20px;background:rgba(13,27,42,.93);backdrop-filter:blur(12px);border-radius:8px;padding:18px 22px;border:1px solid rgba(0,200,83,.2)}
+.pbadge .ptag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--g);margin-bottom:6px}
+.pbadge .pval{font-size:22px;font-weight:900}
+.pbadge .psub{font-size:12px;color:rgba(255,255,255,.5);margin-top:4px}
+
+/* ROI BOX */
+.roi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.06);border-radius:12px;overflow:hidden;margin-top:40px}
+.roi-item{background:var(--p);padding:32px 24px;text-align:center}
+.roi-item .rv{font-size:clamp(28px,3vw,40px);font-weight:900;color:var(--g);line-height:1}
+.roi-item .rl{font-size:12px;color:rgba(255,255,255,.55);margin-top:10px;line-height:1.5}
+
+/* MT STATS */
+.mt-stats{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.mt-stat{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:22px 18px}
+.mt-stat .v{font-size:24px;font-weight:900;color:var(--g);line-height:1}
+.mt-stat .u{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px}
+.mt-stat .l{font-size:12px;color:rgba(255,255,255,.6);margin-top:7px}
+
+/* TOPICS */
+.topics{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.topic{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:24px 16px;text-align:center}
+.topic .ti{font-size:26px;margin-bottom:10px}
+.topic .tn{font-size:12px;font-weight:700;margin-bottom:6px}
+.topic .td{font-size:11px;color:rgba(255,255,255,.4);line-height:1.5}
+
+/* COMPANIES */
+.companies{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.company{padding:28px 18px;text-align:center;background:rgba(255,255,255,.04);border:1px solid rgba(0,200,83,.12);border-radius:12px;position:relative;overflow:hidden;transition:.2s}
+.company::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--g),var(--gl));opacity:.65}
+.company:hover{background:rgba(0,200,83,.06);border-color:rgba(0,200,83,.35);transform:translateY(-3px)}
+.company-icon{width:56px;height:56px;background:rgba(0,200,83,.1);border:1px solid rgba(0,200,83,.28);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--g);margin:0 auto 14px;padding:0 6px}
+.company .cn{font-size:13px;font-weight:800;margin-bottom:4px}
+.company .cc{font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.5px}
+
+/* NUM GRID */
+.numgrid{display:grid;grid-template-columns:repeat(4,1fr)}
+.numitem{padding:56px 36px;text-align:center;border-right:1px solid rgba(255,255,255,.07)}
+.numitem:last-child{border-right:none}
+.numitem .big{font-size:clamp(46px,5vw,68px);font-weight:900;color:var(--g);line-height:1}
+.numitem .nm{font-size:17px;font-weight:700;margin-top:14px;margin-bottom:6px}
+.numitem .ns{font-size:13px;color:rgba(255,255,255,.4)}
+
+/* FOOTER */
+footer{background:#070F1A;padding:44px 80px;border-top:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
+.footer-brand{display:flex;align-items:center;gap:16px}
+.footer-logo{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--g);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;color:var(--g)}
+.footer-name{font-size:13px;font-weight:700;color:rgba(255,255,255,.8)}
+.footer-sub{font-size:11px;color:rgba(255,255,255,.35);margin-top:2px}
+.inst-logos{display:flex;align-items:center;gap:20px}
+.inst-pill{height:30px;padding:0 12px;border-radius:5px;display:flex;align-items:center;font-size:10px;font-weight:900}
+.footer-right{text-align:right}
+.footer-tag{font-size:11px;color:var(--g);letter-spacing:2px;text-transform:uppercase;font-weight:700}
+.footer-conf{font-size:11px;color:rgba(255,255,255,.25);margin-top:4px}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .g2,.g3,.g4,.g2.flip{grid-template-columns:1fr!important}
+  .sec{padding:72px 28px}
+  .hero-content{padding:60px 28px 80px}
+  .numgrid{grid-template-columns:1fr 1fr}
+  .numitem{border-right:none;border-bottom:1px solid rgba(255,255,255,.07)}
+  .topics{grid-template-columns:repeat(2,1fr)}
+  .companies{grid-template-columns:repeat(2,1fr)}
+  .company:nth-child(2n){border-right:none}
+  .cta-strip{padding:20px 28px}
+  .urgencia{padding:20px 28px}
+  .qcard{padding:36px 24px}
+  .qsec{padding:48px 28px}
+  footer{padding:36px 28px;flex-direction:column;text-align:center}
+  .footer-right{text-align:center}
+  .cmp-table{font-size:11px}
+  .cmp-table th,.cmp-table td{padding:10px 10px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV FIXA -->
+<nav id="nav">
+  <div class="logos">
+    <a href="https://www.abeemt.org.br" target="_blank" rel="noopener" class="logo-pill">
+      <span class="logo-chip"><img class="logo-img abee" src="logo-abee-mt.png" alt="ABEE-MT"/></span>
+    </a>
+    <div class="sep"></div>
+    <span class="logo-pill">
+      <span class="logo-chip"><img class="logo-img crea" src="logo-crea-mt.png" alt="CREA-MT"/></span>
+    </span>
+    <div class="sep"></div>
+    <span class="logo-pill">
+      <span class="logo-chip"><img class="logo-img mutua" src="logo-mutua.png" alt="Mútua"/></span>
+    </span>
+  </div>
+  <a href="https://wa.me/5565984633872?text=Ol%C3%A1!%20Tenho%20interesse%20em%20patrocinar%20o%20F%C3%B3rum%20BESS%202026" target="_blank" rel="noopener" class="nav-cta">⚡ Quero Patrocinar</a>
+</nav>
+
+<!-- ═══ HERO CAPA ═══ -->
+<section class="hero">
+  <img class="hero-bg" src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1920&q=85&fit=crop" alt="BESS"/>
+  <div class="hero-ov"></div>
+  <div class="hero-top"></div>
+  <div class="hero-content">
+    <div class="tag" style="margin-bottom:20px">Media Kit 2026 · Captação de Patrocinadores</div>
+    <h1 style="font-size:clamp(34px,5.5vw,72px);font-weight:900;line-height:1.05;letter-spacing:-1px;margin-bottom:12px">
+      FÓRUM MATO-GROSSENSE<br>
+      <span style="color:var(--g)">DE ENGENHARIA ELÉTRICA</span><br>
+      E ENERGIAS SUSTENTÁVEIS
+    </h1>
+    <p style="font-size:clamp(14px,2vw,24px);font-weight:300;color:rgba(255,255,255,.65);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px">Battery Energy Storage Systems — BESS</p>
+    <p style="font-size:15px;color:rgba(255,255,255,.5);margin-bottom:40px;max-width:600px;line-height:1.8">
+      O maior evento técnico de BESS do Centro-Oeste. <strong style="color:var(--g)">200 profissionais qualificados por evento.</strong> Engenheiros especificadores, gestores de compra e líderes do setor elétrico de Mato Grosso — em um único ambiente, em cada cidade.
+    </p>
+    <div class="dates">
+      <div class="dchip">
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px"><span class="day">28</span><div><div class="mo">SET</div><div class="yr">2026</div></div></div>
+        <div class="city">📍 Cuiabá, MT</div>
+      </div>
+      <div class="dchip">
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px"><span class="day">30</span><div><div class="mo">SET</div><div class="yr">2026</div></div></div>
+        <div class="city">📍 Rondonópolis, MT</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:16px;margin-top:40px;flex-wrap:wrap">
+      <a href="mailto:amee.mt@gmail.com" class="btn-green">Garantir Minha Cota Agora</a>
+      <a href="#cotas" class="btn-outline">Ver Planos de Patrocínio</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ URGÊNCIA BAR ═══ -->
+<div class="urgencia">
+  <p>⚡ VAGAS EXTREMAMENTE LIMITADAS — Cota Master: apenas 1 · Diamante: apenas 2 · Ouro: apenas 3</p>
+  <small>Patrocinadores que fecharem até 31/07/2026 garantem benefícios de divulgação desde o lançamento das inscrições</small>
+</div>
+
+<!-- ═══ PROPOSTA DE VALOR ROI ═══ -->
+<section class="sec" style="background:var(--p)">
+  <div class="sec-inner">
+    <div class="sl">Por que este evento</div>
+    <div class="g2">
+      <div>
+        <h2 style="font-size:clamp(26px,3.5vw,46px);font-weight:900;line-height:1.1;margin-bottom:16px">
+          Aqui você não compra<br><span style="color:var(--g)">visibilidade. Você compra<br>resultado.</span>
+        </h2>
+        <div class="gline"></div>
+        <p style="font-size:15px;color:rgba(255,255,255,.7);line-height:1.9;margin-bottom:24px">
+          Esqueça feiras com 10.000 visitantes curiosos. O Fórum BESS 2026 reúne <strong style="color:var(--w)">200 profissionais por evento — 400 no total</strong> — que decidem qual tecnologia entra nos projetos de energia elétrica de Mato Grosso.
+        </p>
+        <p style="font-size:15px;color:rgba(255,255,255,.7);line-height:1.9">
+          Seu produto será apresentado a engenheiros que especificam, consultores que recomendam e gestores que assinam as ordens de compra — no estado com o maior potencial solar per capita do Brasil.
+        </p>
+        <div class="insight">
+          <div class="itag">Diferencial exclusivo</div>
+          <p>Não é evento de massa. Cada participante passa por curadoria — só profissionais com atuação comprovada no setor elétrico. Você não desperdiça verba de exposição.</p>
+        </div>
+      </div>
+      <div>
+        <div class="roi-grid">
+          <div class="roi-item">
+            <div class="rv">200</div>
+            <div class="rl">Qualificados por evento (400 no total)</div>
+          </div>
+          <div class="roi-item">
+            <div class="rv">2</div>
+            <div class="rl">Cidades estratégicas de MT</div>
+          </div>
+          <div class="roi-item">
+            <div class="rv">100%</div>
+            <div class="rl">Foco em BESS e energia elétrica</div>
+          </div>
+          <div class="roi-item">
+            <div class="rv">R$189bi</div>
+            <div class="rl">PIB do agronegócio em MT</div>
+          </div>
+          <div class="roi-item">
+            <div class="rv">6,0</div>
+            <div class="rl">kWh/m²/dia — irradiação solar de MT</div>
+          </div>
+          <div class="roi-item">
+            <div class="rv">3,6GW</div>
+            <div class="rl">Capacidade solar já instalada em MT</div>
+          </div>
+        </div>
+        <div style="margin-top:24px;background:rgba(0,200,83,.08);border:1px solid rgba(0,200,83,.25);border-radius:10px;padding:20px 24px;text-align:center">
+          <div style="font-size:12px;color:var(--g);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:8px">Organização & Apoio Institucional</div>
+          <div style="display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap">
+            <div style="text-align:center"><span class="logo-chip"><img src="logo-abee-mt.png" alt="ABEE-MT" style="height:34px;width:auto;object-fit:contain"/></span><div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:6px">Organização</div></div>
+            <div style="text-align:center"><span class="logo-chip"><img src="logo-crea-mt.png" alt="CREA-MT" style="height:32px;width:auto;object-fit:contain"/></span><div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:6px">Apoio</div></div>
+            <div style="text-align:center"><span class="logo-chip"><img src="logo-mutua.png" alt="Mútua" style="height:30px;width:auto;object-fit:contain"/></span><div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:6px">Apoio</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SOBRE O EVENTO ═══ -->
+<section class="sec" style="background:var(--gr);color:var(--n)">
+  <div class="sec-inner">
+    <div class="sl d">Sobre o Evento</div>
+    <div class="g2">
+      <div>
+        <h2 style="font-size:clamp(26px,3.5vw,46px);font-weight:900;color:var(--p);line-height:1.1;margin-bottom:16px">
+          O Fórum que o<br><span style="color:var(--g)">mercado esperava</span>
+        </h2>
+        <div class="gline"></div>
+        <p style="font-size:15px;color:#4A5568;line-height:1.9;margin-bottom:20px">
+          Criado pela ABEE-MT com apoio do CREA-MT e da Mútua, o Fórum BESS 2026 nasce para suprir uma lacuna clara: <strong>Mato Grosso não tinha um evento técnico dedicado ao armazenamento de energia</strong> — o tema mais estratégico da transição energética brasileira.
+        </p>
+        <p style="font-size:15px;color:#4A5568;line-height:1.9;margin-bottom:32px">
+          Em duas cidades-polo — Cuiabá (capital) e Rondonópolis (maior polo agroindustrial) — o evento conecta fabricantes, integradores, distribuidoras e especificadores num único ambiente de alto impacto técnico e comercial.
+        </p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div style="background:var(--w);border-radius:10px;padding:20px;box-shadow:0 2px 12px rgba(8,42,67,.07);border-left:4px solid var(--g)">
+            <div style="font-size:11px;font-weight:700;color:var(--g);letter-spacing:2px;margin-bottom:6px">CUIABÁ</div>
+            <div style="font-size:15px;font-weight:700;color:var(--p)">28 de Setembro</div>
+            <div style="font-size:13px;color:#718096;margin-top:4px">Capital do Estado · Polo tecnológico e universitário</div>
+          </div>
+          <div style="background:var(--w);border-radius:10px;padding:20px;box-shadow:0 2px 12px rgba(8,42,67,.07);border-left:4px solid var(--g)">
+            <div style="font-size:11px;font-weight:700;color:var(--g);letter-spacing:2px;margin-bottom:6px">RONDONÓPOLIS</div>
+            <div style="font-size:15px;font-weight:700;color:var(--p)">30 de Setembro</div>
+            <div style="font-size:13px;color:#718096;margin-top:4px">2º polo econômico · Maior hub agroindustrial</div>
+          </div>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-meta"><div class="tl-phase">Fase 01</div><div class="tl-date">Jul–Ago 2026</div></div>
+          <div class="tl-body act"><div class="tl-title">Captação de Patrocínio</div><div class="tl-desc">Abertura do processo comercial. Patrocinadores que fecharem nesta fase garantem máxima visibilidade desde o lançamento.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-meta"><div class="tl-phase">Fase 02</div><div class="tl-date">Ago 2026</div></div>
+          <div class="tl-body"><div class="tl-title">Divulgação & Inscrições</div><div class="tl-desc">Campanha integrada: redes sociais, email marketing, CREA-MT, universidades, portais técnicos e Google Ads.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-meta"><div class="tl-phase">Fase 03</div><div class="tl-date">Set 2026</div></div>
+          <div class="tl-body"><div class="tl-title">Pré-evento — Rodadas B2B</div><div class="tl-desc">Reuniões de negócios pré-agendadas entre patrocinadores e participantes selecionados.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-meta"><div class="tl-phase">Fase 04</div><div class="tl-date">28 Set</div></div>
+          <div class="tl-body"><div class="tl-title">Fórum BESS — Cuiabá</div><div class="tl-desc">Palestras, painéis, área de exposição, coffee networking e happy hour exclusivo para patrocinadores.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-meta"><div class="tl-phase">Fase 05</div><div class="tl-date">30 Set</div></div>
+          <div class="tl-body" style="padding-bottom:0"><div class="tl-title">Fórum BESS — Rondonópolis</div><div class="tl-desc">Replicação do evento na capital agroindustrial, com público e agenda específicos para o polo sul do estado.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROGRAMAÇÃO ═══ -->
+<section class="sec" style="background:var(--n)">
+  <div class="sec-inner">
+    <div class="sl">Programação</div>
+    <div class="g2" style="gap:60px">
+      <div>
+        <h2 style="font-size:clamp(24px,3vw,42px);font-weight:900;line-height:1.1;margin-bottom:16px">
+          Agenda<br><span style="color:var(--g)">Técnica Premium</span>
+        </h2>
+        <div class="gline"></div>
+        <p style="font-size:15px;color:rgba(255,255,255,.65);line-height:1.9;margin-bottom:32px">
+          Um encontro técnico focado e direto ao ponto, no fim da tarde/noite — pensado para reunir os profissionais em atividade. Conteúdo aplicado sobre o sistema BESS, do conceito ao dimensionamento e especificação.
+        </p>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">🎤</span> Abertura oficial com ABEE-MT, CREA-MT e Mútua</div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">📚</span> Mini curso: introdução ao sistema BESS</div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">📐</span> Dimensionamento e especificações técnicas</div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">🏪</span> Exposição de tecnologias dos patrocinadores</div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">🤝</span> Networking com especificadores e decisores</div>
+        </div>
+        <div class="insight" style="margin-top:28px">
+          <div class="itag">Mesma programação nas 2 cidades</div>
+          <p>O evento acontece em <strong style="color:var(--w)">Cuiabá (28/09)</strong> e <strong style="color:var(--w)">Rondonópolis (30/09)</strong>, com a mesma grade — dobrando o alcance da sua marca.</p>
+        </div>
+      </div>
+      <div>
+        <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden">
+          <div style="background:rgba(0,200,83,.08);border-bottom:1px solid rgba(0,200,83,.15);padding:16px 24px;display:flex;align-items:center;gap:12px">
+            <span style="font-size:14px">📅</span>
+            <span style="font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--g)">Programação — 28/09 Cuiabá · 30/09 Rondonópolis</span>
+          </div>
+          <div style="padding:8px 24px">
+            <div class="agenda-item">
+              <div class="a-time">17h30<div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:500;margin-top:2px">30 min</div></div>
+              <div class="a-body">
+                <div style="margin-bottom:6px"><span class="a-type key">Abertura</span></div>
+                <div class="a-title">Credenciamento</div>
+                <div class="a-desc">Recepção e credenciamento dos participantes, com exposição dos patrocinadores</div>
+              </div>
+            </div>
+            <div class="agenda-item">
+              <div class="a-time">18h30<div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:500;margin-top:2px">1h30</div></div>
+              <div class="a-body">
+                <div style="margin-bottom:6px"><span class="a-type pan">Palestra</span></div>
+                <div class="a-title">Mini Curso — Introdução e apresentação do sistema BESS</div>
+                <div class="a-desc">Fundamentos, conceitos e aplicações do armazenamento de energia</div>
+              </div>
+            </div>
+            <div class="agenda-item">
+              <div class="a-time">20h00<div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:500;margin-top:2px">30 min</div></div>
+              <div class="a-body">
+                <div style="margin-bottom:6px"><span class="a-type net">Intervalo</span></div>
+                <div class="a-title">Intervalo</div>
+                <div class="a-desc">Coffee break e networking com expositores e patrocinadores</div>
+              </div>
+            </div>
+            <div class="agenda-item">
+              <div class="a-time">20h30<div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:500;margin-top:2px">1h30</div></div>
+              <div class="a-body">
+                <div style="margin-bottom:6px"><span class="a-type pan">Palestra</span></div>
+                <div class="a-title">Dimensionamento e especificações</div>
+                <div class="a-desc">Aplicação prática: como dimensionar e especificar sistemas BESS</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ POR QUE BESS ═══ -->
+<section class="sec" style="background:var(--p)">
+  <div class="sec-inner">
+    <div class="sl">Por que BESS</div>
+    <div class="g2">
+      <div>
+        <h2 style="font-size:clamp(24px,3vw,44px);font-weight:900;line-height:1.1;margin-bottom:16px">
+          O mercado de<br><span style="color:var(--g)">armazenamento explodiu.</span><br>Mato Grosso precisa.
+        </h2>
+        <div class="gline"></div>
+        <p style="font-size:15px;color:rgba(255,255,255,.65);line-height:1.9;margin-bottom:32px">
+          Com 6,0 kWh/m²/dia de irradiação e uma matriz energética 100% dependente da geração hídrica, Mato Grosso vive a perfeita tempestade para adoção massiva de BESS: energia solar barata + agronegócio ávido por autonomia + mercado livre em expansão.
+        </p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div class="sbox"><div class="v">$262bi</div><div class="u">mercado global 2030</div><div class="l">Projeção BloombergNEF</div></div>
+          <div class="sbox"><div class="v">42%</div><div class="u">CAGR 2023–2028</div><div class="l">Taxa de crescimento global</div></div>
+          <div class="sbox"><div class="v">15 GWh</div><div class="u">capacidade BR 2025</div><div class="l">Potência instalada no Brasil</div></div>
+          <div class="sbox"><div class="v">R$8bi</div><div class="u">investimentos previstos</div><div class="l">Pipeline BR 2025–2028</div></div>
+        </div>
+      </div>
+      <div class="flow">
+        <div class="fnode"><span class="fi">☀️</span><span class="fl">Solar Fotovoltaico</span></div>
+        <div class="farr"></div>
+        <div class="fnode"><span class="fi">⚡</span><span class="fl">Inversor Híbrido</span></div>
+        <div class="farr"></div>
+        <div class="fnode hl"><span class="fi">🔋</span><span class="fl">BESS — Armazenamento</span></div>
+        <div class="farr"></div>
+        <div class="fnode"><span class="fi">🔌</span><span class="fl">Rede Elétrica</span></div>
+        <div class="farr"></div>
+        <div class="fnode"><span class="fi">🏭</span><span class="fl">Consumidor / Indústria</span></div>
+        <div class="farr"></div>
+        <div class="fnode"><span class="fi">📈</span><span class="fl">Mercado Livre de Energia</span></div>
+        <div class="farr"></div>
+        <div class="fnode"><span class="fi">🛡️</span><span class="fl">Backup & Resiliência</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ POR QUE MT ═══ -->
+<section style="position:relative;min-height:70vh;display:flex;align-items:center;overflow:hidden">
+  <img style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.28) saturate(.65)" src="https://images.unsplash.com/photo-1574873252157-bc45eba4dc42?w=1600&q=80&fit=crop" alt="MT"/>
+  <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(8,42,67,.94) 0%,rgba(13,27,42,.7) 100%)"></div>
+  <div style="position:relative;z-index:10;padding:100px 80px;width:100%;max-width:1200px;margin:0 auto">
+    <div class="sl">Por que Mato Grosso</div>
+    <div class="g2">
+      <div>
+        <h2 style="font-size:clamp(24px,3.5vw,46px);font-weight:900;line-height:1.1;margin-bottom:16px">
+          O estado que mais<br><span style="color:var(--g)">cresce em energia solar</span><br>no Brasil.
+        </h2>
+        <div class="gline"></div>
+        <p style="font-size:15px;color:rgba(255,255,255,.7);line-height:1.9;margin-bottom:32px">
+          Mato Grosso combina o maior potencial solar do país, o agronegócio mais dinâmico e uma rede de distribuição em expansão acelerada. É o mercado ideal para quem quer crescer em BESS.
+        </p>
+        <a href="mailto:amee.mt@gmail.com" class="btn-green">Quero posicionar minha marca aqui</a>
+      </div>
+      <div class="mt-stats">
+        <div class="mt-stat"><div class="v">6,0</div><div class="u">kWh/m²/dia</div><div class="l">Irradiação solar média — top 5 nacional</div></div>
+        <div class="mt-stat"><div class="v">#1</div><div class="u">Brasil</div><div class="l">Maior produtor de soja e algodão</div></div>
+        <div class="mt-stat"><div class="v">3,6 GW</div><div class="u">instalados</div><div class="l">Capacidade solar fotovoltaica em MT</div></div>
+        <div class="mt-stat"><div class="v">R$189bi</div><div class="u">PIB agro</div><div class="l">Demanda energética crescente</div></div>
+        <div class="mt-stat"><div class="v">120+</div><div class="u">subestações</div><div class="l">Rede em expansão e modernização</div></div>
+        <div class="mt-stat"><div class="v">2</div><div class="u">polos</div><div class="l">Cuiabá + Rondonópolis = MT inteiro</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MERCADO BRASILEIRO ═══ -->
+<section class="sec" style="background:var(--gr);color:var(--n)">
+  <div class="sec-inner">
+    <div class="sl d">Mercado Brasileiro</div>
+    <div class="sec-head" style="margin-bottom:56px">
+      <h2 style="color:var(--p)">Quem compra BESS<br><span>no Brasil hoje</span></h2>
+      <div class="gline" style="margin:16px auto 16px"></div>
+      <p style="color:#718096">Seis verticais com demanda imediata. Todos representados no público do Fórum BESS 2026.</p>
+    </div>
+    <div class="g3">
+      <div class="card-light"><div class="cicon">⚡</div><div class="metric">30+ GW instalados</div><div class="ctitle">Geração Distribuída</div><div class="cdesc">GD solar exige BESS para autoconsumo noturno e maximização do retorno do investimento.</div></div>
+      <div class="card-light"><div class="cicon">📊</div><div class="metric">12.000+ consumidores</div><div class="ctitle">Mercado Livre</div><div class="cdesc">Consumidores livres usam BESS para gestão de demanda, redução de TUSD e arbitragem de preços.</div></div>
+      <div class="card-light"><div class="cicon">🌾</div><div class="metric">R$ 4bi de mercado</div><div class="ctitle">Agronegócio</div><div class="cdesc">Fazendas remotas com alta irradiação e grande demanda — candidatos naturais ao BESS off-grid e híbrido.</div></div>
+      <div class="card-light"><div class="cicon">🖥️</div><div class="metric">150+ data centers BR</div><div class="ctitle">Data Centers</div><div class="cdesc">BESS substituindo UPS convencionais e grupos geradores diesel com autonomia superior e menor custo.</div></div>
+      <div class="card-light"><div class="cicon">⛏️</div><div class="metric">$1,2bi de oportunidade</div><div class="ctitle">Mineração</div><div class="cdesc">Operações remotas migrando de diesel para BESS+solar com ROI comprovado abaixo de 3 anos.</div></div>
+      <div class="card-light"><div class="cicon">🏥</div><div class="metric">2.500+ hospitais</div><div class="ctitle">Hospitais & Indústrias</div><div class="cdesc">Continuidade operacional crítica com BESS de alta potência e alta confiabilidade.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PÚBLICO ═══ -->
+<section class="sec" style="background:var(--n)">
+  <div class="sec-inner">
+    <div class="sl">Público do Evento</div>
+    <div class="g2">
+      <div>
+        <h2 style="font-size:clamp(24px,3.5vw,44px);font-weight:900;line-height:1.1;margin-bottom:16px">
+          200 pessoas que<br><span style="color:var(--g)">tomam decisões</span><br>de compra.
+        </h2>
+        <div class="gline"></div>
+        <p style="font-size:15px;color:rgba(255,255,255,.65);line-height:1.9;margin-bottom:24px">
+          Sem público genérico. Cada participante do Fórum BESS 2026 é um profissional com atuação comprovada no setor elétrico — alguém que especifica, recomenda ou decide qual tecnologia entra nos projetos. São <strong style="color:var(--g)">200 qualificados em Cuiabá + 200 em Rondonópolis.</strong>
+        </p>
+        <div class="insight">
+          <div class="itag">⚡ Dado estratégico para patrocinadores</div>
+          <p>Mais de 80% dos participantes têm poder de especificação ou influência direta na compra de equipamentos e sistemas elétricos em suas empresas.</p>
+        </div>
+        <div style="margin-top:32px;display:flex;gap:16px;flex-wrap:wrap">
+          <div style="background:rgba(0,200,83,.08);border:1px solid rgba(0,200,83,.2);border-radius:8px;padding:16px 20px;text-align:center;flex:1;min-width:120px">
+            <div style="font-size:28px;font-weight:900;color:var(--g)">+80%</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.55);margin-top:4px">Poder de<br>especificação</div>
+          </div>
+          <div style="background:rgba(0,200,83,.08);border:1px solid rgba(0,200,83,.2);border-radius:8px;padding:16px 20px;text-align:center;flex:1;min-width:120px">
+            <div style="font-size:28px;font-weight:900;color:var(--g)">200</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.55);margin-top:4px">Por evento<br>(400 total)</div>
+          </div>
+          <div style="background:rgba(0,200,83,.08);border:1px solid rgba(0,200,83,.2);border-radius:8px;padding:16px 20px;text-align:center;flex:1;min-width:120px">
+            <div style="font-size:28px;font-weight:900;color:var(--g)">2</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.55);margin-top:4px">Eventos em<br>cidades-polo</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="brow"><div class="bh"><span class="bn">Engenheiros Eletricistas</span><span class="bp">35%</span></div><div class="bt"><div class="bf" style="width:35%"></div></div></div>
+        <div class="brow"><div class="bh"><span class="bn">Projetistas e Integradores EPC</span><span class="bp">20%</span></div><div class="bt"><div class="bf" style="width:20%"></div></div></div>
+        <div class="brow"><div class="bh"><span class="bn">Concessionárias e Distribuidoras</span><span class="bp">12%</span></div><div class="bt"><div class="bf" style="width:12%"></div></div></div>
+        <div class="brow"><div class="bh"><span class="bn">Fabricantes e Distribuidores</span><span class="bp">10%</span></div><div class="bt"><div class="bf" style="width:10%"></div></div></div>
+        <div class="brow"><div class="bh"><span class="bn">Consultores e Gestores Energéticos</span><span class="bp">8%</span></div><div class="bt"><div class="bf" style="width:8%"></div></div></div>
+        <div class="brow"><div class="bh"><span class="bn">Docentes e Pesquisadores</span><span class="bp">8%</span></div><div class="bt"><div class="bf" style="width:8%"></div></div></div>
+        <div class="brow"><div class="bh"><span class="bn">Estudantes de Engenharia</span><span class="bp">7%</span></div><div class="bt"><div class="bf" style="width:7%"></div></div></div>
+        <div style="margin-top:32px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:24px">
+          <div style="font-size:11px;color:var(--g);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px">Canais de divulgação</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div style="font-size:12px;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:center"><span>📱</span>Instagram & Reels ABEE-MT</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:center"><span>💼</span>LinkedIn Corporativo</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:center"><span>🏛️</span>CREA-MT (12.000 profis.)</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:center"><span>🎓</span>UFMT, UNEMAT, UniCuiabá</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:center"><span>🌐</span>Portais Canal Solar, Greener</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:center"><span>📧</span>Email marketing base ABEE-MT</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TEMAS ═══ -->
+<section class="sec" style="background:var(--p)">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div class="sl" style="text-align:center">Conteúdo Técnico</div>
+      <h2>10 Temas <span>de Alto Impacto</span></h2>
+      <div class="gline" style="margin:16px auto 16px"></div>
+      <p>Conteúdo aplicado, sem generalidades — desenvolvido por e para engenheiros que trabalham com energia elétrica</p>
+    </div>
+    <div class="topics">
+      <div class="topic"><div class="ti">📉</div><div class="tn">Peak Shaving</div><div class="td">Gestão de demanda e redução de tarifas</div></div>
+      <div class="topic"><div class="ti">🌐</div><div class="tn">Grid Forming</div><div class="td">Formação de rede com inversores BESS</div></div>
+      <div class="topic"><div class="ti">🧠</div><div class="tn">EMS Avançado</div><div class="td">Gerenciamento inteligente de energia</div></div>
+      <div class="topic"><div class="ti">🔗</div><div class="tn">Microgrids</div><div class="td">Ilhamento e resiliência de rede</div></div>
+      <div class="topic"><div class="ti">☀️</div><div class="tn">BESS + Solar</div><div class="td">Hibridização fotovoltaica</div></div>
+      <div class="topic"><div class="ti">📊</div><div class="tn">Mercado Livre</div><div class="td">Trading e arbitragem energética</div></div>
+      <div class="topic"><div class="ti">🎯</div><div class="tn">Power Quality</div><div class="td">Qualidade e estabilidade da energia</div></div>
+      <div class="topic"><div class="ti">🤖</div><div class="tn">IA & BESS</div><div class="td">Otimização por machine learning</div></div>
+      <div class="topic"><div class="ti">📋</div><div class="tn">Normas ABNT</div><div class="td">Regulação e compliance nacional</div></div>
+      <div class="topic"><div class="ti">🏆</div><div class="tn">Cases Reais</div><div class="td">Projetos instalados e medidos no BR</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ NÚMEROS ═══ -->
+<section style="position:relative;overflow:hidden">
+  <img style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.18) saturate(.5)" src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&q=80&fit=crop" alt="Event"/>
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,42,67,.6) 0%,rgba(13,27,42,.95) 100%)"></div>
+  <div style="position:relative;z-index:10;padding:100px 80px;max-width:1200px;margin:0 auto">
+    <div class="sec-head">
+      <div class="sl" style="text-align:center">Números do Evento</div>
+      <h2>O que esperar<br><span>em setembro</span></h2>
+      <div class="gline" style="margin:16px auto 0"></div>
+    </div>
+    <div class="numgrid">
+      <div class="numitem"><div class="big">200</div><div class="nm">Por Evento</div><div class="ns">400 no total — 100% qualificados</div></div>
+      <div class="numitem"><div class="big">30+</div><div class="nm">Empresas</div><div class="ns">Representadas</div></div>
+      <div class="numitem"><div class="big">02</div><div class="nm">Cidades-polo</div><div class="ns">Cuiabá & Rondonópolis</div></div>
+      <div class="numitem"><div class="big">8h+</div><div class="nm">Conteúdo</div><div class="ns">Técnico e aplicado</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ POR QUE PATROCINAR ═══ -->
+<section class="sec" style="background:var(--p);position:relative;overflow:hidden">
+  <div style="position:absolute;right:-150px;top:50%;transform:translateY(-50%);width:500px;height:500px;border-radius:50%;border:1px solid rgba(0,200,83,.07);pointer-events:none"></div>
+  <div class="sec-inner" style="position:relative">
+    <div class="sec-head">
+      <div class="sl" style="text-align:center">Por que patrocinar</div>
+      <h2>6 Razões que tornam<br><span>este investimento irrecusável</span></h2>
+      <div class="gline" style="margin:16px auto 16px"></div>
+      <p>200 decisores por evento — 400 no total. Sua marca no centro de cada um. Não existe atalho mais eficiente para gerar negócios em BESS no Centro-Oeste.</p>
+    </div>
+    <div class="g3">
+      <div class="card-dark"><div style="font-size:10px;font-weight:700;color:var(--g);letter-spacing:4px;margin-bottom:14px">01</div><div style="width:32px;height:2px;background:var(--g);border-radius:1px;margin-bottom:18px"></div><div style="font-size:17px;font-weight:700;margin-bottom:10px;line-height:1.3">Acesso ao Especificador</div><div style="font-size:14px;color:rgba(255,255,255,.55);line-height:1.8">Engenheiros e projetistas que decidem qual tecnologia entra no projeto. Você fala com quem assina a especificação técnica.</div></div>
+      <div class="card-dark"><div style="font-size:10px;font-weight:700;color:var(--g);letter-spacing:4px;margin-bottom:14px">02</div><div style="width:32px;height:2px;background:var(--g);border-radius:1px;margin-bottom:18px"></div><div style="font-size:17px;font-weight:700;margin-bottom:10px;line-height:1.3">Credibilidade Institucional</div><div style="font-size:14px;color:rgba(255,255,255,.55);line-height:1.8">Sua marca associada à ABEE-MT, CREA-MT e Mútua — as entidades mais respeitadas da engenharia elétrica de MT.</div></div>
+      <div class="card-dark"><div style="font-size:10px;font-weight:700;color:var(--g);letter-spacing:4px;margin-bottom:14px">03</div><div style="width:32px;height:2px;background:var(--g);border-radius:1px;margin-bottom:18px"></div><div style="font-size:17px;font-weight:700;margin-bottom:10px;line-height:1.3">Leads Quentes e Qualificados</div><div style="font-size:14px;color:rgba(255,255,255,.55);line-height:1.8">Scanner de crachá, rodadas B2B, mailing pós-evento — leads com nome, empresa e intenção real de compra.</div></div>
+      <div class="card-dark"><div style="font-size:10px;font-weight:700;color:var(--g);letter-spacing:4px;margin-bottom:14px">04</div><div style="width:32px;height:2px;background:var(--g);border-radius:1px;margin-bottom:18px"></div><div style="font-size:17px;font-weight:700;margin-bottom:10px;line-height:1.3">Lançamento de Produto</div><div style="font-size:14px;color:rgba(255,255,255,.55);line-height:1.8">Ambiente ideal para apresentar novos sistemas BESS, inversores e tecnologias para o mercado de MT.</div></div>
+      <div class="card-dark"><div style="font-size:10px;font-weight:700;color:var(--g);letter-spacing:4px;margin-bottom:14px">05</div><div style="width:32px;height:2px;background:var(--g);border-radius:1px;margin-bottom:18px"></div><div style="font-size:17px;font-weight:700;margin-bottom:10px;line-height:1.3">Mercado em Expansão</div><div style="font-size:14px;color:rgba(255,255,255,.55);line-height:1.8">MT é o estado com maior crescimento de energia solar do Brasil. Quem chegar primeiro constrói relacionamento antes da concorrência.</div></div>
+      <div class="card-dark"><div style="font-size:10px;font-weight:700;color:var(--g);letter-spacing:4px;margin-bottom:14px">06</div><div style="width:32px;height:2px;background:var(--g);border-radius:1px;margin-bottom:18px"></div><div style="font-size:17px;font-weight:700;margin-bottom:10px;line-height:1.3">Visibilidade em 2 Cidades</div><div style="font-size:14px;color:rgba(255,255,255,.55);line-height:1.8">Um único investimento, duas presenças físicas. Cuiabá e Rondonópolis — os dois polos econômicos de MT.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA STRIP ═══ -->
+<div class="cta-strip">
+  <div>
+    <p>Sua marca pode estar no próximo projeto de BESS de Mato Grosso.</p>
+    <small>200 engenheiros por evento · 400 no total · 2 cidades · Setembro 2026 · Vagas limitadas.</small>
+  </div>
+  <a href="mailto:amee.mt@gmail.com">Reservar Cota Agora →</a>
+</div>
+
+<!-- ═══ BANNER URGÊNCIA ═══ -->
+<div class="urgencia">
+  <p>⚡ VAGAS LIMITADAS — Master: 1 · Diamante: 2 · Ouro: 3 · Prata: 5 · Bronze: 8</p>
+  <small>Patrocinadores que fecharem até 31/07/2026 têm logo exposto desde o lançamento das inscrições</small>
+</div>
+
+<!-- ═══ COTAS HEADER ═══ -->
+<section id="cotas" class="sec" style="background:var(--n);padding-bottom:40px">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div class="sl" style="text-align:center">Planos de Patrocínio</div>
+      <h2>Escolha seu nível<br><span>de investimento</span></h2>
+      <div class="gline" style="margin:16px auto 16px"></div>
+      <p>Seis planos desenhados para maximizar o retorno comercial de cada patrocinador — do lançamento do evento até o pós-evento</p>
+    </div>
+
+    <!-- TABELA COMPARATIVA -->
+    <div style="overflow-x:auto;margin-top:8px">
+      <table class="cmp-table">
+        <thead>
+          <tr>
+            <th style="text-align:left;color:rgba(255,255,255,.4)">Benefício</th>
+            <th class="col-master" style="color:var(--gold)">⭐ MASTER</th>
+            <th class="col-dia" style="color:var(--dia)">💎 DIAMANTE</th>
+            <th style="color:var(--ouro)">🏅 OURO</th>
+            <th style="color:var(--prata)">🥈 PRATA</th>
+            <th style="color:var(--bronze)">🥉 BRONZE</th>
+            <th style="color:#4DB6AC">🤝 APOIADOR</th>
+          </tr>
+          <tr>
+            <td></td>
+            <td class="col-master" style="text-align:center"><span class="cmp-price" style="color:var(--gold)">R$25.000</span><br><small style="color:rgba(255,255,255,.4);font-size:10px">1 vaga</small></td>
+            <td class="col-dia" style="text-align:center"><span class="cmp-price" style="color:var(--dia)">R$18.000</span><br><small style="color:rgba(255,255,255,.4);font-size:10px">2 vagas</small></td>
+            <td style="text-align:center"><span class="cmp-price" style="color:var(--ouro)">R$12.000</span><br><small style="color:rgba(255,255,255,.4);font-size:10px">3 vagas</small></td>
+            <td style="text-align:center"><span class="cmp-price" style="color:var(--prata)">R$7.000</span><br><small style="color:rgba(255,255,255,.4);font-size:10px">5 vagas</small></td>
+            <td style="text-align:center"><span class="cmp-price" style="color:var(--bronze)">R$3.500</span><br><small style="color:rgba(255,255,255,.4);font-size:10px">8 vagas</small></td>
+            <td style="text-align:center"><span class="cmp-price" style="color:#4DB6AC">R$1.000</span><br><small style="color:rgba(255,255,255,.4);font-size:10px">apoio</small></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Naming rights do evento</td><td class="col-master"><span class="yes">✓</span></td><td class="col-dia"><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Keynote no palco (20 min)</td><td class="col-master"><span class="yes">✓ 2 cidades</span></td><td class="col-dia"><span class="yes">✓ 1 cidade</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Painel técnico (10 min)</td><td class="col-master"><span class="yes">✓</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Stand de exposição</td><td class="col-master"><span class="yes">12m²</span></td><td class="col-dia"><span class="yes">9m²</span></td><td><span class="yes">6m²</span></td><td><span class="yes">Mesa 2m</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Inscrições / convites</td><td class="col-master"><span class="yes">5 VIP</span></td><td class="col-dia"><span class="yes">3</span></td><td><span class="yes">2</span></td><td><span class="yes">1</span></td><td><span class="yes">1</span></td><td><span class="yes">2</span></td></tr>
+          <tr><td>Logo no crachá</td><td class="col-master"><span class="yes">✓ Destaque</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Logo no banner principal</td><td class="col-master"><span class="yes">✓ Grande</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Logo no site do evento</td><td class="col-master"><span class="yes">✓ Topo</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>Mailing pós-evento</td><td class="col-master"><span class="yes">✓</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Kit no participante</td><td class="col-master"><span class="yes">✓</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Happy hour VIP</td><td class="col-master"><span class="yes">✓</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Rodadas B2B</td><td class="col-master"><span class="yes">✓ Prioridade</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Menção nas redes sociais</td><td class="col-master"><span class="yes">✓ Exclusivo</span></td><td class="col-dia"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- COTA MASTER -->
+<section class="qsec" style="background:linear-gradient(135deg,#1a1200,var(--n))">
+  <div class="sl">Cota 01</div>
+  <div class="qcard" style="background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.25);box-shadow:0 0 80px rgba(255,215,0,.08)">
+    <div class="qtop" style="background:linear-gradient(90deg,var(--gold),rgba(255,215,0,.3),transparent)"></div>
+    <div class="qh">
+      <div><div class="qlabel" style="color:var(--gold)">Cota de Patrocínio</div><div class="qlevel" style="color:var(--gold)">MASTER</div></div>
+      <div><div class="qi-label">Investimento</div><div class="qi-price">R$ 25.000</div><div style="text-align:right"><span class="vbadge" style="background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.4);color:var(--gold)">Exclusiva — 1 vaga</span></div></div>
+    </div>
+    <div class="qdiv" style="background:linear-gradient(90deg,rgba(255,215,0,.3),transparent)"></div>
+    <div class="qb" style="grid-template-columns:1fr 1fr">
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>Naming rights — co-branding no título do evento</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>Stand exclusivo 12m² com mobiliário premium</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>Keynote de 20 min no palco principal — 2 cidades</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>Logo gigante em todos os materiais</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>5 inscrições VIP gratuitas</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>Entrevista exclusiva nas redes sociais ABEE-MT</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>Mailing completo dos 400 participantes (200 por cidade)</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>Banner 3×2m no foyer — máxima visibilidade</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>Inclusão em press release e nota para imprensa</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>Happy hour VIP exclusivo patrocinadores</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>Rodadas B2B com prioridade de agenda</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>Menção em todos os posts e stories</span></div>
+    </div>
+    <div style="margin-top:32px;text-align:center"><a href="mailto:amee.mt@gmail.com?subject=Interesse Cota MASTER — Forum BESS 2026" class="btn-green">Garantir Cota Master Agora</a></div>
+  </div>
+</section>
+
+<!-- COTA DIAMANTE -->
+<section class="qsec" style="background:linear-gradient(135deg,#001020,var(--p))">
+  <div class="sl">Cota 02</div>
+  <div class="qcard" style="background:rgba(185,242,255,.04);border:1px solid rgba(185,242,255,.18);box-shadow:0 0 60px rgba(185,242,255,.06)">
+    <div class="qtop" style="background:linear-gradient(90deg,var(--dia),rgba(185,242,255,.25),transparent)"></div>
+    <div class="qh">
+      <div><div class="qlabel" style="color:var(--dia)">Cota de Patrocínio</div><div class="qlevel" style="color:var(--dia)">DIAMANTE</div></div>
+      <div><div class="qi-label">Investimento</div><div class="qi-price">R$ 18.000</div><div style="text-align:right"><span class="vbadge" style="background:rgba(185,242,255,.08);border:1px solid rgba(185,242,255,.3);color:var(--dia)">Apenas 2 vagas</span></div></div>
+    </div>
+    <div class="qdiv" style="background:linear-gradient(90deg,rgba(185,242,255,.2),transparent)"></div>
+    <div class="qb" style="grid-template-columns:1fr 1fr">
+      <div class="qitem"><div class="qdot" style="background:var(--dia)"></div><span>Stand 9m² com identidade visual exclusiva</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--dia)"></div><span>Keynote técnica de 15 min — 1 cidade à escolha</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--dia)"></div><span>Logo destaque — banner, site, crachá</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--dia)"></div><span>3 inscrições gratuitas incluídas</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--dia)"></div><span>Banner 2×1m no evento</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--dia)"></div><span>Mailing dos participantes pós-evento</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--dia)"></div><span>Happy hour VIP exclusivo</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--dia)"></div><span>Rodadas B2B agendadas</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--dia)"></div><span>Menção nos posts de divulgação</span></div>
+    </div>
+    <div style="margin-top:32px;text-align:center"><a href="mailto:amee.mt@gmail.com?subject=Interesse Cota DIAMANTE — Forum BESS 2026" class="btn-green">Garantir Cota Diamante</a></div>
+  </div>
+</section>
+
+<!-- COTAS OURO / PRATA / BRONZE / APOIADOR em cards menores -->
+<section class="sec" style="background:var(--n)">
+  <div class="sec-inner">
+    <div class="g4" style="align-items:start">
+
+      <!-- OURO -->
+      <div style="background:rgba(255,167,38,.05);border:1px solid rgba(255,167,38,.2);border-radius:16px;padding:40px 32px;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--ouro),transparent)"></div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:5px;color:var(--ouro);margin-bottom:10px">COTA 03</div>
+        <div style="font-size:42px;font-weight:900;color:var(--ouro);letter-spacing:-2px;line-height:.9;margin-bottom:16px">OURO</div>
+        <div style="font-size:28px;font-weight:900;margin-bottom:4px">R$ 12.000</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:28px">Apenas 3 vagas disponíveis</div>
+        <div style="height:1px;background:rgba(255,167,38,.2);margin-bottom:24px"></div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
+          <div class="qitem"><div class="qdot" style="background:var(--ouro)"></div><span>Stand 6m² com identificação visual</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--ouro)"></div><span>Painel técnico de 10 min</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--ouro)"></div><span>2 inscrições gratuitas</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--ouro)"></div><span>Logo banner, site e crachá</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--ouro)"></div><span>Roll-up no evento</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--ouro)"></div><span>Rodadas B2B</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--ouro)"></div><span>Menção nas redes sociais</span></div>
+        </div>
+        <a href="mailto:amee.mt@gmail.com?subject=Interesse Cota OURO — Forum BESS 2026" style="display:block;text-align:center;background:rgba(255,167,38,.12);border:1px solid rgba(255,167,38,.35);color:var(--ouro);font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:14px;border-radius:4px;text-decoration:none">Quero Cota Ouro</a>
+      </div>
+
+      <!-- PRATA -->
+      <div style="background:rgba(207,216,220,.04);border:1px solid rgba(207,216,220,.16);border-radius:16px;padding:40px 32px;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--prata),transparent)"></div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:5px;color:var(--prata);margin-bottom:10px">COTA 04</div>
+        <div style="font-size:42px;font-weight:900;color:var(--prata);letter-spacing:-2px;line-height:.9;margin-bottom:16px">PRATA</div>
+        <div style="font-size:28px;font-weight:900;margin-bottom:4px">R$ 7.000</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:28px">Apenas 5 vagas disponíveis</div>
+        <div style="height:1px;background:rgba(207,216,220,.15);margin-bottom:24px"></div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
+          <div class="qitem"><div class="qdot" style="background:var(--prata)"></div><span>Mesa de exposição 2m</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--prata)"></div><span>1 inscrição gratuita</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--prata)"></div><span>Logo no site e banner principal</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--prata)"></div><span>Material no kit do participante</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--prata)"></div><span>Menção nas redes sociais</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--prata)"></div><span>Logo no painel de patrocinadores</span></div>
+        </div>
+        <a href="mailto:amee.mt@gmail.com?subject=Interesse Cota PRATA — Forum BESS 2026" style="display:block;text-align:center;background:rgba(207,216,220,.07);border:1px solid rgba(207,216,220,.25);color:var(--prata);font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:14px;border-radius:4px;text-decoration:none">Quero Cota Prata</a>
+      </div>
+
+      <!-- BRONZE -->
+      <div style="background:rgba(255,138,101,.04);border:1px solid rgba(255,138,101,.18);border-radius:16px;padding:40px 32px;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--bronze),transparent)"></div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:5px;color:var(--bronze);margin-bottom:10px">COTA 05</div>
+        <div style="font-size:42px;font-weight:900;color:var(--bronze);letter-spacing:-2px;line-height:.9;margin-bottom:16px">BRONZE</div>
+        <div style="font-size:28px;font-weight:900;margin-bottom:4px">R$ 3.500</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:28px">Apenas 8 vagas disponíveis</div>
+        <div style="height:1px;background:rgba(255,138,101,.15);margin-bottom:24px"></div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
+          <div class="qitem"><div class="qdot" style="background:var(--bronze)"></div><span>Logo no site do evento</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--bronze)"></div><span>Logo no painel de patrocinadores</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--bronze)"></div><span>1 inscrição gratuita</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--bronze)"></div><span>Material no kit do participante</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--bronze)"></div><span>Menção nas redes sociais</span></div>
+        </div>
+        <a href="mailto:amee.mt@gmail.com?subject=Interesse Cota BRONZE — Forum BESS 2026" style="display:block;text-align:center;background:rgba(255,138,101,.08);border:1px solid rgba(255,138,101,.3);color:var(--bronze);font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:14px;border-radius:4px;text-decoration:none">Quero Cota Bronze</a>
+      </div>
+
+      <!-- APOIADOR -->
+      <div style="background:rgba(77,182,172,.05);border:1px solid rgba(77,182,172,.2);border-radius:16px;padding:40px 32px;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#4DB6AC,transparent)"></div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:5px;color:#4DB6AC;margin-bottom:10px">COTA 06</div>
+        <div style="font-size:36px;font-weight:900;color:#4DB6AC;letter-spacing:-1px;line-height:.9;margin-bottom:16px">APOIADOR</div>
+        <div style="font-size:28px;font-weight:900;margin-bottom:4px">R$ 1.000</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:28px">Cota de apoio — ideal para começar</div>
+        <div style="height:1px;background:rgba(77,182,172,.18);margin-bottom:24px"></div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
+          <div class="qitem"><div class="qdot" style="background:#4DB6AC"></div><span>Logo no site do evento</span></div>
+          <div class="qitem"><div class="qdot" style="background:#4DB6AC"></div><span>2 convites para o evento</span></div>
+        </div>
+        <a href="https://wa.me/5565984633872?text=Ol%C3%A1!%20Tenho%20interesse%20na%20Cota%20Apoiador%20do%20F%C3%B3rum%20BESS%202026" target="_blank" rel="noopener" style="display:block;text-align:center;background:rgba(77,182,172,.12);border:1px solid rgba(77,182,172,.35);color:#4DB6AC;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:14px;border-radius:4px;text-decoration:none">Quero Apoiar</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PARCEIROS ESTRATÉGICOS ═══ -->
+<section class="sec" style="background:linear-gradient(180deg,var(--n) 0%,var(--p) 100%);position:relative;overflow:hidden">
+  <div style="position:absolute;top:-120px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse,rgba(0,200,83,.1),transparent 70%);pointer-events:none"></div>
+  <div class="sec-inner" style="position:relative">
+    <div class="sec-head">
+      <div style="display:inline-block;background:rgba(0,200,83,.12);border:1px solid rgba(0,200,83,.4);border-radius:4px;padding:7px 18px;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--g);margin-bottom:20px">⚡ Parceiros Estratégicos</div>
+      <h2 style="font-size:clamp(28px,4vw,52px)">A sua marca ao lado <span>das líderes globais</span></h2>
+      <div class="gline" style="margin:16px auto 16px"></div>
+      <p style="font-size:16px">Estas são as empresas que dominam o setor global de armazenamento de energia. O Fórum BESS 2026 é o <strong style="color:var(--w)">canal mais direto</strong> para posicionar sua marca ao lado delas no mercado de Mato Grosso — o que mais cresce em energia solar no Brasil.</p>
+    </div>
+    <div class="companies">
+      <div class="company"><div class="company-icon">HW</div><div class="cn">Huawei Digital Power</div><div class="cc">Inversores & BESS</div></div>
+      <div class="company"><div class="company-icon">SG</div><div class="cn">Sungrow</div><div class="cc">Storage & Solar</div></div>
+      <div class="company"><div class="company-icon">WG</div><div class="cn">WEG</div><div class="cc">Equipamentos Elétricos</div></div>
+      <div class="company"><div class="company-icon">AB</div><div class="cn">ABB</div><div class="cc">Grid & Automation</div></div>
+      <div class="company"><div class="company-icon">SE</div><div class="cn">Schneider Electric</div><div class="cc">EMS & Microgrids</div></div>
+      <div class="company"><div class="company-icon">SI</div><div class="cn">Siemens Energy</div><div class="cc">Grid Solutions</div></div>
+      <div class="company"><div class="company-icon">BY</div><div class="cn">BYD Energy</div><div class="cc">Battery Storage</div></div>
+      <div class="company"><div class="company-icon">CT</div><div class="cn">CATL</div><div class="cc">Células & Sistemas</div></div>
+      <div class="company"><div class="company-icon">DY</div><div class="cn">Dyness</div><div class="cc">BESS Residencial</div></div>
+      <div class="company"><div class="company-icon">GW</div><div class="cn">GoodWe</div><div class="cc">Inversores Híbridos</div></div>
+      <div class="company"><div class="company-icon">MO</div><div class="cn">Moura</div><div class="cc">Baterias Nacionais</div></div>
+      <div class="company"><div class="company-icon">CS</div><div class="cn">Canadian Solar</div><div class="cc">Módulos & BESS</div></div>
+    </div>
+    <div style="text-align:center;margin-top:48px">
+      <p style="font-size:14px;color:rgba(255,255,255,.55);margin-bottom:24px">É fabricante, integrador ou distribuidor de BESS? <strong style="color:var(--w)">Este é o seu lugar.</strong></p>
+      <a href="https://wa.me/5565984633872?text=Ol%C3%A1!%20Quero%20ser%20parceiro%2Fpatrocinador%20do%20F%C3%B3rum%20BESS%202026" target="_blank" rel="noopener" class="btn-green">Quero ser Parceiro do Evento</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTATO ═══ -->
+<section style="position:relative;min-height:75vh;display:flex;align-items:center;overflow:hidden">
+  <img style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.22) saturate(.55)" src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=1600&q=80&fit=crop" alt="Solar"/>
+  <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(8,42,67,.96) 0%,rgba(13,27,42,.82) 100%)"></div>
+  <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--g),var(--gl),var(--g))"></div>
+  <div style="position:relative;z-index:10;padding:100px 80px;width:100%;max-width:1200px;margin:0 auto">
+    <div class="sl">Contato</div>
+    <div class="g2">
+      <div>
+        <h2 style="font-size:clamp(26px,3.5vw,50px);font-weight:900;line-height:1.1;margin-bottom:16px">
+          Vamos fechar<br><span style="color:var(--g)">sua cota hoje?</span>
+        </h2>
+        <div class="gline"></div>
+        <p style="font-size:16px;color:rgba(255,255,255,.65);line-height:1.9;margin-bottom:16px;font-weight:300">
+          As vagas são limitadas e o prazo para máxima visibilidade é <strong style="color:var(--w)">31 de julho de 2026.</strong> Após essa data, o logo do patrocinador não entrará nos materiais de divulgação das inscrições.
+        </p>
+        <p style="font-size:15px;color:rgba(255,255,255,.5);line-height:1.8;margin-bottom:40px">
+          Entre em contato com nossa equipe comercial para receber a proposta personalizada, o contrato e o formulário de cadastro.
+        </p>
+        <div class="contact-item">
+          <div class="contact-icon">🌐</div>
+          <div><div class="clabel">Site Oficial</div><div class="cval"><a href="https://www.abeemt.org.br" target="_blank" rel="noopener" style="color:var(--g);text-decoration:none">www.abeemt.org.br</a></div></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📧</div>
+          <div><div class="clabel">Email Comercial</div><div class="cval"><a href="mailto:amee.mt@gmail.com" style="color:var(--w);text-decoration:none">amee.mt@gmail.com</a></div></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📱</div>
+          <div><div class="clabel">Instagram</div><div class="cval"><a href="https://instagram.com/abee_mt" target="_blank" rel="noopener" style="color:var(--w);text-decoration:none">@abee_mt</a></div></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div><div class="clabel">Telefone / WhatsApp</div><div class="cval"><a href="https://wa.me/5565984633872?text=Ol%C3%A1!%20Tenho%20interesse%20em%20patrocinar%20o%20F%C3%B3rum%20BESS%202026" target="_blank" rel="noopener" style="color:var(--w);text-decoration:none">(65) 98463-3872</a></div></div>
+        </div>
+        <div style="display:flex;gap:16px;margin-top:40px;flex-wrap:wrap">
+          <a href="mailto:amee.mt@gmail.com?subject=Quero ser Patrocinador — Forum BESS 2026" class="btn-green">Quero ser Patrocinador →</a>
+          <a href="https://www.abeemt.org.br" target="_blank" rel="noopener" class="btn-outline">Acessar Site Oficial</a>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:28px">
+        <div style="background:var(--w);border-radius:16px;padding:24px;width:200px;height:200px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 60px rgba(0,200,83,.2)">
+          <svg width="152" height="152" viewBox="0 0 152 152" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="8" width="54" height="54" rx="4" fill="none" stroke="#082A43" stroke-width="7"/>
+            <rect x="22" y="22" width="26" height="26" rx="2" fill="#082A43"/>
+            <rect x="90" y="8" width="54" height="54" rx="4" fill="none" stroke="#082A43" stroke-width="7"/>
+            <rect x="104" y="22" width="26" height="26" rx="2" fill="#082A43"/>
+            <rect x="8" y="90" width="54" height="54" rx="4" fill="none" stroke="#082A43" stroke-width="7"/>
+            <rect x="22" y="104" width="26" height="26" rx="2" fill="#082A43"/>
+            <rect x="84" y="84" width="10" height="10" rx="2" fill="#082A43"/>
+            <rect x="98" y="84" width="10" height="10" rx="2" fill="#082A43"/>
+            <rect x="112" y="84" width="10" height="10" rx="2" fill="#082A43"/>
+            <rect x="126" y="84" width="10" height="10" rx="2" fill="#082A43"/>
+            <rect x="140" y="84" width="10" height="10" rx="2" fill="#082A43"/>
+            <rect x="84" y="98" width="10" height="10" rx="2" fill="#082A43"/>
+            <rect x="112" y="98" width="10" height="10" rx="2" fill="#082A43"/>
+            <rect x="84" y="112" width="10" height="10" rx="2" fill="#082A43"/>
+            <rect x="98" y="112" width="10" height="10" rx="2" fill="#082A43"/>
+            <rect x="126" y="112" width="10" height="10" rx="2" fill="#082A43"/>
+            <rect x="84" y="126" width="10" height="10" rx="2" fill="#082A43"/>
+            <rect x="112" y="126" width="10" height="10" rx="2" fill="#082A43"/>
+            <rect x="140" y="126" width="10" height="10" rx="2" fill="#082A43"/>
+            <rect x="84" y="140" width="10" height="10" rx="2" fill="#082A43"/>
+            <rect x="126" y="140" width="10" height="10" rx="2" fill="#082A43"/>
+          </svg>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:11px;color:rgba(255,255,255,.35);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px">Site oficial</div>
+          <a href="https://www.abeemt.org.br" target="_blank" rel="noopener" style="font-size:16px;font-weight:700;color:var(--g);text-decoration:none">www.abeemt.org.br</a>
+        </div>
+        <!-- Logos institucionais -->
+        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px 28px;text-align:center;width:100%">
+          <div style="font-size:10px;color:rgba(255,255,255,.35);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px">Realização & Apoio</div>
+          <div style="display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap">
+            <div style="text-align:center">
+              <span class="logo-chip"><img src="logo-abee-mt.png" alt="ABEE-MT" style="height:40px;width:auto;object-fit:contain"/></span>
+              <div style="font-size:9px;color:rgba(255,255,255,.35);margin-top:6px">Organização</div>
+            </div>
+            <div style="text-align:center">
+              <span class="logo-chip"><img src="logo-crea-mt.png" alt="CREA-MT" style="height:38px;width:auto;object-fit:contain"/></span>
+              <div style="font-size:9px;color:rgba(255,255,255,.35);margin-top:6px">Apoio Institucional</div>
+            </div>
+            <div style="text-align:center">
+              <span class="logo-chip"><img src="logo-mutua.png" alt="Mútua" style="height:34px;width:auto;object-fit:contain"/></span>
+              <div style="font-size:9px;color:rgba(255,255,255,.35);margin-top:6px">Apoio Institucional</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <span class="logo-chip"><img src="logo-abee-mt.png" alt="ABEE-MT" style="height:40px;width:auto;object-fit:contain"/></span>
+    <div>
+      <div class="footer-name">ABEE-MT — Associação Brasileira dos Engenheiros Eletricistas · Mato Grosso</div>
+      <div class="footer-sub"><a href="https://www.abeemt.org.br" target="_blank" rel="noopener" style="color:var(--g);text-decoration:none">www.abeemt.org.br</a></div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+    <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.3)">Apoio Institucional</div>
+    <div style="display:flex;gap:16px;align-items:center">
+      <span class="logo-chip"><img src="logo-crea-mt.png" alt="CREA-MT" style="height:32px;width:auto;object-fit:contain"/></span>
+      <span class="logo-chip"><img src="logo-mutua.png" alt="Mútua" style="height:28px;width:auto;object-fit:contain"/></span>
+    </div>
+    <div style="font-size:11px;color:rgba(255,255,255,.25);letter-spacing:1px">Fórum BESS 2026 · 28 Set Cuiabá · 30 Set Rondonópolis</div>
+  </div>
+  <div class="footer-right">
+    <div class="footer-tag">Media Kit 2026</div>
+    <div class="footer-conf">Material confidencial para patrocinadores</div>
+  </div>
+</footer>
+
+<!-- Fallback: se um logo ainda não foi enviado, mostra a sigla em vez de imagem quebrada -->
+<script>
+(function(){
+  function fix(im){
+    var s=document.createElement('span');
+    s.textContent=im.getAttribute('alt')||'LOGO';
+    s.style.cssText='font-weight:900;font-size:12px;letter-spacing:.5px;color:#082A43;white-space:nowrap';
+    im.replaceWith(s);
+  }
+  document.querySelectorAll('img[src*="logo-"]').forEach(function(im){
+    im.addEventListener('error',function(){fix(im);});
+    if(im.complete && im.naturalWidth===0){fix(im);}
+  });
+})();
+</script>
+
+<!-- BOTÃO FLUTUANTE WHATSAPP -->
+<a href="https://wa.me/5565984633872?text=Ol%C3%A1!%20Tenho%20interesse%20em%20patrocinar%20o%20F%C3%B3rum%20BESS%202026" target="_blank" rel="noopener" aria-label="Falar no WhatsApp"
+   style="position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;align-items:center;gap:10px;background:#25D366;color:#fff;padding:14px 22px 14px 18px;border-radius:50px;text-decoration:none;font-weight:800;font-size:14px;box-shadow:0 8px 28px rgba(37,211,102,.45)">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg"><path d="M17.5 14.4c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35zM12 2A10 10 0 0 0 3.48 17.17L2 22l4.95-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-2.97-.4-4.25-1.16l-.3-.18-2.94.77.79-2.86-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg>
+  Fale conosco
+</a>
+
+</body>
+</html>
