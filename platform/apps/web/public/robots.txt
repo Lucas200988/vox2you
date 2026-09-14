@@ -1,0 +1,3 @@
+# CRM privado: nada aqui deve ser indexado por buscadores.
+User-agent: *
+Disallow: /

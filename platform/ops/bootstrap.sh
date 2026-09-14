@@ -74,7 +74,13 @@ echo "▶ Código em $TARGET (branch $BRANCH)"
 # Sobra de um clone que falhou: o diretório é criado só por este script, então pode ser refeito.
 if [[ -d "$TARGET" && ! -d "$TARGET/.git" ]]; then rm -rf "$TARGET"; fi
 if [[ -d "$TARGET/.git" ]]; then
-  git -C "$TARGET" fetch --quiet origin "$BRANCH" && git -C "$TARGET" checkout --quiet "$BRANCH" && git -C "$TARGET" pull --quiet origin "$BRANCH"
+  # O remote fica sem token depois do clone, então reautentica só durante o fetch.
+  [[ -n "${GITHUB_TOKEN:-}" ]] && git -C "$TARGET" remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git"
+  git -C "$TARGET" fetch --quiet origin "$BRANCH"
+  git -C "$TARGET" checkout --quiet "$BRANCH"
+  # reset em vez de pull: o servidor nunca tem commits locais, e evita merges travando o deploy
+  git -C "$TARGET" reset --hard --quiet "origin/$BRANCH"
+  git -C "$TARGET" remote set-url origin "https://github.com/${REPO}.git"
 else
   if [[ -n "${GITHUB_TOKEN:-}" ]]; then
     git clone --quiet --branch "$BRANCH" "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git" "$TARGET"
