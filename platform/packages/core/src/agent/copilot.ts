@@ -19,34 +19,90 @@ import { NotFoundError } from '../errors.js'
 export class CopilotService {
   constructor(private readonly deps: AgentDeps) {}
 
-  async suggest(ctx: TenantContext, conversationId: string, mode: 'suggest' | 'improve' | 'summarize' | 'next_action', draft?: string): Promise<CopilotSuggestion & { runId: string; costUsd: number }> {
+  async suggest(
+    ctx: TenantContext,
+    conversationId: string,
+    mode: 'suggest' | 'improve' | 'summarize' | 'next_action',
+    draft?: string,
+  ): Promise<CopilotSuggestion & { runId: string; costUsd: number }> {
     const { db, providers, prompts } = this.deps
-    const conv = await db.conversation.findFirst({ where: { id: conversationId, tenantId: ctx.tenantId }, select: { unitId: true, unit: { select: { timezone: true } } } })
+    const conv = await db.conversation.findFirst({
+      where: { id: conversationId, tenantId: ctx.tenantId },
+      select: { unitId: true, unit: { select: { timezone: true } } },
+    })
     if (!conv) throw new NotFoundError('Conversation', conversationId)
     assertUnitAccess(ctx, conv.unitId)
     const settings = await loadAgentSettings(db, conv.unitId, providers.models)
     const memory = await loadMemory(db, conversationId, 16)
     const { brain } = await new SalesBrainService(db).resolve(conv.unitId)
     const catalog = await new ProductService(db).catalogForAgent(ctx, conv.unitId)
-    const lastCustomer = [...memory.recent].reverse().find((m) => m.direction === 'inbound')?.text ?? ''
-    const knowledge = lastCustomer ? await new KnowledgeSearchService(db, providers.embedding).search({ tenantId: ctx.tenantId, unitId: conv.unitId, query: lastCustomer, limit: 4 }) : []
+    const lastCustomer =
+      [...memory.recent].reverse().find((m) => m.direction === 'inbound')?.text ?? ''
+    const knowledge = lastCustomer
+      ? await new KnowledgeSearchService(db, providers.embedding).search({
+          tenantId: ctx.tenantId,
+          unitId: conv.unitId,
+          query: lastCustomer,
+          limit: 4,
+        })
+      : []
     const prompt = await prompts.resolve(ctx.tenantId, 'copilot.suggest')
     const user = PromptRegistry.render(prompt.content, {
       mode,
       draft: draft ?? '(nenhum)',
       history: renderHistory(memory.recent, 3500),
       facts: renderFacts(memory.facts),
-      catalog_summary: AgentTools.renderCatalog(catalog),
+      catalog_summary: AgentTools.renderCatalog(catalog, {
+        hidePricing: settings.salesMode === 'sdr',
+      }),
       knowledge: KnowledgeSearchService.render(knowledge, 3000),
       sales_brain: SalesBrainService.render(brain),
       stage: memory.lead?.stageKey ?? 'new',
     })
-    const run = await db.agentRun.create({ data: { tenantId: ctx.tenantId, unitId: conv.unitId, conversationId, leadId: memory.lead?.id ?? null, kind: 'copilot', status: 'running' } })
-    const res = await callJson(providers.llm, { model: settings.models.copilot, task: 'copilot', user, schema: CopilotSuggestionSchema, schemaName: 'copilot', maxTokens: 700, temperature: 0.4, metadata: { runId: run.id, mode } })
-    const data = res.data ?? { suggestedReply: '', detectedObjection: null, nextBestAction: 'Revisar conversa', summary: 'Não foi possível gerar sugestão.', crmUpdates: [] }
+    const run = await db.agentRun.create({
+      data: {
+        tenantId: ctx.tenantId,
+        unitId: conv.unitId,
+        conversationId,
+        leadId: memory.lead?.id ?? null,
+        kind: 'copilot',
+        status: 'running',
+      },
+    })
+    const res = await callJson(providers.llm, {
+      model: settings.models.copilot,
+      task: 'copilot',
+      user,
+      schema: CopilotSuggestionSchema,
+      schemaName: 'copilot',
+      maxTokens: 700,
+      temperature: 0.4,
+      metadata: { runId: run.id, mode },
+    })
+    const data = res.data ?? {
+      suggestedReply: '',
+      detectedObjection: null,
+      nextBestAction: 'Revisar conversa',
+      summary: 'Não foi possível gerar sugestão.',
+      crmUpdates: [],
+    }
     await db.agentRun.update({
       where: { id: run.id },
-      data: { status: res.data ? 'completed' : 'failed', completedAt: new Date(), replyText: data.suggestedReply, model: res.response.model, inputTokens: res.response.usage.inputTokens, outputTokens: res.response.usage.outputTokens, costUsd: res.response.costUsd, latencyMs: res.response.latencyMs, sourceIds: knowledge.map((k) => k.chunkId), retrieval: { hits: knowledge.map((k) => ({ chunkId: k.chunkId, title: k.title })) } as Prisma.InputJsonValue, error: res.parseError ?? null },
+      data: {
+        status: res.data ? 'completed' : 'failed',
+        completedAt: new Date(),
+        replyText: data.suggestedReply,
+        model: res.response.model,
+        inputTokens: res.response.usage.inputTokens,
+        outputTokens: res.response.usage.outputTokens,
+        costUsd: res.response.costUsd,
+        latencyMs: res.response.latencyMs,
+        sourceIds: knowledge.map((k) => k.chunkId),
+        retrieval: {
+          hits: knowledge.map((k) => ({ chunkId: k.chunkId, title: k.title })),
+        } as Prisma.InputJsonValue,
+        error: res.parseError ?? null,
+      },
     })
     return { ...data, runId: run.id, costUsd: res.response.costUsd }
   }

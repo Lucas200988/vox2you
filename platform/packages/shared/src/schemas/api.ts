@@ -178,9 +178,20 @@ export const AppointmentInputSchema = z.object({
   notes: z.string().optional(),
 })
 
+/**
+ * sdr    — the agent qualifies and books an in-person visit; it never presents products, prices,
+ *          installments or discounts, even when asked (values are shown at the visit).
+ * closer — the agent may present catalog offers and conduct the sale (original behaviour).
+ */
+export const SALES_MODES = ['sdr', 'closer'] as const
+export type SalesMode = (typeof SALES_MODES)[number]
+
 export const AgentSettingsInputSchema = z.object({
   enabled: z.boolean().optional(),
   agentName: z.string().optional(),
+  salesMode: z.enum(SALES_MODES).optional(),
+  /** How the agent names the in-person step, e.g. "visita presencial na unidade" */
+  visitLabel: z.string().min(3).max(120).optional(),
   persona: z.string().nullable().optional(),
   tone: z.string().nullable().optional(),
   models: z.record(z.string(), z.string()).optional(),

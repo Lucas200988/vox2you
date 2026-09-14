@@ -94,6 +94,21 @@ export async function inbound(
   return env.processor.process(events[0]!)
 }
 
+/** Switches the seeded unit between SDR (book the visit, never quote) and closer (may present offers). */
+export async function setSalesMode(env: TestEnv, mode: 'sdr' | 'closer'): Promise<void> {
+  const unitId = env.seed.unitId
+  const current = await env.db.agentSettings.findUnique({
+    where: { unitId },
+    select: { extra: true },
+  })
+  const extra = { ...((current?.extra as Record<string, unknown> | null) ?? {}), salesMode: mode }
+  await env.db.agentSettings.upsert({
+    where: { unitId },
+    update: { extra },
+    create: { unitId, extra },
+  })
+}
+
 export function randomPhone(): string {
   return `5565${Math.floor(900000000 + Math.random() * 99999999)}`
 }

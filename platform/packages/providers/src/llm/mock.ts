@@ -31,8 +31,20 @@ export class MockLLMProvider implements LLMProvider {
     else if (req.task && this.overrides.has(req.task)) payload = this.overrides.get(req.task)!(req)
     else payload = this.defaultFor(req)
     const text = typeof payload === 'string' ? payload : JSON.stringify(payload)
-    const inputTokens = estimateTokens((req.system ?? '') + req.messages.map((m) => m.content).join(''))
-    return { text, json: typeof payload === 'string' ? undefined : payload, toolCalls: [], usage: { inputTokens, outputTokens: estimateTokens(text) }, model: `mock:${req.model}`, provider: this.name, latencyMs: Date.now() - started, costUsd: 0, stopReason: 'end_turn' }
+    const inputTokens = estimateTokens(
+      (req.system ?? '') + req.messages.map((m) => m.content).join(''),
+    )
+    return {
+      text,
+      json: typeof payload === 'string' ? undefined : payload,
+      toolCalls: [],
+      usage: { inputTokens, outputTokens: estimateTokens(text) },
+      model: `mock:${req.model}`,
+      provider: this.name,
+      latencyMs: Date.now() - started,
+      costUsd: 0,
+      stopReason: 'end_turn',
+    }
   }
 
   private lastCustomer(req: LLMRequest): string {
@@ -55,11 +67,34 @@ export class MockLLMProvider implements LLMProvider {
       case 'summarize':
         return 'Cliente interessado em comunicação; conversa em andamento.'
       case 'evaluate':
-        return { scores: { accuracy: 8, grounding: 8, sales_quality: 7, tone: 8, qualification_quality: 7, conversion_attempt: 7, customer_effort: 8, repetition: 9, hallucination: 9, compliance: 9 }, comment: 'Avaliação simulada.' }
+        return {
+          scores: {
+            accuracy: 8,
+            grounding: 8,
+            sales_quality: 7,
+            tone: 8,
+            qualification_quality: 7,
+            conversion_attempt: 7,
+            customer_effort: 8,
+            repetition: 9,
+            hallucination: 9,
+            compliance: 9,
+          },
+          comment: 'Avaliação simulada.',
+        }
       case 'copilot':
-        return { suggestedReply: 'Posso te mostrar como funciona a aula experimental?', detectedObjection: null, nextBestAction: 'Convidar para visita', summary: 'Lead em descoberta.', crmUpdates: [] }
+        return {
+          suggestedReply: 'Posso te mostrar como funciona a aula experimental?',
+          detectedObjection: null,
+          nextBestAction: 'Convidar para visita',
+          summary: 'Lead em descoberta.',
+          crmUpdates: [],
+        }
       case 'followup':
-        return { reply: 'Oi! Fiquei pensando no que você comentou. Posso te ajudar com algum próximo passo?' }
+        return {
+          reply:
+            'Oi! Fiquei pensando no que você comentou. Posso te ajudar com algum próximo passo?',
+        }
       default:
         return { text: 'ok' }
     }
@@ -80,7 +115,16 @@ export function classify(text: string) {
   if (has(text, 'camera', 'gravar video', 'videos')) signals.push('camera_block')
   if (has(text, 'apresenta')) signals.push('presentation')
   if (has(text, 'lideran', 'meu time', 'minha equipe', 'gestor')) signals.push('leadership')
-  if (has(text, 'time de vendas', 'equipe comercial', 'treinar minha equipe', 'funcionarios', 'empresa')) {
+  if (
+    has(
+      text,
+      'time de vendas',
+      'equipe comercial',
+      'treinar minha equipe',
+      'funcionarios',
+      'empresa',
+    )
+  ) {
     signals.push('team_sales')
     profileType = 'b2b'
   }
@@ -92,24 +136,38 @@ export function classify(text: string) {
   if (has(text, '50 pessoas', '100 pessoas', 'toda a empresa')) signals.push('large_team')
 
   if (has(text, 'pare', 'nao me mande', 'sair', 'descadastr')) intent = 'opt_out'
-  else if (has(text, 'atendente', 'humano', 'falar com alguem', 'pessoa de verdade')) intent = 'human_request'
+  else if (has(text, 'atendente', 'humano', 'falar com alguem', 'pessoa de verdade'))
+    intent = 'human_request'
   else if (has(text, 'absurdo', 'reclama', 'pessimo', 'ninguem responde', 'irritad')) {
     intent = 'complaint'
     sentiment = 'frustrated'
-  } else if (has(text, 'quero me matricular', 'quero fechar', 'como faco para me inscrever', 'vamos fechar')) {
+  } else if (
+    has(text, 'quero me matricular', 'quero fechar', 'como faco para me inscrever', 'vamos fechar')
+  ) {
     intent = 'buying_signal'
     urgency = 'high'
-  } else if (has(text, 'agendar', 'marcar', 'visita', 'aula experimental', 'conhecer a escola')) intent = 'booking_request'
-  else if (has(text, 'preco', 'valor', 'quanto custa', 'investimento', 'parcel')) intent = 'price_request'
+  } else if (has(text, 'agendar', 'marcar', 'visita', 'aula experimental', 'conhecer a escola'))
+    intent = 'booking_request'
+  else if (has(text, 'preco', 'valor', 'quanto custa', 'investimento', 'parcel'))
+    intent = 'price_request'
   else if (has(text, 'horario', 'turma', 'que dias', 'quando comeca')) intent = 'schedule_request'
-  else if (signals.some((s) => ['price_objection', 'time_objection', 'later', 'spouse_decision'].includes(s))) intent = 'objection'
+  else if (
+    signals.some((s) =>
+      ['price_objection', 'time_objection', 'later', 'spouse_decision'].includes(s),
+    )
+  )
+    intent = 'objection'
   else if (profileType === 'b2b') intent = 'b2b_inquiry'
-  else if (/^(oi|ola|bom dia|boa tarde|boa noite|opa|e ai)[!. ]*$/.test(text.trim())) intent = 'greeting'
+  else if (/^(oi|ola|bom dia|boa tarde|boa noite|opa|e ai)[!. ]*$/.test(text.trim()))
+    intent = 'greeting'
   else if (has(text, 'obrigad', 'valeu', 'blz', 'beleza')) intent = 'smalltalk'
   if (has(text, 'urgente', 'semana que vem', 'proxima semana', 'preciso rapido')) urgency = 'high'
-  if (has(text, 'so quero', 'pessoal', 'para mim')) profileType = profileType === 'unknown' ? 'b2c' : profileType
+  if (has(text, 'so quero', 'pessoal', 'para mim'))
+    profileType = profileType === 'unknown' ? 'b2c' : profileType
 
-  const mentionsProducts = ['academy', 'master', 'intensivox', 'incompany', 'voxtime'].filter((p) => text.includes(p))
+  const mentionsProducts = ['academy', 'master', 'intensivox', 'incompany', 'voxtime'].filter((p) =>
+    text.includes(p),
+  )
   return {
     intent,
     secondaryIntents: [],
@@ -117,8 +175,11 @@ export function classify(text: string) {
     urgency,
     signals,
     profileType,
-    needsKnowledge: intent === 'info_request' || has(text, 'como funciona', 'metodologia', 'o que e'),
-    needsCatalog: ['price_request', 'schedule_request', 'buying_signal', 'info_request'].includes(intent) || mentionsProducts.length > 0,
+    needsKnowledge:
+      intent === 'info_request' || has(text, 'como funciona', 'metodologia', 'o que e'),
+    needsCatalog:
+      ['price_request', 'schedule_request', 'buying_signal', 'info_request'].includes(intent) ||
+      mentionsProducts.length > 0,
     needsCalendar: intent === 'booking_request',
     requestsHuman: intent === 'human_request',
     isEmotional: sentiment === 'frustrated',
@@ -129,12 +190,21 @@ export function classify(text: string) {
 }
 
 export function extract(text: string) {
-  const facts: Array<{ key: string; value: string; source: 'stated' | 'inferred'; confidence: number }> = []
-  const add = (key: string, value: string, source: 'stated' | 'inferred' = 'stated') => facts.push({ key, value, source, confidence: 0.9 })
+  const facts: Array<{
+    key: string
+    value: string
+    source: 'stated' | 'inferred'
+    confidence: number
+  }> = []
+  const add = (key: string, value: string, source: 'stated' | 'inferred' = 'stated') =>
+    facts.push({ key, value, source, confidence: 0.9 })
   if (has(text, 'vergonha', 'timid')) add('pain', 'vergonha de falar em público')
-  if (has(text, 'travo na frente da camera', 'gravar video')) add('pain', 'trava na frente da câmera')
-  if (has(text, 'apresentar melhor minha empresa', 'apresentacoes')) add('goal', 'melhorar apresentações')
-  if (has(text, 'melhorar meu time de vendas', 'equipe comercial')) add('goal', 'desenvolver time de vendas')
+  if (has(text, 'travo na frente da camera', 'gravar video'))
+    add('pain', 'trava na frente da câmera')
+  if (has(text, 'apresentar melhor minha empresa', 'apresentacoes'))
+    add('goal', 'melhorar apresentações')
+  if (has(text, 'melhorar meu time de vendas', 'equipe comercial'))
+    add('goal', 'desenvolver time de vendas')
   if (has(text, 'lideranca')) add('goal', 'melhorar liderança')
   if (has(text, 'entrevista')) add('goal', 'ir bem em entrevista')
   if (has(text, 'caro')) add('objection', 'preço')
@@ -160,53 +230,120 @@ export function extract(text: string) {
 function generate(text: string, req: LLMRequest) {
   const system = req.system ?? ''
   const c = classify(text)
-  const offers = [...system.matchAll(/Ofertas: ([^\n]+)/g)].map((m) => m[1]!).filter((o) => !o.includes('NÃO cite'))
+  const offers = [...system.matchAll(/Ofertas: ([^\n]+)/g)]
+    .map((m) => m[1]!)
+    .filter((o) => !o.includes('NÃO cite'))
   const firstOffer = offers[0]?.split(';')[0]?.trim()
-  const classes = [...system.matchAll(/Turmas: ([^\n]+)/g)].map((m) => m[1]!).filter((c) => !c.includes('sem turmas'))
+  const classes = [...system.matchAll(/Turmas: ([^\n]+)/g)]
+    .map((m) => m[1]!)
+    .filter((c) => !c.includes('sem turmas'))
   const slotLine = system.match(/- ([^\n(]+) \(iso: ([^)]+)\)/)
   const actions: unknown[] = []
   let reply = ''
   let nextBestAction = 'Continuar descoberta'
+  // SDR mode (see orchestrator mode hints): never quote prices, always steer to the in-person visit.
+  if (system.includes('MODO SDR')) {
+    const invite = slotLine
+      ? `Tenho ${slotLine[1]!.trim()} livre para você conhecer a unidade. Posso reservar?`
+      : 'Qual dia da semana costuma ser melhor pra você passar na unidade?'
+    switch (c.intent) {
+      case 'price_request':
+      case 'schedule_request':
+      case 'buying_signal':
+        reply = `Faz todo sentido querer saber. Os valores e o formato ideal a gente apresenta na visita, depois de um diagnóstico rápido, pra indicar exatamente o que serve pra você. ${invite}`
+        nextBestAction = 'Confirmar visita'
+        break
+      case 'booking_request':
+        reply = slotLine
+          ? `Ótimo! ${invite}`
+          : 'Vou verificar a agenda com a equipe e te passo as opções em instantes.'
+        nextBestAction = 'Confirmar horário'
+        if (slotLine && has(text, 'pode confirmar', 'confirma', 'fechado', 'pode ser'))
+          actions.push({ type: 'book_appointment', isoStart: slotLine[2], kind: 'visit' })
+        break
+      case 'objection':
+        reply = c.signals.includes('price_objection')
+          ? `Entendo. Justamente por isso a gente prefere te mostrar na prática antes de falar de condições. ${invite}`
+          : 'Claro. O que te ajudaria a decidir com mais segurança?'
+        if (c.signals.includes('later'))
+          actions.push({
+            type: 'schedule_followup',
+            hours: 72,
+            reason: 'cliente pediu para pensar',
+          })
+        break
+      case 'greeting':
+        reply = 'Oi! Que bom ter você por aqui. Me conta: o que te fez procurar a VOX2you agora?'
+        break
+      case 'b2b_inquiry':
+        reply =
+          'Legal! Para empresas o melhor caminho é uma conversa com nosso especialista. Para quantas pessoas seria e qual o principal objetivo do time?'
+        nextBestAction = 'Transferir para especialista B2B'
+        break
+      default:
+        reply = has(text, 'como funciona')
+          ? `A VOX2you trabalha com prática desde a primeira aula, em turmas pequenas e com feedback individual. O melhor jeito de sentir isso é ao vivo: ${invite}`
+          : 'Entendi. Me conta um pouco mais sobre o que você quer alcançar com a comunicação?'
+    }
+    return { reply, actions, usedSources: [], confidence: 0.85, nextBestAction }
+  }
   switch (c.intent) {
     case 'greeting':
       reply = 'Oi! Que bom ter você por aqui. Me conta: o que te fez procurar a VOX2you agora?'
       break
     case 'price_request':
-      reply = firstOffer ? `Claro. Hoje a condição vigente é ${firstOffer}. O que mais te ajudaria a decidir: conhecer a metodologia na prática ou entender o cronograma?` : 'Vou confirmar a condição vigente com a equipe e já te retorno. Enquanto isso, me conta qual é o seu principal objetivo?'
+      reply = firstOffer
+        ? `Claro. Hoje a condição vigente é ${firstOffer}. O que mais te ajudaria a decidir: conhecer a metodologia na prática ou entender o cronograma?`
+        : 'Vou confirmar a condição vigente com a equipe e já te retorno. Enquanto isso, me conta qual é o seu principal objetivo?'
       nextBestAction = 'Reforçar valor e convidar para visita'
       actions.push({ type: 'set_stage', stage: 'offer', reason: 'pediu preço' })
       break
     case 'schedule_request':
-      reply = classes.length ? `Temos turmas assim: ${classes[0]!.split(';')[0]}. Qual período fica melhor pra você?` : 'Vou verificar as próximas turmas com a equipe e te retorno. Você prefere manhã, tarde ou noite?'
+      reply = classes.length
+        ? `Temos turmas assim: ${classes[0]!.split(';')[0]}. Qual período fica melhor pra você?`
+        : 'Vou verificar as próximas turmas com a equipe e te retorno. Você prefere manhã, tarde ou noite?'
       break
     case 'booking_request':
       if (slotLine) {
         reply = `Ótimo! Tenho ${slotLine[1]!.trim()} disponível para uma visita. Posso confirmar pra você?`
         nextBestAction = 'Confirmar horário'
-        if (has(text, 'pode confirmar', 'confirma', 'fechado', 'pode ser')) actions.push({ type: 'book_appointment', isoStart: slotLine[2], kind: 'visit' })
+        if (has(text, 'pode confirmar', 'confirma', 'fechado', 'pode ser'))
+          actions.push({ type: 'book_appointment', isoStart: slotLine[2], kind: 'visit' })
       } else {
         reply = 'Vou verificar a agenda com a equipe e te passo as opções em instantes.'
       }
       break
     case 'buying_signal':
-      reply = 'Que ótimo! Para a matrícula, um consultor vai finalizar com você os detalhes. Você prefere fazer isso pessoalmente na unidade ou por aqui mesmo?'
+      reply =
+        'Que ótimo! Para a matrícula, um consultor vai finalizar com você os detalhes. Você prefere fazer isso pessoalmente na unidade ou por aqui mesmo?'
       nextBestAction = 'Ligar agora para fechar matrícula'
       actions.push({ type: 'set_stage', stage: 'negotiation' })
       break
     case 'objection':
-      if (c.signals.includes('price_objection')) reply = firstOffer ? `Entendo. Muita gente sente isso no início. Pensando no que você quer resolver, posso te mostrar como fica parcelado (${firstOffer}) e o que está incluso?` : 'Entendo. Pensando no que você quer resolver, faz sentido eu te mostrar o que está incluso antes de falarmos de condições?'
-      else if (c.signals.includes('time_objection')) reply = 'Faz sentido. A maioria dos alunos concilia com o trabalho. Qual período costuma ser mais tranquilo pra você?'
-      else if (c.signals.includes('spouse_decision')) reply = 'Faz sentido decidir junto. Posso te mandar um resumo pra compartilhar? Vocês podem vir juntos conhecer a escola.'
+      if (c.signals.includes('price_objection'))
+        reply = firstOffer
+          ? `Entendo. Muita gente sente isso no início. Pensando no que você quer resolver, posso te mostrar como fica parcelado (${firstOffer}) e o que está incluso?`
+          : 'Entendo. Pensando no que você quer resolver, faz sentido eu te mostrar o que está incluso antes de falarmos de condições?'
+      else if (c.signals.includes('time_objection'))
+        reply =
+          'Faz sentido. A maioria dos alunos concilia com o trabalho. Qual período costuma ser mais tranquilo pra você?'
+      else if (c.signals.includes('spouse_decision'))
+        reply =
+          'Faz sentido decidir junto. Posso te mandar um resumo pra compartilhar? Vocês podem vir juntos conhecer a escola.'
       else reply = 'Claro. O que te ajudaria a decidir com mais segurança?'
-      if (c.signals.includes('later')) actions.push({ type: 'schedule_followup', hours: 72, reason: 'cliente pediu para pensar' })
+      if (c.signals.includes('later'))
+        actions.push({ type: 'schedule_followup', hours: 72, reason: 'cliente pediu para pensar' })
       nextBestAction = 'Enviar depoimento relacionado à objeção'
       break
     case 'b2b_inquiry':
-      reply = 'Legal! Trabalhamos com treinamentos InCompany sob medida. Para quantas pessoas seria e qual o principal objetivo do time?'
+      reply =
+        'Legal! Trabalhamos com treinamentos InCompany sob medida. Para quantas pessoas seria e qual o principal objetivo do time?'
       nextBestAction = 'Transferir para especialista B2B'
       break
     default:
-      reply = has(text, 'como funciona') ? 'A VOX2you trabalha com prática desde a primeira aula, em turmas pequenas e com feedback individual. Me conta em que situação a comunicação mais te trava hoje?' : 'Entendi. Me conta um pouco mais sobre o que você quer alcançar com a comunicação?'
+      reply = has(text, 'como funciona')
+        ? 'A VOX2you trabalha com prática desde a primeira aula, em turmas pequenas e com feedback individual. Me conta em que situação a comunicação mais te trava hoje?'
+        : 'Entendi. Me conta um pouco mais sobre o que você quer alcançar com a comunicação?'
   }
   return { reply, actions, usedSources: [], confidence: 0.85, nextBestAction }
 }

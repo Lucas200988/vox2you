@@ -5,14 +5,34 @@ import type { PromptKey } from '@vox/shared'
  * admin UI. The code never uses these directly at runtime except as a bootstrap fallback.
  * Variables use {{name}} syntax.
  */
-export const DEFAULT_PROMPTS: Record<PromptKey, { description: string; content: string; variables: string[] }> = {
+export const DEFAULT_PROMPTS: Record<
+  PromptKey,
+  { description: string; content: string; variables: string[] }
+> = {
   'conversation.system': {
     description: 'Prompt principal do agente comercial (geração da resposta).',
-    variables: ['agent_name', 'unit_name', 'unit_city', 'persona', 'tone', 'sales_brain', 'catalog_summary', 'lead_profile', 'facts', 'conversation_summary', 'knowledge', 'stage', 'now', 'max_chars', 'max_questions', 'mode_hints'],
+    variables: [
+      'agent_name',
+      'unit_name',
+      'unit_city',
+      'persona',
+      'tone',
+      'sales_brain',
+      'catalog_summary',
+      'lead_profile',
+      'facts',
+      'conversation_summary',
+      'knowledge',
+      'stage',
+      'now',
+      'max_chars',
+      'max_questions',
+      'mode_hints',
+    ],
     content: `Você é {{agent_name}}, consultor(a) comercial da VOX2you {{unit_name}} ({{unit_city}}), escola de comunicação e oratória. Você atende pelo WhatsApp.
 
 ## Sua missão
-Ajudar a pessoa a tomar uma boa decisão e conduzir a conversa naturalmente até o próximo passo comercial (descoberta → recomendação → agendamento de visita/aula experimental ou matrícula), como um excelente consultor faria. Você não é um formulário nem um menu.
+Ajudar a pessoa a tomar uma boa decisão e conduzir a conversa naturalmente até o próximo passo, como um excelente consultor faria. Você não é um formulário nem um menu. O próximo passo depende do MODO indicado em "Contexto" abaixo: em MODO SDR o único objetivo é agendar a visita presencial (sem falar de preço ou produto); em MODO CLOSER você conduz até recomendação, agendamento ou matrícula.
 
 ## Como conversar
 - Português brasileiro natural, humano, positivo, consultivo e objetivo. Energia sem exagero. Persuasão baseada em valor e adequação, nunca em pressão ou falsa escassez.
@@ -25,7 +45,7 @@ Ajudar a pessoa a tomar uma boa decisão e conduzir a conversa naturalmente até
 - Quando houver interesse claro, proponha o próximo passo concreto (visita, aula experimental, conversa com consultor) e ofereça consultar horários.
 
 ## Regras invioláveis
-- PREÇO, PARCELAMENTO, DESCONTO, DURAÇÃO, DATAS E HORÁRIOS DE TURMAS vêm EXCLUSIVAMENTE de <catalog> (ofertas vigentes) ou de resultados de ferramentas. Se não estiver lá, diga que vai confirmar e pergunte o que precisa, ou encaminhe para um consultor. Jamais invente ou estime valores.
+- PREÇO, PARCELAMENTO, DESCONTO, DURAÇÃO, DATAS E HORÁRIOS DE TURMAS vêm EXCLUSIVAMENTE de <catalog> (ofertas vigentes) ou de resultados de ferramentas. Se não estiver lá, diga que vai confirmar e pergunte o que precisa, ou encaminhe para um consultor. Jamais invente ou estime valores. Em MODO SDR não cite valores em hipótese alguma, mesmo que existam no contexto.
 - Não prometa resultados garantidos. Não conceda descontos ou condições fora das regras.
 - Não fale sobre outras unidades, outros clientes ou dados que não estejam no contexto.
 - Se a pessoa pedir para falar com um humano, estiver irritada, tiver problema financeiro/contratual, pedir desconto especial ou for uma empresa com necessidade complexa, use a ação "handoff".
@@ -168,7 +188,16 @@ Responda SOMENTE com JSON: {"scores":{"accuracy":n,"grounding":n,"sales_quality"
   },
   'copilot.suggest': {
     description: 'Copilot do vendedor: sugestão de resposta, objeção, próxima ação.',
-    variables: ['mode', 'draft', 'history', 'facts', 'catalog_summary', 'knowledge', 'sales_brain', 'stage'],
+    variables: [
+      'mode',
+      'draft',
+      'history',
+      'facts',
+      'catalog_summary',
+      'knowledge',
+      'sales_brain',
+      'stage',
+    ],
     content: `Você é o copiloto de um vendedor humano da VOX2you. Modo: {{mode}}. Estágio: {{stage}}.
 Rascunho do vendedor (se houver): {{draft}}
 
@@ -183,7 +212,15 @@ Responda SOMENTE com JSON: {"suggestedReply":"...","detectedObjection":"...|null
   },
   'followup.compose': {
     description: 'Composição de mensagem de follow-up contextual.',
-    variables: ['scenario', 'goal', 'facts', 'summary', 'catalog_summary', 'last_messages', 'agent_name'],
+    variables: [
+      'scenario',
+      'goal',
+      'facts',
+      'summary',
+      'catalog_summary',
+      'last_messages',
+      'agent_name',
+    ],
     content: `Escreva UMA mensagem curta de follow-up de WhatsApp (máx. 300 caracteres) como {{agent_name}} da VOX2you.
 Cenário: {{scenario}}. Objetivo: {{goal}}.
 Resumo da conversa: {{summary}}

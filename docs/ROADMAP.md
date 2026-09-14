@@ -8,6 +8,7 @@ Entrega em **slices verticais**: cada slice é funcional ponta a ponta (webhook/
 - Fluxo comprovado por processo real (API + worker + web): simulação de WhatsApp → contato/lead/conversa → RAG híbrido → resposta da IA (mock em dev) com preço vindo **do catálogo** → guardrails → score explicado, estágio, NBA, follow-up agendado → inbox em tempo real → lead 360.
 - Provedores reais (Anthropic, OpenAI, Meta Cloud, Google Calendar, S3, Langfuse, SMTP) estão implementados mas **não exercitados**: faltam credenciais (ver `INTEGRATIONS.md`).
 - Preços/ofertas/turmas do seed são **placeholders** a substituir pela unidade antes de qualquer uso real.
+- **Modo de venda (Configurações → Agente):** padrão **SDR**: o agente qualifica e agenda a visita presencial; nunca cita preço, parcela, desconto ou apresenta produto pelo WhatsApp (o catálogo continua carregado só para a validação, que bloqueia qualquer valor). Modo **closer** mantém o comportamento de apresentar ofertas. Testes: `tests/integration/sdr-mode.test.ts`.
 
 ## Slice 0 — Fundação (esta entrega)
 - [x] Análise do repositório e riscos

@@ -65,7 +65,7 @@ export class FollowUpExecutor {
     const memory = await loadMemory(db, conversation.id, 10)
     const catalog = await new ProductService(db).catalogForAgent(ctx, fu.lead.unitId)
     const prompt = await prompts.resolve(fu.tenantId, 'followup.compose')
-    const user = PromptRegistry.render(prompt.content, { scenario: fu.scenario ?? 'generic', goal: fu.goal ?? 'retomar a conversa', facts: renderFacts(memory.facts), summary: memory.conversation.summary ?? '(sem resumo)', catalog_summary: AgentTools.renderCatalog(catalog), last_messages: renderHistory(memory.recent.slice(-6), 1500), agent_name: settings.agentName })
+    const user = PromptRegistry.render(prompt.content, { scenario: fu.scenario ?? 'generic', goal: fu.goal ?? 'retomar a conversa', facts: renderFacts(memory.facts), summary: memory.conversation.summary ?? '(sem resumo)', catalog_summary: AgentTools.renderCatalog(catalog, { hidePricing: settings.salesMode === 'sdr' }), last_messages: renderHistory(memory.recent.slice(-6), 1500), agent_name: settings.agentName })
     const res = await callJson(providers.llm, { model: settings.models.generate, task: 'followup', user, schema: FollowUpReply, schemaName: 'followup', maxTokens: 300, temperature: 0.6 })
     if (!res.data) return skip('compose_failed')
     const guard = runGuardrails({ reply: res.data.reply, catalog, knowledge: [], slots: null, memory, maxChars: 400, maxQuestions: 1, timezone: fu.lead.unit.timezone })

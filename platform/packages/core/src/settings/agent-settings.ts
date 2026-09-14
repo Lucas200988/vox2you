@@ -25,10 +25,16 @@ export const DEFAULT_HANDOFF_RULES: HandoffRules = {
   keywords: [],
 }
 
+export type SalesMode = 'sdr' | 'closer'
+export const DEFAULT_VISIT_LABEL = 'visita presencial na unidade'
+
 export interface ResolvedAgentSettings {
   unitId: string
   enabled: boolean
   agentName: string
+  /** sdr: only qualifies and books the in-person visit, never quotes prices. closer: may present offers. */
+  salesMode: SalesMode
+  visitLabel: string
   persona: string | null
   tone: string | null
   models: ModelRouting
@@ -44,15 +50,31 @@ export interface ResolvedAgentSettings {
   extraLlmVerify?: boolean
 }
 
-export async function loadAgentSettings(db: Db | DbTx, unitId: string, defaults: ModelRouting): Promise<ResolvedAgentSettings> {
+export async function loadAgentSettings(
+  db: Db | DbTx,
+  unitId: string,
+  defaults: ModelRouting,
+): Promise<ResolvedAgentSettings> {
   const row = await db.agentSettings.findUnique({ where: { unitId } })
   const models = { ...defaults, ...((row?.models as Partial<ModelRouting> | null) ?? {}) }
-  const handoffRules = { ...DEFAULT_HANDOFF_RULES, ...((row?.handoffRules as Partial<HandoffRules> | null) ?? {}) }
-  const bh = (row?.businessHours as { rules?: Array<{ weekday: number; start: string; end: string }> } | null)?.rules ?? []
+  const handoffRules = {
+    ...DEFAULT_HANDOFF_RULES,
+    ...((row?.handoffRules as Partial<HandoffRules> | null) ?? {}),
+  }
+  const bh =
+    (
+      row?.businessHours as {
+        rules?: Array<{ weekday: number; start: string; end: string }>
+      } | null
+    )?.rules ?? []
+  const extra =
+    (row?.extra as { llmVerify?: boolean; salesMode?: SalesMode; visitLabel?: string } | null) ?? {}
   return {
     unitId,
     enabled: row?.enabled ?? true,
     agentName: row?.agentName ?? 'Consultor VOX2you',
+    salesMode: extra.salesMode === 'closer' ? 'closer' : 'sdr',
+    visitLabel: extra.visitLabel?.trim() || DEFAULT_VISIT_LABEL,
     persona: row?.persona ?? null,
     tone: row?.tone ?? null,
     models,
@@ -64,6 +86,6 @@ export async function loadAgentSettings(db: Db | DbTx, unitId: string, defaults:
     businessHours: bh,
     outOfHoursMessage: row?.outOfHoursMessage ?? null,
     language: row?.language ?? 'pt-BR',
-    extraLlmVerify: Boolean((row?.extra as { llmVerify?: boolean } | null)?.llmVerify),
+    extraLlmVerify: Boolean(extra.llmVerify),
   }
 }

@@ -25,9 +25,21 @@ export interface ToolContext {
 export const ToolSchemas = {
   get_catalog: z.object({}),
   get_product_offer: z.object({ productSlug: z.string() }),
-  search_knowledge: z.object({ query: z.string().min(2), productId: z.string().uuid().optional(), limit: z.number().int().min(1).max(10).default(6) }),
-  get_available_slots: z.object({ fromIso: z.string().optional(), days: z.number().int().min(1).max(30).default(7), durationMin: z.number().int().optional() }),
-  create_appointment: z.object({ isoStart: z.string(), kind: z.enum(['visit', 'trial_class', 'meeting', 'call']).default('visit'), title: z.string().optional() }),
+  search_knowledge: z.object({
+    query: z.string().min(2),
+    productId: z.string().uuid().optional(),
+    limit: z.number().int().min(1).max(10).default(6),
+  }),
+  get_available_slots: z.object({
+    fromIso: z.string().optional(),
+    days: z.number().int().min(1).max(30).default(7),
+    durationMin: z.number().int().optional(),
+  }),
+  create_appointment: z.object({
+    isoStart: z.string(),
+    kind: z.enum(['visit', 'trial_class', 'meeting', 'call']).default('visit'),
+    title: z.string().optional(),
+  }),
 } as const
 
 export type ToolName = keyof typeof ToolSchemas
@@ -43,7 +55,11 @@ export interface ToolResult<T = unknown> {
 export class AgentTools {
   constructor(private readonly t: ToolContext) {}
 
-  private async run<T>(name: ToolName, input: unknown, fn: (parsed: unknown) => Promise<T>): Promise<ToolResult<T | null>> {
+  private async run<T>(
+    name: ToolName,
+    input: unknown,
+    fn: (parsed: unknown) => Promise<T>,
+  ): Promise<ToolResult<T | null>> {
     const started = Date.now()
     try {
       const parsed = ToolSchemas[name].parse(input ?? {})
@@ -55,7 +71,9 @@ export class AgentTools {
   }
 
   getCatalog(): Promise<ToolResult<AgentCatalog | null>> {
-    return this.run('get_catalog', {}, () => new ProductService(this.t.db).catalogForAgent(this.t.ctx, this.t.unitId))
+    return this.run('get_catalog', {}, () =>
+      new ProductService(this.t.db).catalogForAgent(this.t.ctx, this.t.unitId),
+    )
   }
 
   getProductOffer(productSlug: string) {
@@ -65,45 +83,106 @@ export class AgentTools {
     })
   }
 
-  searchKnowledge(query: string, opts: { productId?: string; limit?: number } = {}): Promise<ToolResult<SearchHit[] | null>> {
+  searchKnowledge(
+    query: string,
+    opts: { productId?: string; limit?: number } = {},
+  ): Promise<ToolResult<SearchHit[] | null>> {
     return this.run('search_knowledge', { query, ...opts }, () =>
-      new KnowledgeSearchService(this.t.db, this.t.providers.embedding).search({ tenantId: this.t.ctx.tenantId, unitId: this.t.unitId, query, productId: opts.productId ?? null, limit: opts.limit ?? 6 }),
+      new KnowledgeSearchService(this.t.db, this.t.providers.embedding).search({
+        tenantId: this.t.ctx.tenantId,
+        unitId: this.t.unitId,
+        query,
+        productId: opts.productId ?? null,
+        limit: opts.limit ?? 6,
+      }),
     )
   }
 
-  getAvailableSlots(opts: { fromIso?: string; days?: number; durationMin?: number } = {}): Promise<ToolResult<AvailableSlot[] | null>> {
+  getAvailableSlots(
+    opts: { fromIso?: string; days?: number; durationMin?: number } = {},
+  ): Promise<ToolResult<AvailableSlot[] | null>> {
     return this.run('get_available_slots', opts, async () => {
       const from = opts.fromIso ? new Date(opts.fromIso) : new Date()
       const to = addDays(from, opts.days ?? 7)
       const service = new AppointmentService(this.t.db, this.t.providers.calendar)
-      return service.getAvailableSlots(this.t.ctx, this.t.unitId, { from, to, durationMin: opts.durationMin, limit: 24 })
+      return service.getAvailableSlots(this.t.ctx, this.t.unitId, {
+        from,
+        to,
+        durationMin: opts.durationMin,
+        limit: 24,
+      })
     })
   }
 
-  createAppointment(input: { isoStart: string; kind?: 'visit' | 'trial_class' | 'meeting' | 'call'; title?: string }) {
+  createAppointment(input: {
+    isoStart: string
+    kind?: 'visit' | 'trial_class' | 'meeting' | 'call'
+    title?: string
+  }) {
     return this.run('create_appointment', input, async () => {
       const service = new AppointmentService(this.t.db, this.t.providers.calendar)
       const startsAt = new Date(input.isoStart)
-      const kindLabel: Record<string, string> = { visit: 'Visita à unidade', trial_class: 'Aula experimental', meeting: 'Reunião', call: 'Ligação' }
-      return service.create(this.t.ctx, { unitId: this.t.unitId, contactId: this.t.contactId, leadId: this.t.leadId ?? undefined, kind: input.kind ?? 'visit', title: input.title ?? `${kindLabel[input.kind ?? 'visit']} — VOX2you`, startsAt })
+      const kindLabel: Record<string, string> = {
+        visit: 'Visita à unidade',
+        trial_class: 'Aula experimental',
+        meeting: 'Reunião',
+        call: 'Ligação',
+      }
+      return service.create(this.t.ctx, {
+        unitId: this.t.unitId,
+        contactId: this.t.contactId,
+        leadId: this.t.leadId ?? undefined,
+        kind: input.kind ?? 'visit',
+        title: input.title ?? `${kindLabel[input.kind ?? 'visit']} — VOX2you`,
+        startsAt,
+      })
     })
   }
 
   /** Human-readable slot list for the prompt (local timezone, max 8 options grouped by day). */
   static renderSlots(slots: AvailableSlot[], timezone: string, max = 8): string {
-    if (!slots.length) return 'Nenhum horário disponível nos próximos dias (ofereça encaminhar para um consultor).'
+    if (!slots.length)
+      return 'Nenhum horário disponível nos próximos dias (ofereça encaminhar para um consultor).'
     return slots
       .slice(0, max)
-      .map((s) => `- ${formatInZone(s.start, timezone, "EEEE dd/MM 'às' HH:mm")} (iso: ${s.start.toISOString()})`)
+      .map(
+        (s) =>
+          `- ${formatInZone(s.start, timezone, "EEEE dd/MM 'às' HH:mm")} (iso: ${s.start.toISOString()})`,
+      )
       .join('\n')
   }
 
-  /** Compact catalog for the system prompt. Full data stays in the tool output for validation. */
-  static renderCatalog(catalog: AgentCatalog): string {
+  /**
+   * Compact catalog for the system prompt. Full data stays in the tool output for validation.
+   * `hidePricing` (SDR mode) strips offers, prices, durations and class schedules: the model only
+   * learns which programs exist and whom they serve, so it cannot quote what it never saw.
+   */
+  static renderCatalog(catalog: AgentCatalog, opts: { hidePricing?: boolean } = {}): string {
+    if (opts.hidePricing) {
+      const lines = catalog.map(
+        (p) =>
+          `• ${p.name} [${p.slug}] (${p.category})\n  Para: ${p.personas.join(', ') || '-'} | Dores: ${p.painsSolved.join(', ') || '-'}\n  ${p.shortDescription ?? ''}`,
+      )
+      return `(MODO SDR: valores, parcelas, duração e turmas foram omitidos de propósito; não cite nem estime nenhum deles)\n${lines.join('\n')}`
+    }
     return catalog
       .map((p) => {
-        const offers = p.offers.length ? p.offers.map((o) => `${o.name}: ${o.display}${o.validTo ? ` (válido até ${o.validTo.slice(0, 10)})` : ''}`).join('; ') : 'sem oferta vigente cadastrada — NÃO cite valores'
-        const classes = p.classes.length ? p.classes.map((c) => `${c.name} ${c.weekdays.join('/')} ${c.startTime}-${c.endTime} início ${c.startsOn}${c.seatsLeft ? ` (${c.seatsLeft} vagas)` : ' (turma cheia)'}`).join('; ') : 'sem turmas abertas cadastradas'
+        const offers = p.offers.length
+          ? p.offers
+              .map(
+                (o) =>
+                  `${o.name}: ${o.display}${o.validTo ? ` (válido até ${o.validTo.slice(0, 10)})` : ''}`,
+              )
+              .join('; ')
+          : 'sem oferta vigente cadastrada — NÃO cite valores'
+        const classes = p.classes.length
+          ? p.classes
+              .map(
+                (c) =>
+                  `${c.name} ${c.weekdays.join('/')} ${c.startTime}-${c.endTime} início ${c.startsOn}${c.seatsLeft ? ` (${c.seatsLeft} vagas)` : ' (turma cheia)'}`,
+              )
+              .join('; ')
+          : 'sem turmas abertas cadastradas'
         return `• ${p.name} [${p.slug}] (${p.category}${p.modality ? `, ${p.modality}` : ''}${p.durationText ? `, ${p.durationText}` : ''})\n  Para: ${p.personas.join(', ') || '-'} | Dores: ${p.painsSolved.join(', ') || '-'}\n  ${p.shortDescription ?? ''}\n  Ofertas: ${offers}\n  Turmas: ${classes}\n  Argumentos: ${p.salesArguments.slice(0, 3).join(' | ')}`
       })
       .join('\n')

@@ -48,6 +48,8 @@ export default function SettingsPage() {
 interface AgentSettings {
   enabled: boolean
   agentName: string
+  salesMode: 'sdr' | 'closer'
+  visitLabel: string
   persona: string | null
   tone: string | null
   models: Record<string, string>
@@ -88,6 +90,31 @@ function AgentTab() {
             <Input
               value={s.agentName}
               onChange={(e) => setS({ ...s, agentName: e.target.value })}
+            />
+          </Field>
+          <Field
+            label="Modo de venda"
+            hint={
+              s.salesMode === 'sdr'
+                ? 'SDR: qualifica e agenda a visita presencial. Nunca cita preço, parcela, desconto ou produto pelo WhatsApp; valores só na visita.'
+                : 'Closer: pode apresentar ofertas do catálogo e conduzir até a matrícula.'
+            }
+          >
+            <Select
+              value={s.salesMode}
+              onChange={(e) => setS({ ...s, salesMode: e.target.value as 'sdr' | 'closer' })}
+            >
+              <option value="sdr">SDR (agendar visita presencial)</option>
+              <option value="closer">Closer (apresentar ofertas)</option>
+            </Select>
+          </Field>
+          <Field
+            label="Como o agente chama a visita"
+            hint="Ex.: visita presencial na unidade, aula experimental, diagnóstico de comunicação"
+          >
+            <Input
+              value={s.visitLabel}
+              onChange={(e) => setS({ ...s, visitLabel: e.target.value })}
             />
           </Field>
           <Field label="Confiança mínima para responder" hint="Abaixo disso, transfere para humano">
@@ -228,6 +255,8 @@ function AgentTab() {
             await api.put(`agent-settings?unitId=${unitId}`, {
               enabled: s.enabled,
               agentName: s.agentName,
+              salesMode: s.salesMode,
+              visitLabel: s.visitLabel,
               persona: s.persona,
               tone: s.tone,
               models: s.models,
