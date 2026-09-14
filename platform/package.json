@@ -1,0 +1,47 @@
+{
+  "name": "@vox/platform",
+  "version": "0.1.0",
+  "private": true,
+  "description": "VOX2you Conversational CRM + AI Sales Agent platform",
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json",
+    "typecheck": "tsc -b tsconfig.build.json",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:unit": "vitest run --project shared --project core --project providers --project api",
+    "test:integration": "RUN_INTEGRATION=1 vitest run --project db --project integration",
+    "test:watch": "vitest",
+    "db:generate": "pnpm --filter @vox/db generate",
+    "db:migrate": "pnpm --filter @vox/db migrate:dev",
+    "db:deploy": "pnpm --filter @vox/db migrate:deploy",
+    "db:seed": "pnpm --filter @vox/db seed",
+    "db:reset": "pnpm --filter @vox/db reset",
+    "dev:api": "pnpm --filter @vox/api dev",
+    "dev:worker": "pnpm --filter @vox/worker dev",
+    "dev:web": "pnpm --filter @vox/web dev",
+    "dev": "concurrently -n api,worker,web -c blue,magenta,green \"pnpm dev:api\" \"pnpm dev:worker\" \"pnpm dev:web\"",
+    "simulate": "pnpm --filter @vox/api simulate",
+    "build:web": "pnpm --filter @vox/web build"
+  },
+  "devDependencies": {
+    "@aws-sdk/s3-request-presigner": "^3.1131.0",
+    "@eslint/js": "^9.39.0",
+    "@types/node": "^22.20.2",
+    "@vitest/coverage-v8": "^4.1.11",
+    "concurrently": "^10.0.5",
+    "eslint": "^9.39.5",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.9.6",
+    "tsx": "^4.23.13",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.70.0",
+    "vitest": "^4.1.11"
+  },
+  "packageManager": "pnpm@10.33.0"
+}

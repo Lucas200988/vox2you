@@ -1,0 +1,17 @@
+{
+  "name": "@vox/integration-tests",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "RUN_INTEGRATION=1 vitest run"
+  },
+  "dependencies": {
+    "@vox/core": "workspace:*",
+    "@vox/db": "workspace:*",
+    "@vox/providers": "workspace:*",
+    "@vox/shared": "workspace:*",
+    "@vox/api": "workspace:*",
+    "@vox/worker": "workspace:*"
+  }
+}

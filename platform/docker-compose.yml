@@ -1,0 +1,97 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: vox
+      POSTGRES_PASSWORD: vox
+      POSTGRES_DB: vox
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vox -d vox"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio12345
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - miniodata:/data
+
+  # Optional: self-hosted Langfuse (see docs/OBSERVABILITY.md). Uncomment if desired.
+  # langfuse:
+  #   image: langfuse/langfuse:3
+  #   depends_on: [postgres]
+  #   ports: ["3030:3000"]
+  #   environment:
+  #     DATABASE_URL: postgresql://vox:vox@postgres:5432/langfuse
+  #     NEXTAUTH_SECRET: change-me
+  #     SALT: change-me
+  #     NEXTAUTH_URL: http://localhost:3030
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    profiles: ["app"]
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://vox:vox@postgres:5432/vox
+      REDIS_URL: redis://redis:6379
+    ports:
+      - "4000:4000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  worker:
+    build:
+      context: .
+      dockerfile: apps/worker/Dockerfile
+    profiles: ["app"]
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://vox:vox@postgres:5432/vox
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    profiles: ["app"]
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:4000
+      API_INTERNAL_URL: http://api:4000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+volumes:
+  pgdata:
+  redisdata:
+  miniodata:

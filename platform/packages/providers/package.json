@@ -1,0 +1,40 @@
+{
+  "name": "@vox/providers",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "development": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.125.0",
+    "@aws-sdk/client-s3": "^3.1131.0",
+    "@vox/core": "workspace:*",
+    "@vox/shared": "workspace:*",
+    "cheerio": "^1.2.0",
+    "csv-parse": "^7.0.2",
+    "googleapis": "^180.0.0",
+    "ioredis": "^5.11.1",
+    "langfuse": "^3.38.20",
+    "luxon": "^3.7.2",
+    "mammoth": "^1.12.3",
+    "nodemailer": "^10.0.9",
+    "openai": "^7.15.0",
+    "pdf-parse": "^2.4.5",
+    "xlsx": "^0.18.5",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@aws-sdk/s3-request-presigner": "^3.1131.0",
+    "@types/luxon": "^3.7.5",
+    "@types/nodemailer": "^8.0.1"
+  }
+}
