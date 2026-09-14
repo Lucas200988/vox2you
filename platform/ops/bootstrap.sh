@@ -12,6 +12,9 @@ set -euo pipefail
 REPO="${REPO:-Lucas200988/vox2you}"
 BRANCH="${BRANCH:-main}"
 TARGET="${TARGET:-/opt/vox2you}"
+# Chave de deploy: forma preferida de autenticar no GitHub. A parte privada nasce e fica no
+# servidor, e só a pública é copiada para o GitHub, então nenhum segredo passa pelo terminal.
+SSH_KEY="${SSH_KEY:-/root/.ssh/vox_deploy}"
 
 ask() { # ask VAR "Prompt"
   local var="$1" prompt="$2"
@@ -71,25 +74,32 @@ ufw allow 443/tcp >/dev/null
 ufw --force enable >/dev/null
 
 echo "▶ Código em $TARGET (branch $BRANCH)"
+# Autenticação no GitHub, em ordem de preferência:
+#   1. chave de deploy SSH (nenhum segredo trafega pelo terminal)
+#   2. GITHUB_TOKEN, quando informado
+#   3. HTTPS anônimo, para repositório público
+REMOTE_URL="https://github.com/${REPO}.git"
+if [[ -f "$SSH_KEY" ]]; then
+  REMOTE_URL="git@github.com:${REPO}.git"
+  export GIT_SSH_COMMAND="ssh -i $SSH_KEY -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new"
+  echo "  usando a chave de deploy $SSH_KEY"
+elif [[ -n "${GITHUB_TOKEN:-}" ]]; then
+  REMOTE_URL="https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git"
+fi
+
 # Sobra de um clone que falhou: o diretório é criado só por este script, então pode ser refeito.
 if [[ -d "$TARGET" && ! -d "$TARGET/.git" ]]; then rm -rf "$TARGET"; fi
 if [[ -d "$TARGET/.git" ]]; then
-  # O remote fica sem token depois do clone, então reautentica só durante o fetch.
-  [[ -n "${GITHUB_TOKEN:-}" ]] && git -C "$TARGET" remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git"
+  git -C "$TARGET" remote set-url origin "$REMOTE_URL"
   git -C "$TARGET" fetch --quiet origin "$BRANCH"
   git -C "$TARGET" checkout --quiet "$BRANCH"
   # reset em vez de pull: o servidor nunca tem commits locais, e evita merges travando o deploy
   git -C "$TARGET" reset --hard --quiet "origin/$BRANCH"
-  git -C "$TARGET" remote set-url origin "https://github.com/${REPO}.git"
 else
-  if [[ -n "${GITHUB_TOKEN:-}" ]]; then
-    git clone --quiet --branch "$BRANCH" "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git" "$TARGET"
-    # do not keep the token in the remote URL
-    git -C "$TARGET" remote set-url origin "https://github.com/${REPO}.git"
-  else
-    git clone --quiet --branch "$BRANCH" "https://github.com/${REPO}.git" "$TARGET"
-  fi
+  git clone --quiet --branch "$BRANCH" "$REMOTE_URL" "$TARGET"
 fi
+# O token nunca fica gravado no remote; a chave de deploy pode, por não ser segredo na URL.
+[[ "$REMOTE_URL" == https://x-access-token:* ]] && git -C "$TARGET" remote set-url origin "https://github.com/${REPO}.git"
 cd "$TARGET/platform"
 
 if [[ -f .env ]]; then
