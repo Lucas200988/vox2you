@@ -2,7 +2,7 @@ name: platform-ci
 
 on:
   push:
-    branches: [master, main]
+    branches: [master, main, 'claude/**']
     paths: ['platform/**', '.github/workflows/platform-ci.yml']
   pull_request:
     paths: ['platform/**', '.github/workflows/platform-ci.yml']
@@ -62,3 +62,26 @@ jobs:
         run: pnpm build:web
         env:
           NEXT_PUBLIC_API_URL: http://localhost:4000
+
+  # Builds the production images exactly as the server does. Catches files missing from the
+  # repository (gitignore mistakes, untracked directories) that local checks cannot see.
+  docker-images:
+    runs-on: ubuntu-latest
+    needs: verify
+    strategy:
+      fail-fast: false
+      matrix:
+        image: [api, worker, web]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Build ${{ matrix.image }}
+        uses: docker/build-push-action@v6
+        with:
+          context: platform
+          file: platform/apps/${{ matrix.image }}/Dockerfile
+          push: false
+          build-args: |
+            NEXT_PUBLIC_API_URL=https://api.example.com
+          cache-from: type=gha,scope=${{ matrix.image }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.image }}
