@@ -2,6 +2,13 @@
 
 Entrega em **slices verticais**: cada slice é funcional ponta a ponta (webhook/simulação → banco → agente → UI) antes do próximo.
 
+## Estado verificado (2026-09-14, branch `claude/brave-fermat-k7tfvc`)
+
+- Suíte: 15 arquivos / 59 testes verdes com Postgres 16 + pgvector reais (`RUN_INTEGRATION=1 pnpm test`), `tsc -b` e ESLint limpos, `next build` do web OK.
+- Fluxo comprovado por processo real (API + worker + web): simulação de WhatsApp → contato/lead/conversa → RAG híbrido → resposta da IA (mock em dev) com preço vindo **do catálogo** → guardrails → score explicado, estágio, NBA, follow-up agendado → inbox em tempo real → lead 360.
+- Provedores reais (Anthropic, OpenAI, Meta Cloud, Google Calendar, S3, Langfuse, SMTP) estão implementados mas **não exercitados**: faltam credenciais (ver `INTEGRATIONS.md`).
+- Preços/ofertas/turmas do seed são **placeholders** a substituir pela unidade antes de qualquer uso real.
+
 ## Slice 0 — Fundação (esta entrega)
 - [x] Análise do repositório e riscos
 - [x] Documentação (ARCHITECTURE, DOMAIN, ROADMAP, INTEGRATIONS, SECURITY)
@@ -34,7 +41,9 @@ Objetivo: **receber mensagem WhatsApp (real ou simulada) → identificar/criar c
 
 ## Slice 4 — Agenda
 - [x] `CalendarProvider` + agenda interna + Google Calendar (aguarda credencial)
-- [x] Tools `get_available_slots`, `create_appointment`, `reschedule`, `cancel`, `get`
+- [x] Tools do agente `get_available_slots`, `create_appointment` (agendamento validado contra os slots buscados)
+- [x] API/inbox: listar, criar, remarcar (`/appointments/:id/reschedule`) e mudar status (confirmado, compareceu, no-show, cancelado)
+- [ ] Tools do agente para remarcar/cancelar via conversa
 - [ ] Lembretes automáticos (template) + no-show handling
 
 ## Slice 5 — Follow-up inteligente
@@ -43,8 +52,8 @@ Objetivo: **receber mensagem WhatsApp (real ou simulada) → identificar/criar c
 - [ ] Estratégias por cenário (preço e sumiu, abandonou agenda…) refinadas com dados reais
 
 ## Slice 6 — Campanhas e templates
-- [x] Gestão de templates (sync Meta)
-- [ ] Segmentação + envio em lote com limites e timezone
+- [x] Gestão de templates (`/settings/templates`, sync Meta via `MessagingProvider.listTemplates`) e envio de template fora da janela de 24h pela inbox
+- [ ] Segmentação + envio em lote com limites e timezone (schema `Campaign`/`CampaignRecipient` pronto; sem motor/UI)
 - [ ] Métricas de campanha
 
 ## Slice 7 — Analytics
@@ -54,9 +63,9 @@ Objetivo: **receber mensagem WhatsApp (real ou simulada) → identificar/criar c
 - [ ] Insights automáticos ("campanha X converte 2,3x")
 
 ## Slice 8 — Avaliação e melhoria controlada
-- [x] `Evaluation` + scorecards + avaliação humana
-- [x] Datasets
-- [ ] Comparação A/B prompt/modelo no playground
+- [x] `Evaluation` + scorecards (avaliador LLM) + avaliação humana por conversa (`/conversations/:id/evaluations`) + feedback 👍/👎 por mensagem
+- [ ] Datasets (schema `Dataset`/`DatasetItem` pronto; sem API/UI)
+- [ ] Comparação A/B prompt/modelo no playground (playground já aceita versão de prompt e modelo por execução)
 - [ ] Pipeline de sugestão de melhoria com aprovação humana
 
 ## Slice 9 — Conectores P1
@@ -68,5 +77,7 @@ Objetivo: **receber mensagem WhatsApp (real ou simulada) → identificar/criar c
 
 ## Slice 10 — Operação
 - [ ] Migrar `vox2you-estoque` para `platform/apps/estoque` (após ajuste do Root Directory no Vercel)
+- [ ] Schedulers do worker (outbox, follow-ups) como jobs repetíveis do BullMQ para rodar com múltiplas réplicas (hoje: um loop por processo)
+- [ ] Lockout progressivo por conta no login (hoje: rate limit por IP)
 - [ ] Backups automatizados e restore testado
 - [ ] Runbooks

@@ -7,7 +7,7 @@
 | Dados de leads (telefone, conversas, fatos) | Vazamento entre tenants/unidades | `TenantContext` obrigatório em todo repositório; filtros por `tenantId` em todas as queries; testes de isolamento; nunca usar `findUnique` só por id em rotas públicas |
 | Webhook WhatsApp | Forjar mensagens inbound | Validação HMAC-SHA256 (`X-Hub-Signature-256`) sobre o corpo bruto; verify token no GET; rejeição se `WHATSAPP_APP_SECRET` ausente em produção |
 | Webhook WhatsApp | Replay / duplicação | Idempotência por `providerMessageId` (unique) e `IdempotencyKey` no job |
-| Painel / API | Credential stuffing, sessão roubada | Argon2id para senhas; JWT de acesso curto (15 min) + refresh token rotativo (httpOnly, `SameSite=Lax`) com revogação; rate limit por IP e por conta; lockout progressivo |
+| Painel / API | Credential stuffing, sessão roubada | scrypt (N=2^15) para senhas; JWT de acesso curto (15 min) + refresh token rotativo (httpOnly, `SameSite=Lax`) com revogação; rate limit por IP no login; lockout progressivo por conta (pendente) |
 | API | IDOR / escalação de privilégio | RBAC por rota (`requireRole`), autorização por recurso (`assertTenant`), scopes em API keys |
 | Agente LLM | Prompt injection via mensagem/documento/URL | Conteúdo recuperado e mensagens do cliente entram **apenas** como dados delimitados (`<customer_message>`, `<knowledge>`), nunca como system; instruções explícitas de ignorar comandos dentro desses blocos; validação pós-geração; tools com Zod schema e allowlist; LLM não executa SQL/shell |
 | Agente LLM | Alucinação de preço/horário/desconto | Valores só de `Offer`/`ClassSchedule`/`CalendarProvider`; validador detecta números monetários/horários na resposta sem fonte e bloqueia |
@@ -20,7 +20,8 @@
 
 ## 2. Autenticação e autorização
 
-- Usuários: e-mail + senha (Argon2id) — pronto para SSO (interface `AuthProvider`).
+- Usuários: e-mail + senha (scrypt, `packages/core/src/auth/password.ts`) — pronto para SSO (interface `AuthProvider`).
+- E-mail é único **por tenant**, não globalmente. O login verifica a senha contra todos os usuários ativos com aquele e-mail e nunca deixa "o primeiro registro vencer"; se mais de um bater, exige `tenant` (slug) no corpo do login.
 - Sessões: access JWT (HS256, `JWT_SECRET`, 15 min) + refresh (opaque, hash no banco, 30 dias, rotação a cada uso, família revogável).
 - RBAC: `owner > admin > manager > seller > viewer`. Matriz em `packages/core/src/auth/permissions.ts`.
 - API keys: `ApiKey(hash, scopes[], tenantId, unitIds[])` — header `X-Api-Key`.
@@ -31,7 +32,8 @@
 - `tenantId` em todas as tabelas de negócio; `unitId` onde aplicável.
 - Repositórios de `core` recebem `TenantContext` e aplicam `where: { tenantId }` sempre.
 - Conhecimento: `unitId IS NULL` = global no tenant; nunca cross-tenant.
-- Testes `tenant-isolation.test.ts` criam dois tenants e provam que buscas, inbox, KB e catálogo não vazam.
+- **Roteamento de entrada decide o tenant.** O webhook resolve o canal pelo `phone_number_id` da Meta, portanto esse id é único globalmente (`channels(kind, external_id)`), o seed recusa adotar um canal de outro tenant e o `InboundProcessor` recusa ids ambíguos em vez de escolher um tenant. Chamadores internos confiáveis (simulador) fixam `channelId` no evento.
+- Testes: `tests/integration/channel-isolation.test.ts` (canal duplicado é rejeitado; evento vai para o tenant dono do canal) e `tests/integration/vertical-slice.test.ts` (fluxo completo dentro de um tenant). Pendente: teste dedicado provando que buscas, inbox, KB e catálogo não vazam entre dois tenants.
 
 ## 4. Prompt injection — política
 
