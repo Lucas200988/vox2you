@@ -11,12 +11,17 @@ const EnvSchema = z.object({
   OUTBOX_POLL_MS: z.coerce.number().default(2000),
   FOLLOWUP_POLL_MS: z.coerce.number().default(30000),
   WEBHOOK_TIMEOUT_MS: z.coerce.number().default(10000),
+  /** In-process schedulers (outbox, follow-ups, SLA, cleanup). Run them in exactly ONE replica. */
+  SCHEDULERS: z.enum(['0', '1']).default('1'),
 })
 
 export type WorkerConfig = z.infer<typeof EnvSchema>
 
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): WorkerConfig {
   const parsed = EnvSchema.safeParse(env)
-  if (!parsed.success) throw new Error(`Invalid environment: ${parsed.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('; ')}`)
+  if (!parsed.success)
+    throw new Error(
+      `Invalid environment: ${parsed.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('; ')}`,
+    )
   return parsed.data
 }

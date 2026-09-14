@@ -7,10 +7,16 @@ import rateLimit from '@fastify/rate-limit'
 import sensible from '@fastify/sensible'
 import swagger from '@fastify/swagger'
 import swaggerUi from '@fastify/swagger-ui'
-import { jsonSchemaTransform, serializerCompiler, validatorCompiler, type ZodTypeProvider } from 'fastify-type-provider-zod'
+import {
+  jsonSchemaTransform,
+  serializerCompiler,
+  validatorCompiler,
+  type ZodTypeProvider,
+} from 'fastify-type-provider-zod'
 import type { AppContext } from './context.js'
 import authPlugin from './plugins/auth.js'
 import errorsPlugin from './plugins/errors.js'
+import metricsPlugin from './plugins/metrics.js'
 import { healthRoutes } from './routes/health.js'
 import { whatsappWebhookRoutes } from './routes/webhooks/whatsapp.js'
 import { authRoutes } from './routes/v1/auth.js'
@@ -30,22 +36,45 @@ import { streamRoutes } from './routes/v1/stream.js'
 export type App = Awaited<ReturnType<typeof buildApp>>
 
 export async function buildApp(ctx: AppContext) {
-  const app = Fastify({ loggerInstance: ctx.logger, trustProxy: true, bodyLimit: 25 * 1024 * 1024, disableRequestLogging: ctx.config.NODE_ENV === 'test' }).withTypeProvider<ZodTypeProvider>()
+  const app = Fastify({
+    loggerInstance: ctx.logger,
+    trustProxy: true,
+    bodyLimit: 25 * 1024 * 1024,
+    disableRequestLogging: ctx.config.NODE_ENV === 'test',
+  }).withTypeProvider<ZodTypeProvider>()
   app.setValidatorCompiler(validatorCompiler)
   app.setSerializerCompiler(serializerCompiler)
 
   await app.register(helmet, { contentSecurityPolicy: false })
-  await app.register(cors, { origin: ctx.config.WEB_ORIGIN.split(',').map((o) => o.trim()), credentials: true })
+  await app.register(cors, {
+    origin: ctx.config.WEB_ORIGIN.split(',').map((o) => o.trim()),
+    credentials: true,
+  })
   await app.register(cookie)
   await app.register(multipart, { limits: { fileSize: 25 * 1024 * 1024, files: 1 } })
   await app.register(sensible)
-  await app.register(rateLimit, { global: true, max: 300, timeWindow: '1 minute', keyGenerator: (req) => req.auth?.userId ?? req.ip, allowList: () => false })
+  await app.register(rateLimit, {
+    global: true,
+    max: 300,
+    timeWindow: '1 minute',
+    keyGenerator: (req) => req.auth?.userId ?? req.ip,
+    allowList: () => false,
+  })
   await app.register(swagger, {
     openapi: {
       openapi: '3.1.0',
-      info: { title: 'VOX2you Conversational CRM API', version: '1.0.0', description: 'Public (v1), internal and webhook endpoints. Auth: Bearer JWT or X-Api-Key.' },
+      info: {
+        title: 'VOX2you Conversational CRM API',
+        version: '1.0.0',
+        description: 'Public (v1), internal and webhook endpoints. Auth: Bearer JWT or X-Api-Key.',
+      },
       servers: [{ url: ctx.config.PUBLIC_API_URL }],
-      components: { securitySchemes: { bearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }, apiKey: { type: 'apiKey', in: 'header', name: 'X-Api-Key' } } },
+      components: {
+        securitySchemes: {
+          bearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+          apiKey: { type: 'apiKey', in: 'header', name: 'X-Api-Key' },
+        },
+      },
       security: [{ bearerAuth: [] }, { apiKey: [] }],
       tags: [
         { name: 'auth' },
@@ -67,6 +96,7 @@ export async function buildApp(ctx: AppContext) {
 
   await app.register(errorsPlugin)
   await app.register(authPlugin, { ctx })
+  await app.register(metricsPlugin, { ctx })
 
   await app.register(healthRoutes)
   await app.register(whatsappWebhookRoutes, { prefix: '/webhooks' })

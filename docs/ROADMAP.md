@@ -77,7 +77,11 @@ Objetivo: **receber mensagem WhatsApp (real ou simulada) → identificar/criar c
 
 ## Slice 10 — Operação
 - [ ] Migrar `vox2you-estoque` para `platform/apps/estoque` (após ajuste do Root Directory no Vercel)
+- [x] Deploy de produção em um host: `docker-compose.prod.yml` (Caddy HTTPS automático, Postgres+pgvector, Redis, api, worker, web) + `ops/deploy.sh`
+- [x] Backups automatizados (diário, retenção, off-host via rclone) com restore verificado semanalmente (`ops/backup/`); scripts testados contra Postgres real
+- [x] Métricas Prometheus em `GET /metrics` + regras de alerta + stack opcional (Prometheus/Alertmanager/Grafana)
+- [x] Flag `SCHEDULERS` no worker para réplicas extras
 - [ ] Schedulers do worker (outbox, follow-ups) como jobs repetíveis do BullMQ para rodar com múltiplas réplicas (hoje: um loop por processo)
 - [ ] Lockout progressivo por conta no login (hoje: rate limit por IP)
-- [ ] Backups automatizados e restore testado
+- [ ] Build das imagens Docker validado em CI (o sandbox de desenvolvimento não tem daemon Docker)
 - [ ] Runbooks

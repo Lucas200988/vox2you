@@ -1,0 +1,68 @@
+groups:
+  - name: vox-platform
+    rules:
+      - alert: ApiDown
+        expr: up{job="vox-api"} == 0
+        for: 2m
+        labels: { severity: critical }
+        annotations: { summary: "API não responde ao scrape há 2 min" }
+
+      - alert: DependencyDown
+        expr: vox_dependency_up == 0
+        for: 2m
+        labels: { severity: critical }
+        annotations: { summary: "Dependência {{ $labels.dependency }} indisponível para a API" }
+
+      - alert: HighErrorRate
+        expr: sum(rate(vox_http_requests_total{status=~"5.."}[5m])) / sum(rate(vox_http_requests_total[5m])) > 0.05
+        for: 5m
+        labels: { severity: critical }
+        annotations: { summary: "Mais de 5% das requisições retornam 5xx" }
+
+      - alert: WebhookSlow
+        expr: histogram_quantile(0.95, sum(rate(vox_http_request_duration_seconds_bucket{route=~"/webhooks.*"}[5m])) by (le)) > 2
+        for: 10m
+        labels: { severity: warning }
+        annotations: { summary: "p95 do webhook WhatsApp acima de 2 s (Meta reenvia após timeout)" }
+
+      - alert: QueueBacklog
+        expr: vox_queue_jobs{state="waiting"} > 100
+        for: 10m
+        labels: { severity: warning }
+        annotations: { summary: "Fila {{ $labels.queue }} com mais de 100 jobs aguardando: worker parado ou lento" }
+
+      - alert: QueueFailures
+        expr: vox_queue_jobs{state="failed"} > 10
+        for: 5m
+        labels: { severity: warning }
+        annotations: { summary: "Fila {{ $labels.queue }} acumula jobs falhos (ver DLQ / logs do worker)" }
+
+      - alert: OutboxStuck
+        expr: vox_outbox_unpublished > 50
+        for: 10m
+        labels: { severity: critical }
+        annotations: { summary: "Eventos de domínio não publicados: scheduler do worker não está rodando" }
+
+      - alert: FollowUpsOverdue
+        expr: vox_followups_overdue > 20
+        for: 15m
+        labels: { severity: warning }
+        annotations: { summary: "Follow-ups vencidos não enviados" }
+
+      - alert: AgentBlockedRatioHigh
+        expr: sum(vox_agent_runs_1h{decision="blocked"}) / clamp_min(sum(vox_agent_runs_1h), 1) > 0.2
+        for: 15m
+        labels: { severity: warning }
+        annotations: { summary: "Mais de 20% das respostas da IA bloqueadas pela validação na última hora (prompt ou catálogo desatualizado?)" }
+
+      - alert: AgentCostSpike
+        expr: vox_agent_cost_usd_1h > 20
+        for: 5m
+        labels: { severity: warning }
+        annotations: { summary: "Custo de IA acima de US$ 20 na última hora" }
+
+      - alert: PendingCredentialsInProduction
+        expr: vox_pending_credentials > 0
+        for: 30m
+        labels: { severity: warning }
+        annotations: { summary: "API em produção rodando com provedores mock/pendentes" }

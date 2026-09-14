@@ -16,6 +16,8 @@ const EnvSchema = z.object({
   REFRESH_TOKEN_TTL_DAYS: z.coerce.number().default(30),
   /** Process inbound webhooks inline instead of via the worker (tests/simple deployments) */
   INBOUND_INLINE: z.enum(['0', '1']).default('0'),
+  /** Optional bearer token required by GET /metrics (Prometheus). Empty = open (keep it off the public edge). */
+  METRICS_TOKEN: z.string().optional(),
 })
 
 export type ApiConfig = z.infer<typeof EnvSchema>
@@ -26,6 +28,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): ApiConfig {
     const issues = parsed.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('; ')
     throw new Error(`Invalid environment: ${issues}`)
   }
-  if (parsed.data.NODE_ENV === 'production' && parsed.data.JWT_SECRET.startsWith('change-me')) throw new Error('JWT_SECRET must be set in production')
+  if (parsed.data.NODE_ENV === 'production' && parsed.data.JWT_SECRET.startsWith('change-me'))
+    throw new Error('JWT_SECRET must be set in production')
   return parsed.data
 }

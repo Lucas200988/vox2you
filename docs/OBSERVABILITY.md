@@ -12,19 +12,32 @@
 
 Descomente o serviço `langfuse` no `docker-compose.yml`, crie o projeto e defina `LANGFUSE_PUBLIC_KEY/SECRET_KEY/BASE_URL`. Datasets de avaliação: use `Dataset`/`DatasetItem` no banco (exportáveis) ou os datasets do Langfuse a partir dos traces.
 
-## Métricas sugeridas (Prometheus/Grafana — não incluído)
+## Métricas (Prometheus) — `GET /metrics`
 
-- Fila: `bullmq` waiting/active/failed por queue (`/api/v1/analytics` não cobre filas; use Bull Board ou exporter).
-- API: p95 latência por rota (pino → Loki) e taxa de 5xx.
-- IA: custo/dia, latência p95 por etapa (`AgentRun.steps`), % `blocked`, % `handoff`, confiança média.
-- Negócio: dashboard interno em `/analytics`.
+Expostas pela API (`apps/api/src/plugins/metrics.ts`, sem dependência externa; o Caddy bloqueia a rota externamente e `METRICS_TOKEN` pode exigir bearer):
 
-## Alertas recomendados
+| Métrica | Tipo | Uso |
+|---|---|---|
+| `vox_http_requests_total{method,route,status}` | counter | taxa de 5xx, volume por rota |
+| `vox_http_request_duration_seconds{method,route}` | histogram | p95 por rota (webhook precisa responder < 2 s para a Meta) |
+| `vox_dependency_up{dependency=database\|redis}` | gauge | readiness |
+| `vox_queue_jobs{queue,state}` | gauge | filas BullMQ (waiting/active/delayed/failed/completed) |
+| `vox_outbox_unpublished` | gauge | eventos de domínio esperando o scheduler; sobe = worker parado |
+| `vox_followups_overdue` | gauge | follow-ups vencidos há > 5 min |
+| `vox_agent_runs_1h{decision}` | gauge | reply / handoff / blocked / silent na última hora |
+| `vox_agent_cost_usd_1h` | gauge | gasto de LLM na última hora |
+| `vox_pending_credentials` | gauge | provedores ainda em mock/local (só conta em produção) |
 
-- `GET /ready` ≠ 200 por 2 min.
-- Dead-letter queue (`dead-letter`) com jobs novos.
-- `AgentRun.decision = blocked` > 5% em 1 h (indica catálogo/base desatualizados ou prompt regredido).
-- `pendingCredentials` não vazio em produção.
+Stack pronta: `docker compose -f docker-compose.prod.yml --profile monitoring up -d` (Prometheus + Alertmanager + Grafana com datasource provisionado; ver `DEPLOYMENT.md`). Latência por etapa do agente (`AgentRun.steps`) e confiança média ficam no dashboard interno `/analytics` e no Langfuse.
+
+## Alertas (regras em `platform/ops/prometheus/alerts.yml`)
+
+- `ApiDown`, `DependencyDown`: API ou Postgres/Redis fora por 2 min (crítico).
+- `HighErrorRate`: 5xx > 5% por 5 min (crítico). `WebhookSlow`: p95 do webhook > 2 s.
+- `QueueBacklog`, `QueueFailures`, `OutboxStuck`, `FollowUpsOverdue`: worker parado ou lento.
+- `AgentBlockedRatioHigh`: > 20% de respostas bloqueadas pela validação em 1 h (catálogo/base desatualizados ou prompt regredido). `AgentCostSpike`: > US$ 20/h.
+- `PendingCredentialsInProduction`: API em produção com provedores mock.
+- Sem a stack: monitor externo em `GET /ready` (≠ 200 por 2 min) é o mínimo.
 
 ## Avaliação contínua
 

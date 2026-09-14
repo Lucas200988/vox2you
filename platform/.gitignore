@@ -9,3 +9,6 @@ coverage/
 packages/db/src/generated/
 storage/
 *.log
+
+# off-host backup credentials (copy from rclone.conf.example; never commit real keys)
+ops/backup/rclone.conf

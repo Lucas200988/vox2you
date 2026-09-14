@@ -1,0 +1,9 @@
+# Optional off-host backup target for rclone (mounted read-only into the backup container).
+# Copy to rclone.conf (git-ignored), fill one remote and set BACKUP_RCLONE_REMOTE=<name>:<bucket>/<prefix> in .env.
+#
+# [s3backup]
+# type = s3
+# provider = AWS            # or Cloudflare / Minio / Backblaze
+# access_key_id = ...
+# secret_access_key = ...
+# region = sa-east-1
