@@ -17,11 +17,23 @@
 
 Pré-requisitos: VPS Linux (2 vCPU / 4 GB é suficiente para uma unidade), Docker 24+ com Compose v2, dois registros DNS A apontando para o host (`app.` e `api.`), portas 80/443 abertas.
 
+Caminho curto (servidor recém-criado, como root):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Lucas200988/vox2you/main/platform/ops/bootstrap.sh -o bootstrap.sh
+DOMAIN_APP=crm.sonare.com.br DOMAIN_API=api.crm.sonare.com.br ACME_EMAIL=voce@exemplo.com.br \
+GITHUB_TOKEN=github_pat_xxx BRANCH=main bash bootstrap.sh
+```
+
+O `bootstrap.sh` confere o DNS, instala Docker, abre o firewall (22/80/443), clona o repositório, gera um `.env` com segredos aleatórios (senha do Postgres, `JWT_SECRET`, `APP_ENCRYPTION_KEY`, verify token, senha do admin gravada em `/root/.vox-admin-password`) e roda o deploy com seed. As credenciais dos provedores (Anthropic, WhatsApp…) são cadastradas depois pela tela do CRM.
+
+Caminho manual:
+
 ```bash
 git clone <repo> && cd vox2you/platform
 cp .env.example .env
 # preencha: DOMAIN_APP, DOMAIN_API, ACME_EMAIL, POSTGRES_PASSWORD, JWT_SECRET, APP_ENCRYPTION_KEY
-#           (openssl rand -base64 48), NODE_ENV=production, LLM_PROVIDER=anthropic + chave, etc.
+#           (openssl rand -base64 48), NODE_ENV=production
 ./ops/deploy.sh --seed          # build, sobe tudo, migra, espera /ready, roda o seed
 ```
 
