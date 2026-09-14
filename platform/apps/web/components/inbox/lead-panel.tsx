@@ -186,6 +186,26 @@ export function LeadPanel({ conversationId }: { conversationId: string }) {
                 </option>
               ))}
             </Select>
+            <Button
+              size="sm"
+              variant="ghost"
+              className="mt-1"
+              title="Entrega ao consultor da unidade com menos leads abertos (rodízio)"
+              onClick={async () => {
+                const r = await api.post<{ assigned: boolean; ownerId: string | null }>(
+                  `leads/${lead.id}/auto-assign`,
+                  {},
+                )
+                await refresh()
+                toast.show(
+                  r.assigned
+                    ? 'Lead distribuído pelo rodízio'
+                    : 'Nenhum consultor elegível na unidade',
+                )
+              }}
+            >
+              Distribuir automaticamente
+            </Button>
           </section>
 
           <section className="rounded-xl border border-brand-100 bg-brand-50/60 p-3">

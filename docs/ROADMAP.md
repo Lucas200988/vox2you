@@ -38,7 +38,7 @@ Objetivo: **receber mensagem WhatsApp (real ou simulada) → identificar/criar c
 - [x] Regras de handoff (explícito, emocional, desconto, baixa confiança, B2B complexo)
 - [x] Pausa da IA, resumo de handoff, retomada com contexto
 - [x] Copilot (sugerir, melhorar, resumir, próxima ação) — somente com ação humana
-- [ ] Atribuição automática por time/round-robin
+- [x] Atribuição automática por rodízio (menos leads abertos primeiro; handoff recomenda e atribui; `POST /leads/:id/auto-assign` + botão no painel do lead). Times: pendente
 - [ ] Notificações (push/e-mail) para vendedor
 
 ## Slice 4 — Agenda

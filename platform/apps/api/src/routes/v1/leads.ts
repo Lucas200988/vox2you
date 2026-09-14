@@ -46,6 +46,9 @@ export const leadRoutes: FastifyPluginAsync = async (app) => {
     return updated
   })
 
+  app.post('/leads/:id/auto-assign', { schema: { tags: ['crm'], params: IdParams }, preHandler: app.requireAuth('leads:assign') }, async (req) => {
+    return leads.autoAssign(req.auth!, (req.params as z.infer<typeof IdParams>).id)
+  })
   app.post('/leads/:id/assign', { schema: { tags: ['crm'], params: IdParams, body: z.object({ ownerId: z.string().uuid().nullable() }) }, preHandler: app.requireAuth('leads:assign') }, async (req) => {
     return leads.assign(req.auth!, (req.params as z.infer<typeof IdParams>).id, (req.body as { ownerId: string | null }).ownerId)
   })

@@ -1,4 +1,5 @@
 import type { Db, DbTx, Prisma } from '@vox/db'
+import { pickOwner } from './assignment.js'
 import { emitEvent } from '../events/outbox.js'
 import { NotFoundError, ValidationError } from '../errors.js'
 import { assertUnitAccess, unitScope, type TenantContext } from '../tenant/context.js'
@@ -248,6 +249,15 @@ export class LeadService {
       await emitEvent(tx, { type: 'lead.updated', tenantId: ctx.tenantId, unitId: lead.unitId, aggregateType: 'lead', aggregateId: leadId, payload: { ownerId }, actor: ctx.actor })
       return updated
     })
+  }
+
+  /** Assigns the least-loaded eligible user of the lead's unit (round-robin); no-op when nobody is eligible. */
+  async autoAssign(ctx: TenantContext, leadId: string) {
+    const lead = await this.get(ctx, leadId)
+    const ownerId = await this.db.$transaction((tx) => pickOwner(tx, lead.unitId, { excludeUserIds: lead.ownerId ? [lead.ownerId] : [] }))
+    if (!ownerId) return { assigned: false as const, ownerId: null, lead }
+    const updated = await this.assign(ctx, leadId, ownerId)
+    return { assigned: true as const, ownerId, lead: updated }
   }
 
   async addNote(ctx: TenantContext, leadId: string, body: string) {

@@ -1,4 +1,4 @@
-import type { DbTx, Prisma } from '@vox/db'
+import type { Prisma } from '@vox/db'
 import {
   ClassificationSchema,
   ExtractionSchema,
@@ -37,6 +37,7 @@ import { KnowledgeSearchService } from '../knowledge/search-service.js'
 import { PromptRegistry } from '../prompts/registry.js'
 import { SalesBrainService } from '../sales-brain/service.js'
 import { AppointmentService } from '../scheduling/appointment-service.js'
+import { pickOwner } from '../crm/assignment.js'
 import { computeLeadScore, DEFAULT_SCORING_WEIGHTS } from '../scoring/lead-scoring.js'
 import { loadAgentSettings } from '../settings/agent-settings.js'
 import { agentContext } from '../tenant/context.js'
@@ -1390,7 +1391,7 @@ export class AgentOrchestrator {
           : (ctx.generation?.nextBestAction ?? defaultNba(c, stageKey, plan.scenario))
       const recommendedOwnerId =
         ctx.decision === 'handoff' && !m.lead!.ownerId
-          ? await pickOwner(tx, ctx.input.unitId, c?.profileType === 'b2b')
+          ? await pickOwner(tx, ctx.input.unitId, { preferManager: c?.profileType === 'b2b' })
           : null
 
       // 6. Tasks from actions
@@ -1587,19 +1588,6 @@ function defaultNba(c: Classification | null, stage: string, scenario?: string):
           ? `Aguardar follow-up (${scenario})`
           : 'Continuar descoberta'
   }
-}
-
-async function pickOwner(tx: DbTx, unitId: string, preferManager: boolean): Promise<string | null> {
-  const user = await tx.user.findFirst({
-    where: {
-      status: 'active',
-      role: { in: preferManager ? ['manager', 'admin', 'owner'] : ['seller', 'manager'] },
-      units: { some: { unitId } },
-    },
-    orderBy: { lastLoginAt: 'desc' },
-    select: { id: true },
-  })
-  return user?.id ?? null
 }
 
 function summarizeForTrace(v: unknown): unknown {
