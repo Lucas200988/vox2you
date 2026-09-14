@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/primitives'
 import { IntegrationsTab } from '@/components/settings/integrations-tab'
 import { UnitTab } from '@/components/settings/unit-tab'
+import { UsersTab } from '@/components/settings/users-tab'
 
 const TABS = [
   { key: 'agent', label: 'Agente' },
@@ -404,86 +405,6 @@ function FollowUpTab() {
       </Button>
       {toast.node}
     </Card>
-  )
-}
-
-function UsersTab() {
-  const { data } = useApi<{
-    items: Array<{
-      id: string
-      name: string
-      email: string
-      role: string
-      status: string
-      lastLoginAt: string | null
-    }>
-  }>('users')
-  const { me } = useSession()
-  const toast = useToast()
-  return (
-    <div className="space-y-4">
-      <Card title="Novo usuário">
-        <form
-          className="grid gap-2 md:grid-cols-5"
-          onSubmit={async (e) => {
-            e.preventDefault()
-            const f = new FormData(e.currentTarget)
-            try {
-              await api.post('users', {
-                name: f.get('name'),
-                email: f.get('email'),
-                password: f.get('password'),
-                role: f.get('role'),
-                unitIds: me?.units.map((u) => u.id) ?? [],
-              })
-              await mutate('users')
-              ;(e.target as HTMLFormElement).reset()
-              toast.show('Usuário criado')
-            } catch (err) {
-              toast.show((err as Error).message, 'err')
-            }
-          }}
-        >
-          <Input name="name" placeholder="Nome" required />
-          <Input name="email" type="email" placeholder="E-mail" required />
-          <Input name="password" type="password" placeholder="Senha (8+)" required minLength={8} />
-          <Select name="role" defaultValue="seller">
-            <option value="seller">Vendedor</option>
-            <option value="manager">Gestor</option>
-            <option value="admin">Admin</option>
-            <option value="viewer">Visualizador</option>
-          </Select>
-          <Button type="submit">Criar</Button>
-        </form>
-      </Card>
-      <Card title="Usuários">
-        <table className="w-full text-sm">
-          <thead className="text-left text-xs text-muted">
-            <tr>
-              <th>Nome</th>
-              <th>E-mail</th>
-              <th>Papel</th>
-              <th>Status</th>
-              <th>Último login</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(data?.items ?? []).map((u) => (
-              <tr key={u.id} className="border-t">
-                <td className="py-1.5">{u.name}</td>
-                <td>{u.email}</td>
-                <td>
-                  <Badge tone="brand">{u.role}</Badge>
-                </td>
-                <td>{u.status}</td>
-                <td className="text-xs text-muted">{fmtDate(u.lastLoginAt)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </Card>
-      {toast.node}
-    </div>
   )
 }
 

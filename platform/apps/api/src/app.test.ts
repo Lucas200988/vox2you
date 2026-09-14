@@ -432,4 +432,42 @@ describe.skipIf(!RUN)('API', () => {
       ).statusCode,
     ).toBe(200)
   })
+
+  it('lets a user change their own password only with the current one', async () => {
+    const auth = { authorization: `Bearer ${token}` }
+    const wrong = await app.inject({
+      method: 'POST',
+      url: '/api/v1/auth/change-password',
+      headers: auth,
+      payload: { currentPassword: 'nope-nope', newPassword: 'brand-new-pass' },
+    })
+    expect(wrong.statusCode).toBe(401)
+    const ok = await app.inject({
+      method: 'POST',
+      url: '/api/v1/auth/change-password',
+      headers: auth,
+      payload: { currentPassword: 'test12345', newPassword: 'brand-new-pass' },
+    })
+    expect(ok.statusCode, ok.body).toBe(200)
+    const oldLogin = await app.inject({
+      method: 'POST',
+      url: '/api/v1/auth/login',
+      payload: { email: 'api-admin@test.local', password: 'test12345', tenant: 'api-test' },
+    })
+    expect(oldLogin.statusCode).toBe(401)
+    const newLogin = await app.inject({
+      method: 'POST',
+      url: '/api/v1/auth/login',
+      payload: { email: 'api-admin@test.local', password: 'brand-new-pass', tenant: 'api-test' },
+    })
+    expect(newLogin.statusCode, newLogin.body).toBe(200)
+    // restore so other runs keep working against the same database
+    const back = await app.inject({
+      method: 'POST',
+      url: '/api/v1/auth/change-password',
+      headers: { authorization: `Bearer ${newLogin.json().accessToken}` },
+      payload: { currentPassword: 'brand-new-pass', newPassword: 'test12345' },
+    })
+    expect(back.statusCode).toBe(200)
+  })
 })

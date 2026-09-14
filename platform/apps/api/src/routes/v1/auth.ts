@@ -1,7 +1,7 @@
 import type { FastifyPluginAsync } from 'fastify'
 import { z } from 'zod'
 import { LoginSchema, type Role } from '@vox/shared'
-import { UnauthorizedError, verifyPassword } from '@vox/core'
+import { ForbiddenError, UnauthorizedError, hashPassword, verifyPassword } from '@vox/core'
 
 export const authRoutes: FastifyPluginAsync = async (app) => {
   const loginLimit = { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } }
@@ -151,4 +151,50 @@ export const authRoutes: FastifyPluginAsync = async (app) => {
     })
     return { user, units, role: auth.role, providers: app.ctx.providerStatus }
   })
+
+  /** Any signed-in user changes their own password; the current one is required. */
+  app.post(
+    '/change-password',
+    {
+      schema: {
+        tags: ['auth'],
+        body: z.object({
+          currentPassword: z.string().min(1),
+          newPassword: z.string().min(8).max(200),
+        }),
+      },
+      preHandler: app.requireAuth(),
+      ...loginLimit,
+    },
+    async (req) => {
+      const { currentPassword, newPassword } = req.body as {
+        currentPassword: string
+        newPassword: string
+      }
+      const auth = req.auth!
+      if (!auth.userId) throw new ForbiddenError('API keys cannot change passwords')
+      const user = await app.ctx.db.user.findFirst({
+        where: { id: auth.userId, tenantId: auth.tenantId, status: 'active' },
+      })
+      if (!user || !(await verifyPassword(currentPassword, user.passwordHash)))
+        throw new UnauthorizedError('Senha atual incorreta')
+      await app.ctx.db.user.update({
+        where: { id: user.id },
+        data: { passwordHash: await hashPassword(newPassword) },
+      })
+      await app.ctx.db.auditLog.create({
+        data: {
+          tenantId: auth.tenantId,
+          userId: user.id,
+          actor: auth.actor,
+          action: 'auth.password_changed',
+          entityType: 'user',
+          entityId: user.id,
+          ip: req.ip,
+          userAgent: req.headers['user-agent'] ?? null,
+        },
+      })
+      return { ok: true }
+    },
+  )
 }
