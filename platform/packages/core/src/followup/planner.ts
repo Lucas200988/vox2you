@@ -42,6 +42,7 @@ const DEFAULT_STRATEGIES: Record<string, { delayHours: number; goal: string }> =
     goal: 'Confirmar se conseguiu resolver e oferecer ajuda',
   },
   objection_open: { delayHours: 30, goal: 'Trazer prova/depoimento relacionado à objeção' },
+  no_show: { delayHours: 3, goal: 'A visita não aconteceu: perguntar com leveza se houve algum imprevisto e oferecer 2 novos horários' },
   generic: { delayHours: 26, goal: 'Reengajar com pergunta leve sobre o objetivo' },
 }
 

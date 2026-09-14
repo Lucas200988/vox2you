@@ -1171,6 +1171,10 @@ model Appointment {
   externalId  String?   @map("external_id")
   location    String?
   notes       String?
+  /// Visit reminders (24h and 2h before) and the outcome prompt sent to the consultant after the end
+  reminder24hSentAt DateTime? @map("reminder_24h_sent_at") @db.Timestamptz
+  reminder2hSentAt  DateTime? @map("reminder_2h_sent_at") @db.Timestamptz
+  outcomePromptedAt DateTime? @map("outcome_prompted_at") @db.Timestamptz
   createdBy   String    @map("created_by") // agent | user:<id>
   createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz
   updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz
@@ -1183,6 +1187,8 @@ model Appointment {
 
   @@index([calendarId, startsAt])
   @@index([tenantId, unitId, startsAt])
+  @@index([status, startsAt])
+  @@index([status, endsAt])
   @@map("appointments")
 }
 

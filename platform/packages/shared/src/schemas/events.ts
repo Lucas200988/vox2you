@@ -23,6 +23,8 @@ export const DOMAIN_EVENT_TYPES = [
   'appointment.cancelled',
   'appointment.completed',
   'appointment.no_show',
+  'appointment.reminder_sent',
+  'appointment.outcome_pending',
   'followup.scheduled',
   'followup.sent',
   'followup.cancelled',
