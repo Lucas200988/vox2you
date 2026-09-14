@@ -50,6 +50,12 @@ if ! command -v docker >/dev/null; then
 fi
 docker compose version >/dev/null
 
+if [[ ! -f /swapfile ]]; then
+  echo "▶ Swap de 2 GB (o build das imagens precisa de folga de memória)"
+  fallocate -l 2G /swapfile && chmod 600 /swapfile && mkswap /swapfile >/dev/null && swapon /swapfile
+  grep -q '^/swapfile' /etc/fstab || echo '/swapfile none swap sw 0 0' >> /etc/fstab
+fi
+
 echo "▶ Firewall (22, 80, 443)"
 ufw allow OpenSSH >/dev/null
 ufw allow 80/tcp >/dev/null
