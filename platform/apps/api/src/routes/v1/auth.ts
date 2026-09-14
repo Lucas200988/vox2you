@@ -1,16 +1,60 @@
 import type { FastifyPluginAsync } from 'fastify'
 import { z } from 'zod'
 import { LoginSchema, type Role } from '@vox/shared'
-import { ForbiddenError, UnauthorizedError, hashPassword, verifyPassword } from '@vox/core'
+import {
+  AppError,
+  ForbiddenError,
+  UnauthorizedError,
+  hashPassword,
+  verifyPassword,
+} from '@vox/core'
+
+/**
+ * Progressive per-account lockout on top of the per-IP rate limit: after 5 failures the account is
+ * locked for 1 minute, doubling on each further failure up to 30 minutes. A successful login clears
+ * it. Keys live in Redis and expire on their own, so nothing is stored on the user row.
+ */
+const LOCK_AFTER = 5
+const LOCK_MAX_SECONDS = 30 * 60
+const FAIL_WINDOW_SECONDS = 15 * 60
 
 export const authRoutes: FastifyPluginAsync = async (app) => {
   const loginLimit = { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } }
+  const redis = app.ctx.redis
+  const lockKey = (email: string) => `login:lock:${email}`
+  const failKey = (email: string) => `login:fail:${email}`
+
+  const assertNotLocked = async (email: string) => {
+    const ttl = await redis.ttl(lockKey(email)).catch(() => -2)
+    if (ttl > 0) {
+      const minutes = Math.max(1, Math.ceil(ttl / 60))
+      throw new AppError(
+        `Conta bloqueada temporariamente por tentativas seguidas. Tente em ${minutes} min.`,
+        429,
+        'account_locked',
+        { retryAfterSeconds: ttl },
+      )
+    }
+  }
+  const recordFailure = async (email: string) => {
+    const fails = await redis.incr(failKey(email)).catch(() => 0)
+    if (fails === 1) await redis.expire(failKey(email), FAIL_WINDOW_SECONDS).catch(() => undefined)
+    if (fails >= LOCK_AFTER) {
+      const seconds = Math.min(LOCK_MAX_SECONDS, 60 * 2 ** (fails - LOCK_AFTER))
+      await redis.set(lockKey(email), '1', 'EX', seconds).catch(() => undefined)
+    }
+  }
+  const clearFailures = async (email: string) => {
+    await redis.del(failKey(email), lockKey(email)).catch(() => undefined)
+  }
 
   app.post(
     '/login',
     { schema: { tags: ['auth'], security: [], body: LoginSchema }, ...loginLimit },
     async (req) => {
       const { email, password, tenant: tenantSlug } = req.body as z.infer<typeof LoginSchema>
+      const account = email.toLowerCase()
+      await assertNotLocked(account)
       // E-mail is unique per tenant, not globally: verify the password against every candidate and
       // never let the first row win. If more than one matches, the caller must name the tenant.
       const candidates = await app.ctx.db.user.findMany({
@@ -27,7 +71,11 @@ export const authRoutes: FastifyPluginAsync = async (app) => {
       if (matches.length > 1)
         throw new UnauthorizedError('Este e-mail existe em mais de uma conta; informe o tenant')
       const user = matches[0]
-      if (!user) throw new UnauthorizedError('Credenciais inválidas')
+      if (!user) {
+        await recordFailure(account)
+        throw new UnauthorizedError('Credenciais inválidas')
+      }
+      await clearFailures(account)
       const units = user.units.map((u) => u.unitId)
       const accessToken = await app.tokens.signAccess({
         sub: user.id,

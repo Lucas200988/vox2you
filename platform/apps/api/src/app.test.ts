@@ -433,6 +433,27 @@ describe.skipIf(!RUN)('API', () => {
     ).toBe(200)
   })
 
+  it('locks an account after repeated failures and clears the lock on success', async () => {
+    // Own source address so the per-IP login rate limit does not interfere with the account lock
+    const from = { remoteAddress: '10.9.9.9' }
+    const login = (password: string) =>
+      app.inject({
+        method: 'POST',
+        url: '/api/v1/auth/login',
+        payload: { email: 'vendedor@vox2you.local', password, tenant: 'api-test' },
+        ...from,
+      })
+    for (let i = 0; i < 5; i++) expect((await login('wrong-password')).statusCode).toBe(401)
+    const locked = await login('test12345')
+    expect(locked.statusCode).toBe(429)
+    expect(locked.json().error).toBe('account_locked')
+    await app.ctx.redis.del(
+      'login:lock:vendedor@vox2you.local',
+      'login:fail:vendedor@vox2you.local',
+    )
+    expect((await login('test12345')).statusCode).toBe(200)
+  })
+
   it('lets a user change their own password only with the current one', async () => {
     const auth = { authorization: `Bearer ${token}` }
     const wrong = await app.inject({

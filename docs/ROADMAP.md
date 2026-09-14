@@ -84,6 +84,6 @@ Objetivo: **receber mensagem WhatsApp (real ou simulada) → identificar/criar c
 - [x] Métricas Prometheus em `GET /metrics` + regras de alerta + stack opcional (Prometheus/Alertmanager/Grafana)
 - [x] Flag `SCHEDULERS` no worker para réplicas extras
 - [ ] Schedulers do worker (outbox, follow-ups) como jobs repetíveis do BullMQ para rodar com múltiplas réplicas (hoje: um loop por processo)
-- [ ] Lockout progressivo por conta no login (hoje: rate limit por IP)
+- [x] Lockout progressivo por conta no login (5 falhas → 1 min, dobrando até 30 min; limpa no sucesso), além do rate limit por IP
 - [ ] Build das imagens Docker validado em CI (o sandbox de desenvolvimento não tem daemon Docker)
 - [ ] Runbooks
