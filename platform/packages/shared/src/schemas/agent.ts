@@ -65,6 +65,10 @@ export const AgentActionSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('do_not_contact_until'), isoDate: z.string() }),
   /** Only valid when isoStart matches a slot previously returned by the calendar tool */
   z.object({ type: z.literal('book_appointment'), isoStart: z.string(), kind: z.enum(['visit', 'trial_class', 'meeting', 'call']).default('visit') }),
+  /** Moves the lead's upcoming appointment; isoStart must match a slot returned by the calendar tool */
+  z.object({ type: z.literal('reschedule_appointment'), isoStart: z.string() }),
+  /** Cancels the lead's upcoming appointment (the agent should offer to rebook) */
+  z.object({ type: z.literal('cancel_appointment'), reason: z.string().optional() }),
 ])
 export type AgentAction = z.infer<typeof AgentActionSchema>
 

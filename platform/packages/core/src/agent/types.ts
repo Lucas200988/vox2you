@@ -84,6 +84,8 @@ export interface MemorySnapshot {
   inboundCount: number
   outboundCount: number
   appointmentsCount: number
+  /** Next scheduled/confirmed appointment for the lead (what "remarcar"/"cancelar" refer to) */
+  upcomingAppointment: { id: string; startsAt: Date; endsAt: Date; status: string; kind: string } | null
   consecutiveBlockedRuns: number
   optedOut: boolean
 }

@@ -45,7 +45,7 @@ Objetivo: **receber mensagem WhatsApp (real ou simulada) → identificar/criar c
 - [x] `CalendarProvider` + agenda interna + Google Calendar (aguarda credencial)
 - [x] Tools do agente `get_available_slots`, `create_appointment` (agendamento validado contra os slots buscados)
 - [x] API/inbox: listar, criar, remarcar (`/appointments/:id/reschedule`) e mudar status (confirmado, compareceu, no-show, cancelado)
-- [ ] Tools do agente para remarcar/cancelar via conversa
+- [x] Tools do agente para remarcar/cancelar via conversa (`reschedule_appointment` / `cancel_appointment`, visita atual injetada no prompt, nunca cria segunda visita)
 - [x] Lembretes automáticos 24h e 2h antes (texto na janela, template aprovado fora dela, tarefa ao consultor sem template) + resultado da visita (tarefa após 2h; no-show automático após 24h com follow-up de reagendamento)
 
 ## Slice 5 — Follow-up inteligente

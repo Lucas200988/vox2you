@@ -39,6 +39,7 @@ const memory: MemorySnapshot = {
   inboundCount: 2,
   outboundCount: 1,
   appointmentsCount: 0,
+  upcomingAppointment: null,
   consecutiveBlockedRuns: 0,
   optedOut: false,
 }

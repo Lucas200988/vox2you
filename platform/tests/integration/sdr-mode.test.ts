@@ -77,6 +77,43 @@ describe.skipIf(!RUN)('SDR mode: qualify → book the visit, never quote', () =>
     expect(lead!.stage.key).toBe('scheduling')
   })
 
+  it('reschedules and then cancels the booked visit from the conversation (no second visit)', async () => {
+    const phone = randomPhone()
+    await inbound(env, phone, 'Quero visitar a escola pra conhecer')
+    const booked = await inbound(env, phone, 'Pode confirmar a visita nesse horário')
+    const before = await env.db.appointment.findMany({ where: { leadId: booked.leadId } })
+    expect(before.length).toBe(1)
+    const original = before[0]!
+
+    // "remarcar" → the agent proposes another free slot instead of booking a second visit
+    const ask = await inbound(env, phone, 'Quero remarcar a visita para outro horário')
+    expect(ask.run?.decision).toBe('reply')
+    expect(ask.run?.reply).toMatch(/mudar|remarcar|troca/i)
+    const confirm = await inbound(env, phone, 'Pode confirmar a visita nesse novo horário')
+    expect(confirm.run?.decision).toBe('reply')
+    const afterReschedule = await env.db.appointment.findMany({ where: { leadId: booked.leadId } })
+    expect(afterReschedule.length).toBe(1)
+    expect(afterReschedule[0]!.id).toBe(original.id)
+    expect(afterReschedule[0]!.status).toBe('scheduled')
+    expect(afterReschedule[0]!.startsAt.getTime()).not.toBe(original.startsAt.getTime())
+    const run = await env.db.agentRun.findUnique({
+      where: { id: confirm.run!.runId },
+      include: { toolCalls: true },
+    })
+    expect(run!.toolCalls.map((t) => t.name)).toContain('reschedule_appointment')
+
+    // "cancelar" → the visit is cancelled and a follow-up is planned to re-book later
+    const cancel = await inbound(env, phone, 'Vou precisar cancelar a visita')
+    expect(cancel.run?.decision).toBe('reply')
+    const afterCancel = await env.db.appointment.findUnique({ where: { id: original.id } })
+    expect(afterCancel!.status).toBe('cancelled')
+    expect(cancel.run?.followUpAt).toBeTruthy()
+    const followUps = await env.db.followUp.findMany({
+      where: { leadId: booked.leadId, status: 'scheduled' },
+    })
+    expect(followUps.length).toBe(1)
+  })
+
   it('exposes the mode through resolved agent settings', async () => {
     const { loadAgentSettings } = await import('@vox/core')
     const settings = await loadAgentSettings(env.db, env.seed.unitId, env.providers.models)

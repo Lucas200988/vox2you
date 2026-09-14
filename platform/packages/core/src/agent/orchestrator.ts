@@ -36,6 +36,7 @@ import { evaluateHandoff } from '../handoff/rules.js'
 import { KnowledgeSearchService } from '../knowledge/search-service.js'
 import { PromptRegistry } from '../prompts/registry.js'
 import { SalesBrainService } from '../sales-brain/service.js'
+import { AppointmentService } from '../scheduling/appointment-service.js'
 import { computeLeadScore, DEFAULT_SCORING_WEIGHTS } from '../scoring/lead-scoring.js'
 import { loadAgentSettings } from '../settings/agent-settings.js'
 import { agentContext } from '../tenant/context.js'
@@ -670,7 +671,8 @@ export class AgentOrchestrator {
       sdr ||
       c.needsCalendar ||
       c.intent === 'booking_request' ||
-      ctx.memory.lead?.stageKey === 'scheduling'
+      ctx.memory.lead?.stageKey === 'scheduling' ||
+      !!ctx.memory.upcomingAppointment
     ) {
       const slots = await tools.getAvailableSlots({ days: sdr ? 5 : 7 })
       ctx.toolCalls.push({ ...slots, output: slots.output?.map((s) => s.start.toISOString()) })
@@ -689,6 +691,9 @@ export class AgentOrchestrator {
       sdr
         ? sdrModeRules(ctx.settings.visitLabel)
         : 'MODO CLOSER: você pode apresentar ofertas do <catalog> e conduzir até agendamento ou matrícula.',
+      ctx.memory.upcomingAppointment
+        ? `VISITA JÁ AGENDADA: ${formatInZone(ctx.memory.upcomingAppointment.startsAt, ctx.unit.timezone, "EEEE dd/MM 'às' HH:mm")} (iso: ${ctx.memory.upcomingAppointment.startsAt.toISOString()}). Se a pessoa quiser mudar o horário, ofereça opções da lista de horários disponíveis e use a ação reschedule_appointment com o iso exato do novo horário. Se quiser cancelar, use cancel_appointment e ofereça reagendar depois. Não crie uma segunda visita.`
+        : '',
       `Intenção detectada: ${c.intent}${c.signals.length ? ` | sinais: ${c.signals.join(', ')}` : ''} | sentimento: ${c.sentiment}`,
       ctx.slots
         ? `Horários disponíveis (só ofereça estes; para agendar, use a ação book_appointment com o iso exato):\n${AgentTools.renderSlots(ctx.slots, ctx.unit.timezone)}`
@@ -973,6 +978,109 @@ export class AgentOrchestrator {
         ctx.stageSuggestion = 'scheduling'
         continue
       }
+      if (action.type === 'reschedule_appointment' || action.type === 'cancel_appointment') {
+        const upcoming = ctx.memory.upcomingAppointment
+        if (!upcoming) {
+          ctx.validation = {
+            ok: ctx.validation?.ok ?? true,
+            issues: [
+              ...(ctx.validation?.issues ?? []),
+              {
+                code: 'no_upcoming_appointment',
+                severity: 'warn',
+                message: `Ação ${action.type} sem visita agendada; ignorada`,
+              },
+            ],
+          }
+          continue
+        }
+        if (ctx.input.dryRun) {
+          kept.push(action)
+          continue
+        }
+        const appointments = new AppointmentService(db, providers.calendar)
+        const tctx = agentContext(ctx.input.tenantId)
+        const started = Date.now()
+        if (action.type === 'cancel_appointment') {
+          try {
+            await appointments.setStatus(tctx, upcoming.id, 'cancelled')
+            ctx.toolCalls.push({
+              name: 'cancel_appointment',
+              input: { appointmentId: upcoming.id, reason: action.reason ?? null },
+              output: { ok: true },
+              ms: Date.now() - started,
+            })
+            ctx.memory.appointmentsCount = Math.max(0, ctx.memory.appointmentsCount - 1)
+            ctx.memory.upcomingAppointment = null
+            kept.push(action)
+          } catch (err) {
+            ctx.toolCalls.push({
+              name: 'cancel_appointment',
+              input: { appointmentId: upcoming.id },
+              output: null,
+              ms: Date.now() - started,
+              error: (err as Error).message,
+            })
+            ctx.actions.push({
+              type: 'create_task',
+              title: `Cancelar visita manualmente (${upcoming.startsAt.toISOString()})`,
+            })
+          }
+          continue
+        }
+        const slot = ctx.slots?.find(
+          (s) =>
+            s.start.toISOString() === action.isoStart ||
+            Math.abs(s.start.getTime() - new Date(action.isoStart).getTime()) < 60_000,
+        )
+        if (!slot) {
+          ctx.validation = {
+            ok: ctx.validation?.ok ?? true,
+            issues: [
+              ...(ctx.validation?.issues ?? []),
+              {
+                code: 'invalid_slot',
+                severity: 'warn',
+                message: `Slot ${action.isoStart} não estava na lista de disponibilidade; remarcação ignorada`,
+              },
+            ],
+          }
+          continue
+        }
+        try {
+          await appointments.reschedule(tctx, upcoming.id, slot.start)
+          ctx.toolCalls.push({
+            name: 'reschedule_appointment',
+            input: { appointmentId: upcoming.id, isoStart: slot.start.toISOString() },
+            output: { ok: true },
+            ms: Date.now() - started,
+          })
+          ctx.memory.upcomingAppointment = {
+            ...upcoming,
+            startsAt: slot.start,
+            endsAt: new Date(
+              slot.start.getTime() + (upcoming.endsAt.getTime() - upcoming.startsAt.getTime()),
+            ),
+          }
+          kept.push(action)
+          ctx.stageSuggestion = 'scheduling'
+        } catch (err) {
+          ctx.toolCalls.push({
+            name: 'reschedule_appointment',
+            input: { appointmentId: upcoming.id, isoStart: slot.start.toISOString() },
+            output: null,
+            ms: Date.now() - started,
+            error: (err as Error).message,
+          })
+          ctx.finalReply =
+            `${ctx.finalReply}\n\n(Não consegui remarcar automaticamente; um consultor vai confirmar o novo horário com você.)`.trim()
+          ctx.actions.push({
+            type: 'create_task',
+            title: `Remarcar visita manualmente para ${slot.start.toISOString()}`,
+          })
+        }
+        continue
+      }
       if (action.type === 'handoff') {
         ctx.decision = 'handoff'
         ctx.handoffReason = action.reason
@@ -1230,7 +1338,10 @@ export class AgentOrchestrator {
         optedOut: m.optedOut || c?.intent === 'opt_out',
         lastInboundAt: new Date(),
         hasScheduledAppointment:
-          m.appointmentsCount > 0 || ctx.actions.some((a) => a.type === 'book_appointment'),
+          m.appointmentsCount > 0 ||
+          ctx.actions.some(
+            (a) => a.type === 'book_appointment' || a.type === 'reschedule_appointment',
+          ),
         attemptsSoFar: attempts,
         policy,
       })

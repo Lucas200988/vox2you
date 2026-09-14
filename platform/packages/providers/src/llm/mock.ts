@@ -238,6 +238,15 @@ function generate(text: string, req: LLMRequest) {
     .map((m) => m[1]!)
     .filter((c) => !c.includes('sem turmas'))
   const slotLine = system.match(/- ([^\n(]+) \(iso: ([^)]+)\)/)
+  // An existing visit is announced in the prompt; "remarcar"/"cancelar" then act on it instead of booking twice
+  const hasVisit = system.includes('VISITA JÁ AGENDADA')
+  const wantsCancel = has(
+    text,
+    'cancelar',
+    'desmarcar',
+    'nao vou conseguir ir',
+    'não vou conseguir ir',
+  )
   const actions: unknown[] = []
   let reply = ''
   let nextBestAction = 'Continuar descoberta'
@@ -254,6 +263,20 @@ function generate(text: string, req: LLMRequest) {
         nextBestAction = 'Confirmar visita'
         break
       case 'booking_request':
+        if (hasVisit && wantsCancel) {
+          reply =
+            'Sem problema, cancelei sua visita. Quando quiser remarcar é só me chamar, eu te passo os horários.'
+          actions.push({ type: 'cancel_appointment', reason: 'cliente pediu para cancelar' })
+          nextBestAction = 'Reagendar visita quando o cliente retomar'
+          break
+        }
+        if (hasVisit && slotLine) {
+          reply = `Claro! Posso mudar sua visita para ${slotLine[1]!.trim()}. Confirmo a troca?`
+          nextBestAction = 'Confirmar novo horário'
+          if (has(text, 'pode confirmar', 'confirma', 'fechado', 'pode ser'))
+            actions.push({ type: 'reschedule_appointment', isoStart: slotLine[2] })
+          break
+        }
         reply = slotLine
           ? `Ótimo! ${invite}`
           : 'Vou verificar a agenda com a equipe e te passo as opções em instantes.'
@@ -304,6 +327,19 @@ function generate(text: string, req: LLMRequest) {
         : 'Vou verificar as próximas turmas com a equipe e te retorno. Você prefere manhã, tarde ou noite?'
       break
     case 'booking_request':
+      if (hasVisit && wantsCancel) {
+        reply = 'Sem problema, cancelei sua visita. Quando quiser remarcar é só me chamar.'
+        actions.push({ type: 'cancel_appointment', reason: 'cliente pediu para cancelar' })
+        nextBestAction = 'Reagendar visita quando o cliente retomar'
+        break
+      }
+      if (hasVisit && slotLine) {
+        reply = `Claro! Posso mudar sua visita para ${slotLine[1]!.trim()}. Confirmo a troca?`
+        nextBestAction = 'Confirmar novo horário'
+        if (has(text, 'pode confirmar', 'confirma', 'fechado', 'pode ser'))
+          actions.push({ type: 'reschedule_appointment', isoStart: slotLine[2] })
+        break
+      }
       if (slotLine) {
         reply = `Ótimo! Tenho ${slotLine[1]!.trim()} disponível para uma visita. Posso confirmar pra você?`
         nextBestAction = 'Confirmar horário'

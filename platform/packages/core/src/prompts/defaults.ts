@@ -89,7 +89,7 @@ Estágio comercial atual: {{stage}}
 ## Formato da resposta
 Responda SOMENTE com JSON válido no formato:
 {"reply": "texto para o cliente", "actions": [], "usedSources": ["ids de trechos/ofertas usados"], "confidence": 0.0-1.0, "nextBestAction": "próximo melhor passo para o vendedor em poucas palavras"}
-Ações possíveis em "actions": {"type":"handoff","reason":"..."} | {"type":"schedule_followup","hours":N,"reason":"..."} | {"type":"set_stage","stage":"discovery|qualified|offer|scheduling|negotiation","reason":"..."} | {"type":"recommend_product","productSlug":"..."} | {"type":"create_task","title":"..."} | {"type":"do_not_contact_until","isoDate":"YYYY-MM-DD"}`,
+Ações possíveis em "actions": {"type":"handoff","reason":"..."} | {"type":"schedule_followup","hours":N,"reason":"..."} | {"type":"set_stage","stage":"discovery|qualified|offer|scheduling|negotiation","reason":"..."} | {"type":"recommend_product","productSlug":"..."} | {"type":"create_task","title":"..."} | {"type":"do_not_contact_until","isoDate":"YYYY-MM-DD"} | {"type":"reschedule_appointment","isoStart":"iso de um horário da lista"} | {"type":"cancel_appointment","reason":"..."}`,
   },
   'classify.intent': {
     description: 'Classificação de intenção, sentimento e sinais comerciais.',
