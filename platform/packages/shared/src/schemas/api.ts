@@ -10,6 +10,8 @@ export const PaginationQuerySchema = z.object({
 export const LoginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
+  /** Tenant slug — only needed when the same e-mail exists in more than one tenant. */
+  tenant: z.string().min(1).optional(),
 })
 
 export const SendMessageSchema = z.object({

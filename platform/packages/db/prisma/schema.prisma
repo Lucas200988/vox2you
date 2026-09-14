@@ -231,7 +231,10 @@ model Channel {
   unit          Unit           @relation(fields: [unitId], references: [id], onDelete: Cascade)
   conversations Conversation[]
 
-  @@unique([tenantId, kind, externalId])
+  /// Global (not per-tenant): a provider account (Meta phone_number_id) belongs to exactly one unit.
+  /// Inbound routing derives the tenant from this id, so cross-tenant duplicates would allow one
+  /// tenant to capture another tenant's messages.
+  @@unique([kind, externalId])
   @@index([tenantId, unitId])
   @@map("channels")
 }

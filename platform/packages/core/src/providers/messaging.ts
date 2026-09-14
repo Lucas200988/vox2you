@@ -3,13 +3,32 @@ export type InboundEvent =
   | {
       kind: 'message'
       channelExternalId: string // phone_number_id (Meta)
+      /** Resolved channel id, set only by trusted in-process callers (simulator). Wins over channelExternalId. */
+      channelId?: string
       providerMessageId: string
       from: string // wa_id (digits)
       fromName?: string
       timestamp: Date
-      type: 'text' | 'audio' | 'image' | 'video' | 'document' | 'location' | 'interactive' | 'contacts' | 'reaction' | 'sticker' | 'unknown'
+      type:
+        | 'text'
+        | 'audio'
+        | 'image'
+        | 'video'
+        | 'document'
+        | 'location'
+        | 'interactive'
+        | 'contacts'
+        | 'reaction'
+        | 'sticker'
+        | 'unknown'
       text?: string
-      media?: { providerMediaId: string; mimeType?: string; fileName?: string; caption?: string; sha256?: string }
+      media?: {
+        providerMediaId: string
+        mimeType?: string
+        fileName?: string
+        caption?: string
+        sha256?: string
+      }
       location?: { latitude: number; longitude: number; name?: string; address?: string }
       interactive?: { replyId: string; title: string }
       replyToProviderMessageId?: string
@@ -26,6 +45,7 @@ export type InboundEvent =
   | {
       kind: 'status'
       channelExternalId: string
+      channelId?: string
       providerMessageId: string
       status: 'sent' | 'delivered' | 'read' | 'failed'
       timestamp: Date
@@ -65,7 +85,13 @@ export interface OutboundInteractive {
   header?: string
   footer?: string
   buttons?: Array<{ id: string; title: string }>
-  list?: { buttonText: string; sections: Array<{ title: string; rows: Array<{ id: string; title: string; description?: string }> }> }
+  list?: {
+    buttonText: string
+    sections: Array<{
+      title: string
+      rows: Array<{ id: string; title: string; description?: string }>
+    }>
+  }
 }
 
 export interface SendResult {

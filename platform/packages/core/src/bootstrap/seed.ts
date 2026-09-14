@@ -33,29 +33,78 @@ export interface SeedResult {
  * Prices below are PLACEHOLDERS for development — replace in the admin UI.
  */
 export async function seedVox2you(db: Db, opts: SeedOptions): Promise<SeedResult> {
-  const tenant = await db.tenant.upsert({ where: { slug: opts.tenantSlug ?? 'vox2you' }, update: {}, create: { name: opts.tenantName ?? 'VOX2you', slug: opts.tenantSlug ?? 'vox2you' } })
+  const tenant = await db.tenant.upsert({
+    where: { slug: opts.tenantSlug ?? 'vox2you' },
+    update: {},
+    create: { name: opts.tenantName ?? 'VOX2you', slug: opts.tenantSlug ?? 'vox2you' },
+  })
   const unit = await db.unit.upsert({
     where: { tenantId_slug: { tenantId: tenant.id, slug: opts.unitSlug ?? 'cuiaba' } },
     update: {},
-    create: { tenantId: tenant.id, name: opts.unitName ?? 'VOX2you Cuiabá', slug: opts.unitSlug ?? 'cuiaba', city: opts.unitCity ?? 'Cuiabá', state: 'MT', timezone: opts.timezone ?? 'America/Cuiaba' },
+    create: {
+      tenantId: tenant.id,
+      name: opts.unitName ?? 'VOX2you Cuiabá',
+      slug: opts.unitSlug ?? 'cuiaba',
+      city: opts.unitCity ?? 'Cuiabá',
+      state: 'MT',
+      timezone: opts.timezone ?? 'America/Cuiaba',
+    },
   })
 
-  const existingAdmin = await db.user.findUnique({ where: { tenantId_email: { tenantId: tenant.id, email: opts.adminEmail } } })
+  const existingAdmin = await db.user.findUnique({
+    where: { tenantId_email: { tenantId: tenant.id, email: opts.adminEmail } },
+  })
   const admin =
     existingAdmin ??
-    (await db.user.create({ data: { tenantId: tenant.id, email: opts.adminEmail, name: 'Administrador', role: 'owner', passwordHash: await hashPassword(opts.adminPassword), status: 'active', units: { create: { unitId: unit.id, role: 'owner' } } } }))
+    (await db.user.create({
+      data: {
+        tenantId: tenant.id,
+        email: opts.adminEmail,
+        name: 'Administrador',
+        role: 'owner',
+        passwordHash: await hashPassword(opts.adminPassword),
+        status: 'active',
+        units: { create: { unitId: unit.id, role: 'owner' } },
+      },
+    }))
   const seller = await db.user.upsert({
     where: { tenantId_email: { tenantId: tenant.id, email: 'vendedor@vox2you.local' } },
     update: {},
-    create: { tenantId: tenant.id, email: 'vendedor@vox2you.local', name: 'Consultor Exemplo', role: 'seller', passwordHash: await hashPassword(opts.adminPassword), status: 'active', units: { create: { unitId: unit.id, role: 'seller' } } },
+    create: {
+      tenantId: tenant.id,
+      email: 'vendedor@vox2you.local',
+      name: 'Consultor Exemplo',
+      role: 'seller',
+      passwordHash: await hashPassword(opts.adminPassword),
+      status: 'active',
+      units: { create: { unitId: unit.id, role: 'seller' } },
+    },
   })
   void seller
 
-  const channel = await db.channel.upsert({
-    where: { tenantId_kind_externalId: { tenantId: tenant.id, kind: 'whatsapp', externalId: opts.channelExternalId ?? 'mock-phone' } },
-    update: {},
-    create: { tenantId: tenant.id, unitId: unit.id, kind: 'whatsapp', provider: opts.channelExternalId && opts.channelExternalId !== 'mock-phone' ? 'meta' : 'mock', externalId: opts.channelExternalId ?? 'mock-phone', name: 'WhatsApp principal' },
+  const channelExternalId = opts.channelExternalId ?? 'mock-phone'
+  // Channel external ids are globally unique (they decide the tenant on inbound). Never adopt a
+  // channel that belongs to another tenant — fail loudly instead.
+  const existingChannel = await db.channel.findUnique({
+    where: { kind_externalId: { kind: 'whatsapp', externalId: channelExternalId } },
   })
+  if (existingChannel && existingChannel.tenantId !== tenant.id) {
+    throw new Error(
+      `WhatsApp channel "${channelExternalId}" already belongs to another tenant (${existingChannel.tenantId}); use a distinct WHATSAPP_PHONE_NUMBER_ID`,
+    )
+  }
+  const channel =
+    existingChannel ??
+    (await db.channel.create({
+      data: {
+        tenantId: tenant.id,
+        unitId: unit.id,
+        kind: 'whatsapp',
+        provider: channelExternalId === 'mock-phone' ? 'mock' : 'meta',
+        externalId: channelExternalId,
+        name: 'WhatsApp principal',
+      },
+    }))
 
   await db.$transaction(async (tx) => {
     await PipelineService.ensureDefaults(tx, tenant.id, unit.id)
@@ -68,41 +117,293 @@ export async function seedVox2you(db: Db, opts: SeedOptions): Promise<SeedResult
     create: {
       unitId: unit.id,
       agentName: 'Bia',
-      persona: 'Consultora comercial da VOX2you: acolhedora, direta, entusiasmada com comunicação, fala como uma pessoa real no WhatsApp.',
+      persona:
+        'Consultora comercial da VOX2you: acolhedora, direta, entusiasmada com comunicação, fala como uma pessoa real no WhatsApp.',
       tone: 'Frases curtas, calor humano, zero robotismo, no máximo um emoji quando natural.',
       handoffRules: { keywords: ['cancelar matrícula', 'reembolso'] },
       businessHours: { rules: [] },
     },
   })
-  await db.scoringConfig.upsert({ where: { id: (await db.scoringConfig.findFirst({ where: { unitId: unit.id } }))?.id ?? '00000000-0000-0000-0000-000000000000' }, update: {}, create: { unitId: unit.id, name: 'default', weights: DEFAULT_SCORING_WEIGHTS as Prisma.InputJsonValue } })
-  await db.followUpPolicy.upsert({ where: { unitId: unit.id }, update: {}, create: { unitId: unit.id } })
-  const calendar = (await db.calendar.findFirst({ where: { unitId: unit.id } })) ?? (await db.calendar.create({ data: { unitId: unit.id, name: 'Visitas e aulas experimentais', provider: 'internal', timezone: unit.timezone, isDefault: true, slotDurationMin: 60, availabilityRules: [1, 2, 3, 4, 5].map((weekday) => ({ weekday, start: '09:00', end: '19:00' })) } }))
+  await db.scoringConfig.upsert({
+    where: {
+      id:
+        (await db.scoringConfig.findFirst({ where: { unitId: unit.id } }))?.id ??
+        '00000000-0000-0000-0000-000000000000',
+    },
+    update: {},
+    create: {
+      unitId: unit.id,
+      name: 'default',
+      weights: DEFAULT_SCORING_WEIGHTS as Prisma.InputJsonValue,
+    },
+  })
+  await db.followUpPolicy.upsert({
+    where: { unitId: unit.id },
+    update: {},
+    create: { unitId: unit.id },
+  })
+  const calendar =
+    (await db.calendar.findFirst({ where: { unitId: unit.id } })) ??
+    (await db.calendar.create({
+      data: {
+        unitId: unit.id,
+        name: 'Visitas e aulas experimentais',
+        provider: 'internal',
+        timezone: unit.timezone,
+        isDefault: true,
+        slotDurationMin: 60,
+        availabilityRules: [1, 2, 3, 4, 5].map((weekday) => ({
+          weekday,
+          start: '09:00',
+          end: '19:00',
+        })),
+      },
+    }))
   void calendar
 
   const brainExists = await db.salesBrainVersion.findFirst({ where: { unitId: unit.id } })
-  if (!brainExists) await db.salesBrainVersion.create({ data: { unitId: unit.id, version: 1, status: 'production', content: DEFAULT_SALES_BRAIN as unknown as Prisma.InputJsonValue, changelog: 'Sales Brain inicial', publishedAt: new Date() } })
+  if (!brainExists)
+    await db.salesBrainVersion.create({
+      data: {
+        unitId: unit.id,
+        version: 1,
+        status: 'production',
+        content: DEFAULT_SALES_BRAIN as unknown as Prisma.InputJsonValue,
+        changelog: 'Sales Brain inicial',
+        publishedAt: new Date(),
+      },
+    })
 
   // Products (placeholder prices — edit in admin)
   const productDefs = [
-    { slug: 'academy', name: 'Academy', category: 'course', modality: 'in_person', audience: 'b2c', shortDescription: 'Curso completo de comunicação e oratória para quem quer perder a vergonha e falar com segurança.', durationText: '4 meses, 1 aula por semana', personas: ['profissional tímido', 'estudante', 'iniciante'], painsSolved: ['vergonha de falar em público', 'nervosismo', 'insegurança'], benefits: ['falar com segurança', 'estruturar ideias', 'presença'], salesArguments: ['Prática desde a primeira aula', 'Turmas pequenas com feedback individual', 'Método progressivo para quem trava'], offers: [{ name: 'Academy — turma regular', listPrice: 3990, installmentsMax: 12, installmentValue: 332.5, conditions: 'à vista com 10% de desconto ou 12x no cartão', paymentMethods: ['pix', 'card', 'boleto'], maxDiscountPct: 10 }], classes: [{ name: 'Academy Noite', weekdays: ['tue'], startTime: '19:00', endTime: '21:00', period: 'evening', capacity: 12, enrolled: 7 }, { name: 'Academy Sábado', weekdays: ['sat'], startTime: '09:00', endTime: '11:00', period: 'morning', capacity: 12, enrolled: 4 }] },
-    { slug: 'master', name: 'Master', category: 'course', modality: 'in_person', audience: 'both', shortDescription: 'Programa avançado de comunicação persuasiva, liderança e apresentações de alto impacto.', durationText: '6 meses', personas: ['líder', 'vendedor', 'empreendedor', 'executivo'], painsSolved: ['apresentações', 'liderança', 'vendas', 'persuasão'], benefits: ['apresentar com impacto', 'persuadir', 'liderar reuniões'], salesArguments: ['Foco em resultados profissionais', 'Simulações reais de apresentações e negociações', 'Networking com outros líderes'], offers: [{ name: 'Master — turma regular', listPrice: 6990, installmentsMax: 12, installmentValue: 582.5, conditions: '12x no cartão ou à vista com 8% de desconto', paymentMethods: ['pix', 'card'], maxDiscountPct: 8 }], classes: [{ name: 'Master Noite', weekdays: ['thu'], startTime: '19:00', endTime: '21:30', period: 'evening', capacity: 10, enrolled: 6 }] },
-    { slug: 'intensivox', name: 'Intensivox', category: 'immersion', modality: 'in_person', audience: 'b2c', shortDescription: 'Imersão intensiva de fim de semana para destravar a comunicação em vídeo e ao vivo.', durationText: '2 dias (16h)', personas: ['criador de conteúdo', 'profissional com prazo', 'vendedor'], painsSolved: ['travar na frente da câmera', 'urgência', 'falta de tempo'], benefits: ['resultado rápido', 'prática intensiva', 'gravações com feedback'], salesArguments: ['Ideal para quem tem pouco tempo', 'Destrava em um fim de semana', 'Feedback em vídeo'], offers: [{ name: 'Intensivox — próxima turma', listPrice: 1490, installmentsMax: 6, installmentValue: 248.34, conditions: '6x no cartão', paymentMethods: ['pix', 'card'], maxDiscountPct: 5 }], classes: [{ name: 'Intensivox Outubro', weekdays: ['sat', 'sun'], startTime: '08:00', endTime: '17:00', period: 'morning', capacity: 16, enrolled: 9, startsOffsetDays: 30 }] },
-    { slug: 'incompany', name: 'InCompany', category: 'incompany', modality: 'hybrid', audience: 'b2b', shortDescription: 'Treinamento corporativo sob medida para times comerciais, atendimento e lideranças.', durationText: 'Sob medida (8h a 40h)', personas: ['empresa', 'RH', 'gestor comercial'], painsSolved: ['time de vendas', 'atendimento', 'apresentações corporativas', 'liderança'], benefits: ['programa customizado', 'diagnóstico prévio', 'métricas de evolução'], salesArguments: ['Diagnóstico gratuito do time', 'Conteúdo adaptado ao negócio', 'Turmas fechadas na empresa ou na unidade'], offers: [], classes: [] },
-    { slug: 'voxtime', name: 'VoxTime', category: 'course', modality: 'online', audience: 'b2c', shortDescription: 'Encontros online curtos e práticos para manter a comunicação em dia.', durationText: 'Mensal, 4 encontros de 1h', personas: ['ex-aluno', 'profissional ocupado'], painsSolved: ['manter prática', 'falta de tempo'], benefits: ['flexível', 'online', 'prática contínua'], salesArguments: ['100% online', 'Ideal para manter o ritmo'], offers: [{ name: 'VoxTime mensal', listPrice: 297, installmentsMax: 1, installmentValue: null, conditions: 'assinatura mensal', paymentMethods: ['pix', 'card'], maxDiscountPct: 0 }], classes: [] },
+    {
+      slug: 'academy',
+      name: 'Academy',
+      category: 'course',
+      modality: 'in_person',
+      audience: 'b2c',
+      shortDescription:
+        'Curso completo de comunicação e oratória para quem quer perder a vergonha e falar com segurança.',
+      durationText: '4 meses, 1 aula por semana',
+      personas: ['profissional tímido', 'estudante', 'iniciante'],
+      painsSolved: ['vergonha de falar em público', 'nervosismo', 'insegurança'],
+      benefits: ['falar com segurança', 'estruturar ideias', 'presença'],
+      salesArguments: [
+        'Prática desde a primeira aula',
+        'Turmas pequenas com feedback individual',
+        'Método progressivo para quem trava',
+      ],
+      offers: [
+        {
+          name: 'Academy — turma regular',
+          listPrice: 3990,
+          installmentsMax: 12,
+          installmentValue: 332.5,
+          conditions: 'à vista com 10% de desconto ou 12x no cartão',
+          paymentMethods: ['pix', 'card', 'boleto'],
+          maxDiscountPct: 10,
+        },
+      ],
+      classes: [
+        {
+          name: 'Academy Noite',
+          weekdays: ['tue'],
+          startTime: '19:00',
+          endTime: '21:00',
+          period: 'evening',
+          capacity: 12,
+          enrolled: 7,
+        },
+        {
+          name: 'Academy Sábado',
+          weekdays: ['sat'],
+          startTime: '09:00',
+          endTime: '11:00',
+          period: 'morning',
+          capacity: 12,
+          enrolled: 4,
+        },
+      ],
+    },
+    {
+      slug: 'master',
+      name: 'Master',
+      category: 'course',
+      modality: 'in_person',
+      audience: 'both',
+      shortDescription:
+        'Programa avançado de comunicação persuasiva, liderança e apresentações de alto impacto.',
+      durationText: '6 meses',
+      personas: ['líder', 'vendedor', 'empreendedor', 'executivo'],
+      painsSolved: ['apresentações', 'liderança', 'vendas', 'persuasão'],
+      benefits: ['apresentar com impacto', 'persuadir', 'liderar reuniões'],
+      salesArguments: [
+        'Foco em resultados profissionais',
+        'Simulações reais de apresentações e negociações',
+        'Networking com outros líderes',
+      ],
+      offers: [
+        {
+          name: 'Master — turma regular',
+          listPrice: 6990,
+          installmentsMax: 12,
+          installmentValue: 582.5,
+          conditions: '12x no cartão ou à vista com 8% de desconto',
+          paymentMethods: ['pix', 'card'],
+          maxDiscountPct: 8,
+        },
+      ],
+      classes: [
+        {
+          name: 'Master Noite',
+          weekdays: ['thu'],
+          startTime: '19:00',
+          endTime: '21:30',
+          period: 'evening',
+          capacity: 10,
+          enrolled: 6,
+        },
+      ],
+    },
+    {
+      slug: 'intensivox',
+      name: 'Intensivox',
+      category: 'immersion',
+      modality: 'in_person',
+      audience: 'b2c',
+      shortDescription:
+        'Imersão intensiva de fim de semana para destravar a comunicação em vídeo e ao vivo.',
+      durationText: '2 dias (16h)',
+      personas: ['criador de conteúdo', 'profissional com prazo', 'vendedor'],
+      painsSolved: ['travar na frente da câmera', 'urgência', 'falta de tempo'],
+      benefits: ['resultado rápido', 'prática intensiva', 'gravações com feedback'],
+      salesArguments: [
+        'Ideal para quem tem pouco tempo',
+        'Destrava em um fim de semana',
+        'Feedback em vídeo',
+      ],
+      offers: [
+        {
+          name: 'Intensivox — próxima turma',
+          listPrice: 1490,
+          installmentsMax: 6,
+          installmentValue: 248.34,
+          conditions: '6x no cartão',
+          paymentMethods: ['pix', 'card'],
+          maxDiscountPct: 5,
+        },
+      ],
+      classes: [
+        {
+          name: 'Intensivox Outubro',
+          weekdays: ['sat', 'sun'],
+          startTime: '08:00',
+          endTime: '17:00',
+          period: 'morning',
+          capacity: 16,
+          enrolled: 9,
+          startsOffsetDays: 30,
+        },
+      ],
+    },
+    {
+      slug: 'incompany',
+      name: 'InCompany',
+      category: 'incompany',
+      modality: 'hybrid',
+      audience: 'b2b',
+      shortDescription:
+        'Treinamento corporativo sob medida para times comerciais, atendimento e lideranças.',
+      durationText: 'Sob medida (8h a 40h)',
+      personas: ['empresa', 'RH', 'gestor comercial'],
+      painsSolved: ['time de vendas', 'atendimento', 'apresentações corporativas', 'liderança'],
+      benefits: ['programa customizado', 'diagnóstico prévio', 'métricas de evolução'],
+      salesArguments: [
+        'Diagnóstico gratuito do time',
+        'Conteúdo adaptado ao negócio',
+        'Turmas fechadas na empresa ou na unidade',
+      ],
+      offers: [],
+      classes: [],
+    },
+    {
+      slug: 'voxtime',
+      name: 'VoxTime',
+      category: 'course',
+      modality: 'online',
+      audience: 'b2c',
+      shortDescription: 'Encontros online curtos e práticos para manter a comunicação em dia.',
+      durationText: 'Mensal, 4 encontros de 1h',
+      personas: ['ex-aluno', 'profissional ocupado'],
+      painsSolved: ['manter prática', 'falta de tempo'],
+      benefits: ['flexível', 'online', 'prática contínua'],
+      salesArguments: ['100% online', 'Ideal para manter o ritmo'],
+      offers: [
+        {
+          name: 'VoxTime mensal',
+          listPrice: 297,
+          installmentsMax: 1,
+          installmentValue: null,
+          conditions: 'assinatura mensal',
+          paymentMethods: ['pix', 'card'],
+          maxDiscountPct: 0,
+        },
+      ],
+      classes: [],
+    },
   ]
   const productIds: Record<string, string> = {}
   for (const def of productDefs) {
     const { offers, classes, ...data } = def
-    const product = await db.product.upsert({ where: { tenantId_slug: { tenantId: tenant.id, slug: def.slug } }, update: {}, create: { ...data, tenantId: tenant.id, unitId: null, status: 'active' } })
+    const product = await db.product.upsert({
+      where: { tenantId_slug: { tenantId: tenant.id, slug: def.slug } },
+      update: {},
+      create: { ...data, tenantId: tenant.id, unitId: null, status: 'active' },
+    })
     productIds[def.slug] = product.id
     if (!(await db.offer.findFirst({ where: { productId: product.id } }))) {
-      for (const o of offers) await db.offer.create({ data: { tenantId: tenant.id, productId: product.id, unitId: unit.id, name: o.name, listPrice: o.listPrice, installmentsMax: o.installmentsMax, installmentValue: o.installmentValue, conditions: o.conditions, paymentMethods: o.paymentMethods, maxDiscountPct: o.maxDiscountPct, discountRequiresApproval: true, status: 'active' } })
+      for (const o of offers)
+        await db.offer.create({
+          data: {
+            tenantId: tenant.id,
+            productId: product.id,
+            unitId: unit.id,
+            name: o.name,
+            listPrice: o.listPrice,
+            installmentsMax: o.installmentsMax,
+            installmentValue: o.installmentValue,
+            conditions: o.conditions,
+            paymentMethods: o.paymentMethods,
+            maxDiscountPct: o.maxDiscountPct,
+            discountRequiresApproval: true,
+            status: 'active',
+          },
+        })
     }
-    if (!(await db.classSchedule.findFirst({ where: { productId: product.id, unitId: unit.id } }))) {
+    if (
+      !(await db.classSchedule.findFirst({ where: { productId: product.id, unitId: unit.id } }))
+    ) {
       for (const c of classes) {
         const startsOn = new Date()
-        startsOn.setDate(startsOn.getDate() + ((c as { startsOffsetDays?: number }).startsOffsetDays ?? 14))
-        await db.classSchedule.create({ data: { tenantId: tenant.id, unitId: unit.id, productId: product.id, name: c.name, startsOn, weekdays: c.weekdays, startTime: c.startTime, endTime: c.endTime, period: c.period, capacity: c.capacity, enrolled: c.enrolled, status: 'open' } })
+        startsOn.setDate(
+          startsOn.getDate() + ((c as { startsOffsetDays?: number }).startsOffsetDays ?? 14),
+        )
+        await db.classSchedule.create({
+          data: {
+            tenantId: tenant.id,
+            unitId: unit.id,
+            productId: product.id,
+            name: c.name,
+            startsOn,
+            weekdays: c.weekdays,
+            startTime: c.startTime,
+            endTime: c.endTime,
+            period: c.period,
+            capacity: c.capacity,
+            enrolled: c.enrolled,
+            status: 'open',
+          },
+        })
       }
     }
   }
@@ -116,25 +417,98 @@ export async function seedVox2you(db: Db, opts: SeedOptions): Promise<SeedResult
   ]
   const knowledgeDocumentIds: string[] = []
   for (const d of docs) {
-    const existing = await db.knowledgeDocument.findFirst({ where: { tenantId: tenant.id, title: d.title } })
-    const doc = existing ?? (await db.knowledgeDocument.create({ data: { tenantId: tenant.id, unitId: null, title: d.title, category: d.category, sourceType: 'text', status: 'published', publishedAt: new Date(), priority: 7, ingestStatus: 'pending', metadata: { content: d.content } } }))
+    const existing = await db.knowledgeDocument.findFirst({
+      where: { tenantId: tenant.id, title: d.title },
+    })
+    const doc =
+      existing ??
+      (await db.knowledgeDocument.create({
+        data: {
+          tenantId: tenant.id,
+          unitId: null,
+          title: d.title,
+          category: d.category,
+          sourceType: 'text',
+          status: 'published',
+          publishedAt: new Date(),
+          priority: 7,
+          ingestStatus: 'pending',
+          metadata: { content: d.content },
+        },
+      }))
     knowledgeDocumentIds.push(doc.id)
   }
 
   // Templates (mock approved) so out-of-window follow-ups have something to send in dev
   for (const t of [
-    { name: 'retomada_contato', language: 'pt_BR', category: 'MARKETING', body: 'Oi {{1}}, aqui é da VOX2you. Podemos continuar nossa conversa sobre {{2}}?', variables: ['nome', 'assunto'] },
-    { name: 'lembrete_visita', language: 'pt_BR', category: 'UTILITY', body: 'Olá {{1}}! Lembrando da sua visita à VOX2you em {{2}}. Até lá!', variables: ['nome', 'data'] },
+    {
+      name: 'retomada_contato',
+      language: 'pt_BR',
+      category: 'MARKETING',
+      body: 'Oi {{1}}, aqui é da VOX2you. Podemos continuar nossa conversa sobre {{2}}?',
+      variables: ['nome', 'assunto'],
+    },
+    {
+      name: 'lembrete_visita',
+      language: 'pt_BR',
+      category: 'UTILITY',
+      body: 'Olá {{1}}! Lembrando da sua visita à VOX2you em {{2}}. Até lá!',
+      variables: ['nome', 'data'],
+    },
   ]) {
-    await db.messageTemplate.upsert({ where: { tenantId_name_language: { tenantId: tenant.id, name: t.name, language: t.language } }, update: {}, create: { tenantId: tenant.id, unitId: null, name: t.name, language: t.language, category: t.category, status: 'approved', body: t.body, variables: t.variables, components: [{ type: 'BODY', text: t.body }], providerId: `local-${t.name}`, qualityScore: 'GREEN' } })
+    await db.messageTemplate.upsert({
+      where: {
+        tenantId_name_language: { tenantId: tenant.id, name: t.name, language: t.language },
+      },
+      update: {},
+      create: {
+        tenantId: tenant.id,
+        unitId: null,
+        name: t.name,
+        language: t.language,
+        category: t.category,
+        status: 'approved',
+        body: t.body,
+        variables: t.variables,
+        components: [{ type: 'BODY', text: t.body }],
+        providerId: `local-${t.name}`,
+        qualityScore: 'GREEN',
+      },
+    })
   }
 
   // Sample automation: notify owner when a lead is qualified
-  if (!(await db.automation.findFirst({ where: { tenantId: tenant.id, trigger: 'lead.qualified' } }))) {
-    await db.automation.create({ data: { tenantId: tenant.id, unitId: unit.id, name: 'Lead qualificado → tarefa para o time', trigger: 'lead.qualified', conditions: [], actions: [{ type: 'create_task', title: 'Lead qualificado pela IA: ligar em até 5 minutos', kind: 'call', dueInHours: 0.1 }, { type: 'add_tag', tag: 'qualificado-ia' }] } })
+  if (
+    !(await db.automation.findFirst({ where: { tenantId: tenant.id, trigger: 'lead.qualified' } }))
+  ) {
+    await db.automation.create({
+      data: {
+        tenantId: tenant.id,
+        unitId: unit.id,
+        name: 'Lead qualificado → tarefa para o time',
+        trigger: 'lead.qualified',
+        conditions: [],
+        actions: [
+          {
+            type: 'create_task',
+            title: 'Lead qualificado pela IA: ligar em até 5 minutos',
+            kind: 'call',
+            dueInHours: 0.1,
+          },
+          { type: 'add_tag', tag: 'qualificado-ia' },
+        ],
+      },
+    })
   }
 
-  return { tenantId: tenant.id, unitId: unit.id, adminUserId: admin.id, channelId: channel.id, productIds, knowledgeDocumentIds }
+  return {
+    tenantId: tenant.id,
+    unitId: unit.id,
+    adminUserId: admin.id,
+    channelId: channel.id,
+    productIds,
+    knowledgeDocumentIds,
+  }
 }
 
 const KB_HOW_IT_WORKS = `# Como funciona a VOX2you
