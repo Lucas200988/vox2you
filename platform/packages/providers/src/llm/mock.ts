@@ -251,7 +251,7 @@ function generate(text: string, req: LLMRequest) {
   let reply = ''
   let nextBestAction = 'Continuar descoberta'
   // SDR mode (see orchestrator mode hints): never quote prices, always steer to the in-person visit.
-  if (system.includes('MODO SDR')) {
+  if (system.includes('## MODO SDR')) {
     const invite = slotLine
       ? `Tenho ${slotLine[1]!.trim()} livre para você conhecer a unidade. Posso reservar?`
       : 'Qual dia da semana costuma ser melhor pra você passar na unidade?'
