@@ -60,6 +60,7 @@
 ## 6. Operação segura
 
 - Segredos em variáveis de ambiente / secret manager; `APP_ENCRYPTION_KEY` (AES-256-GCM) para credenciais de `Integration`.
+- Credenciais cadastradas pelo CRM (Configurações → Integrações): segredos só existem em claro na memória do processo; a API devolve apenas os 4 últimos caracteres; o audit log registra quais campos mudaram, nunca os valores; `settings:write` (owner/admin) é exigido para salvar, testar ou remover. Rotacionar `APP_ENCRYPTION_KEY` exige re-salvar as integrações.
 - TLS obrigatório (terminação no proxy); HSTS via helmet.
 - Health checks sem dados sensíveis.
 - Graceful shutdown (drena filas e conexões).

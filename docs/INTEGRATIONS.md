@@ -31,6 +31,16 @@ Credenciais são lidas de variáveis de ambiente (ver `platform/.env.example`) o
 | `ConversionProvider` | Meta CAPI | Interface + `NoopConversionProvider` | `META_CAPI_TOKEN`, `META_PIXEL_ID` |
 | Webhooks genéricos / n8n | `call_webhook` action | Implementado (HMAC assinado) | — |
 
+## Configuração pelo CRM (sem .env)
+
+Todas as credenciais acima podem ser cadastradas em **Configurações → Integrações** pelo owner/admin da conta, sem acesso ao servidor:
+
+- **Onde fica:** tabela `integrations`; valores não sensíveis em `config`, segredos em `credentials_enc` (AES-256-GCM com `APP_ENCRYPTION_KEY`). A API nunca devolve segredos, só uma dica (`••••1234`); deixar o campo em branco ao salvar mantém o segredo atual.
+- **Escopo:** Anthropic, OpenAI, Langfuse, SMTP, S3 e Meta CAPI valem para a conta; WhatsApp e Google Calendar são por unidade. Ao salvar o WhatsApp, o canal da unidade é criado/atualizado com o `phone_number_id` (globalmente único; um número de outra conta é recusado).
+- **Testar conexão:** cada integração tem um teste vivo e barato (lista de modelos, leitura do número na Meta, leitura do calendário, `HeadBucket`, `verify` SMTP). O status vira `connected` ou `error` com a mensagem do provedor.
+- **Runtime:** API e worker resolvem os providers **por tenant** (`TenantProviderResolver`, cache 60 s) a partir dessas credenciais, com o `.env` como fallback. O webhook do WhatsApp valida a assinatura com o app secret do tenant dono do `phone_number_id`; o handshake de verificação aceita o verify token de qualquer conta configurada.
+- **Checklist de ativação:** `GET /api/v1/setup-status?unitId=` (exibido na aba Integrações) lista o que falta para o piloto: dados da unidade, WhatsApp, IA, embeddings, agente, horário de atendimento, agenda, base de conhecimento, catálogo (só em modo closer), templates, equipe.
+
 ## WhatsApp Business Platform (Meta Cloud API)
 
 - **Webhook**: `GET /webhooks/whatsapp` (verify token) e `POST /webhooks/whatsapp` (assinatura `X-Hub-Signature-256` = HMAC-SHA256 do corpo bruto com `WHATSAPP_APP_SECRET`). O POST responde `200` em < 50 ms e enfileira.

@@ -9,6 +9,7 @@ Entrega em **slices verticais**: cada slice é funcional ponta a ponta (webhook/
 - Provedores reais (Anthropic, OpenAI, Meta Cloud, Google Calendar, S3, Langfuse, SMTP) estão implementados mas **não exercitados**: faltam credenciais (ver `INTEGRATIONS.md`).
 - Preços/ofertas/turmas do seed são **placeholders** a substituir pela unidade antes de qualquer uso real.
 - **Modo de venda (Configurações → Agente):** padrão **SDR**: o agente qualifica e agenda a visita presencial; nunca cita preço, parcela, desconto ou apresenta produto pelo WhatsApp (o catálogo continua carregado só para a validação, que bloqueia qualquer valor). Modo **closer** mantém o comportamento de apresentar ofertas. Testes: `tests/integration/sdr-mode.test.ts`.
+- **Configuração pelo CRM:** credenciais (Anthropic, OpenAI, WhatsApp Meta, Google Calendar, Langfuse, SMTP, S3, Meta CAPI) e dados da unidade são cadastrados em Configurações, criptografados, testados com um clique e usados em runtime por tenant (API, worker e webhook). Checklist de ativação mostra o que falta para o piloto. Testes: `tests/integration/integrations.test.ts`.
 
 ## Slice 0 — Fundação (esta entrega)
 - [x] Análise do repositório e riscos

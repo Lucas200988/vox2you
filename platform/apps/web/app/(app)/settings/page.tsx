@@ -17,9 +17,12 @@ import {
   Toggle,
   useToast,
 } from '@/components/ui/primitives'
+import { IntegrationsTab } from '@/components/settings/integrations-tab'
+import { UnitTab } from '@/components/settings/unit-tab'
 
 const TABS = [
   { key: 'agent', label: 'Agente' },
+  { key: 'unit', label: 'Unidade' },
   { key: 'score', label: 'Score' },
   { key: 'followup', label: 'Follow-up' },
   { key: 'users', label: 'Usuários' },
@@ -38,7 +41,8 @@ export default function SettingsPage() {
       {tab === 'score' && <ScoreTab />}
       {tab === 'followup' && <FollowUpTab />}
       {tab === 'users' && <UsersTab />}
-      {tab === 'integrations' && <IntegrationsTab />}
+      {tab === 'integrations' && <IntegrationsTab onGoTo={(t) => setTab(t)} />}
+      {tab === 'unit' && <UnitTab />}
       {tab === 'automations' && <AutomationsTab />}
       {tab === 'audit' && <AuditTab />}
     </div>
@@ -473,117 +477,6 @@ function UsersTab() {
                 </td>
                 <td>{u.status}</td>
                 <td className="text-xs text-muted">{fmtDate(u.lastLoginAt)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </Card>
-      {toast.node}
-    </div>
-  )
-}
-
-function IntegrationsTab() {
-  const { data } = useApi<{ runtime: Record<string, string | string[]>; items: unknown[] }>(
-    'integrations',
-  )
-  const { data: templates } = useApi<{
-    items: Array<{
-      name: string
-      language: string
-      category: string
-      status: string
-      qualityScore: string | null
-      lastSyncAt: string | null
-    }>
-  }>('templates')
-  const toast = useToast()
-  const rt = data?.runtime ?? {}
-  const pending = (rt['pendingCredentials'] as string[] | undefined) ?? []
-  return (
-    <div className="space-y-4">
-      <Card title="Providers em execução">
-        <div className="grid gap-2 md:grid-cols-3">
-          {[
-            'llm',
-            'embedding',
-            'messaging',
-            'stt',
-            'calendar',
-            'storage',
-            'trace',
-            'email',
-            'conversion',
-          ].map((k) => (
-            <div
-              key={k}
-              className="flex items-center justify-between rounded-md border px-3 py-2 text-sm"
-            >
-              <span className="text-muted">{k}</span>
-              <Badge
-                tone={
-                  ['mock', 'hash', 'internal', 'local', 'console', 'noop'].includes(String(rt[k]))
-                    ? 'amber'
-                    : 'green'
-                }
-              >
-                {String(rt[k] ?? '—')}
-              </Badge>
-            </div>
-          ))}
-        </div>
-        {pending.length > 0 && (
-          <div className="mt-3 rounded-md bg-amber-50 p-3 text-xs text-amber-900">
-            <p className="font-medium">
-              Credenciais pendentes (a plataforma opera em modo simulação até serem configuradas no
-              .env):
-            </p>
-            <ul className="mt-1 list-disc pl-4">
-              {pending.map((p) => (
-                <li key={p}>{p}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </Card>
-      <Card
-        title="Templates WhatsApp"
-        actions={
-          <Button
-            size="sm"
-            variant="secondary"
-            onClick={async () => {
-              const r = await api.post<{ synced: number; provider: string }>('templates/sync')
-              await mutate('templates')
-              toast.show(`${r.synced} templates sincronizados (${r.provider})`)
-            }}
-          >
-            Sincronizar com a Meta
-          </Button>
-        }
-      >
-        <table className="w-full text-sm">
-          <thead className="text-left text-xs text-muted">
-            <tr>
-              <th>Nome</th>
-              <th>Idioma</th>
-              <th>Categoria</th>
-              <th>Status</th>
-              <th>Qualidade</th>
-              <th>Sync</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(templates?.items ?? []).map((t) => (
-              <tr key={`${t.name}-${t.language}`} className="border-t">
-                <td className="py-1.5 font-mono text-xs">{t.name}</td>
-                <td>{t.language}</td>
-                <td>{t.category}</td>
-                <td>
-                  <Badge tone={t.status === 'approved' ? 'green' : 'amber'}>{t.status}</Badge>
-                </td>
-                <td>{t.qualityScore ?? '—'}</td>
-                <td className="text-xs text-muted">{fmtDate(t.lastSyncAt)}</td>
               </tr>
             ))}
           </tbody>

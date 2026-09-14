@@ -3,7 +3,9 @@ import { Redis } from 'ioredis'
 import { createDb } from '@vox/db'
 import {
   createLogger,
+  currentTenantId,
   InboundProcessor,
+  IntegrationService,
   PromptRegistry,
   QUEUES,
   type AgentDeps,
@@ -13,7 +15,13 @@ import {
   type IngestionJob,
   type OutboundJob,
 } from '@vox/core'
-import { createProvidersFromEnv, RedisRealtimePublisher } from '@vox/providers'
+import {
+  createProvidersFromEnv,
+  RedisRealtimePublisher,
+  tenantAwareProviders,
+  TenantProviderResolver,
+} from '@vox/providers'
+import { tenantOf, withTenant } from './tenant.js'
 import { loadConfig } from './config.js'
 import { processInbound } from './jobs/inbound.js'
 import { processOutbound } from './jobs/outbound.js'
@@ -26,14 +34,31 @@ async function main() {
   const config = loadConfig()
   const logger = createLogger('worker', config.LOG_LEVEL)
   const db = createDb({ url: config.DATABASE_URL })
-  const { providers, status } = createProvidersFromEnv(
-    process.env as Record<string, string | undefined>,
-    logger,
-  )
+  const baseEnv = process.env as Record<string, string | undefined>
+  const built = createProvidersFromEnv(baseEnv, logger)
+  const status = built.status
   if (status.pendingCredentials.length)
-    logger.warn({ pending: status.pendingCredentials }, 'running with mock/local providers')
+    logger.warn(
+      { pending: status.pendingCredentials },
+      'running with mock/local providers (tenants may configure their own in the CRM)',
+    )
+  // CRM-managed credentials: resolved per tenant and served through an ambient-tenant facade
+  const integrations = new IntegrationService(db, config.APP_ENCRYPTION_KEY)
+  const resolver = new TenantProviderResolver({
+    baseEnv,
+    base: built,
+    logger,
+    loadOverrides: (tenantId) => integrations.envOverrides(tenantId),
+  })
+  const providers = tenantAwareProviders(built.providers, resolver, currentTenantId)
   const prompts = new PromptRegistry(db)
-  const deps: AgentDeps = { db, providers, logger, prompts }
+  const deps: AgentDeps = {
+    db,
+    providers,
+    logger,
+    prompts,
+    warmTenant: async (tenantId) => void (await resolver.resolve(tenantId)),
+  }
   const realtime = new RedisRealtimePublisher(config.REDIS_URL)
   const connection = new Redis(config.REDIS_URL, { maxRetriesPerRequest: null })
   const queues = {
@@ -75,22 +100,47 @@ async function main() {
       connection,
       concurrency: config.WORKER_CONCURRENCY_INBOUND,
     }),
-    new Worker<OutboundJob>(QUEUES.outbound, (job) => processOutbound(ctx, job.data), {
-      connection,
-      concurrency: 4,
-    }),
-    new Worker<IngestionJob>(QUEUES.ingestion, (job) => processIngestion(ctx, job.data), {
-      connection,
-      concurrency: config.WORKER_CONCURRENCY_INGESTION,
-    }),
-    new Worker<FollowUpJob>(QUEUES.followups, (job) => processFollowUp(ctx, job.data), {
-      connection,
-      concurrency: 2,
-    }),
-    new Worker<DomainEventJob>(QUEUES.events, (job) => processDomainEvent(ctx, job.data), {
-      connection,
-      concurrency: 4,
-    }),
+    new Worker<OutboundJob>(
+      QUEUES.outbound,
+      (job) => withTenant(ctx, job.data.tenantId, () => processOutbound(ctx, job.data)),
+      {
+        connection,
+        concurrency: 4,
+      },
+    ),
+    new Worker<IngestionJob>(
+      QUEUES.ingestion,
+      async (job) =>
+        withTenant(ctx, await tenantOf.document(ctx, job.data.documentId), () =>
+          processIngestion(ctx, job.data),
+        ),
+      {
+        connection,
+        concurrency: config.WORKER_CONCURRENCY_INGESTION,
+      },
+    ),
+    new Worker<FollowUpJob>(
+      QUEUES.followups,
+      async (job) =>
+        withTenant(ctx, await tenantOf.followUp(ctx, job.data.followUpId), () =>
+          processFollowUp(ctx, job.data),
+        ),
+      {
+        connection,
+        concurrency: 2,
+      },
+    ),
+    new Worker<DomainEventJob>(
+      QUEUES.events,
+      async (job) =>
+        withTenant(ctx, await tenantOf.event(ctx, job.data.eventId), () =>
+          processDomainEvent(ctx, job.data),
+        ),
+      {
+        connection,
+        concurrency: 4,
+      },
+    ),
   ]
   for (const w of workers) {
     w.on('failed', deadLetter(w.name))

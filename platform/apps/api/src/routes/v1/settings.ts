@@ -2,11 +2,13 @@ import type { FastifyPluginAsync } from 'fastify'
 import { z } from 'zod'
 import type { Prisma } from '@vox/db'
 import { AgentSettingsInputSchema, ROLES } from '@vox/shared'
+import { checkIntegration } from '@vox/providers'
 import {
   DEFAULT_SCORING_WEIGHTS,
   NotFoundError,
   ValidationError,
   hashPassword,
+  integrationKind,
   loadAgentSettings,
   loadFollowUpPolicy,
 } from '@vox/core'
@@ -48,6 +50,7 @@ export const settingsRoutes: FastifyPluginAsync = async (app) => {
           state: z.string().optional(),
           address: z.string().optional(),
           phone: z.string().optional(),
+          email: z.string().optional(),
           timezone: z.string().optional(),
         }),
       },
@@ -388,24 +391,258 @@ export const settingsRoutes: FastifyPluginAsync = async (app) => {
     },
   )
 
+  // ─── Integrations (CRM-managed credentials; secrets encrypted at rest, never returned) ───
+  const KindParams = z.object({ kind: z.string().min(1) })
+  const IntegrationBody = z.object({
+    unitId: z.string().uuid().optional(),
+    values: z.record(z.string(), z.string()),
+  })
+  const assertUnit = async (tenantId: string, unitId?: string) => {
+    if (!unitId) return
+    const unit = await db.unit.findFirst({ where: { id: unitId, tenantId }, select: { id: true } })
+    if (!unit) throw new NotFoundError('Unit', unitId)
+  }
+  const scopedUnit = (kind: string, unitId?: string): string | null =>
+    integrationKind(kind)?.scope === 'unit' ? (unitId ?? null) : null
+
   app.get(
     '/integrations',
-    { schema: { tags: ['settings'] }, preHandler: app.requireAuth('settings:read') },
+    {
+      schema: {
+        tags: ['settings'],
+        querystring: z.object({ unitId: z.string().uuid().optional() }),
+      },
+      preHandler: app.requireAuth('settings:read'),
+    },
     async (req) => {
-      const rows = await db.integration.findMany({
-        where: { tenantId: req.auth!.tenantId },
-        select: {
-          id: true,
-          unitId: true,
-          kind: true,
-          name: true,
-          status: true,
-          config: true,
-          lastError: true,
-          lastSyncAt: true,
+      const { unitId } = req.query as { unitId?: string }
+      const tenantId = req.auth!.tenantId
+      const [items, resolved] = await Promise.all([
+        app.ctx.integrations.list(tenantId, unitId),
+        app.ctx.resolver.resolve(tenantId),
+      ])
+      return {
+        kinds: app.ctx.integrations.kinds(),
+        items,
+        runtime: resolved.status,
+        processRuntime: app.ctx.providerStatus,
+      }
+    },
+  )
+
+  app.put(
+    '/integrations/:kind',
+    {
+      schema: { tags: ['settings'], params: KindParams, body: IntegrationBody },
+      preHandler: app.requireAuth('settings:write'),
+    },
+    async (req) => {
+      const { kind } = req.params as z.infer<typeof KindParams>
+      const { unitId, values } = req.body as z.infer<typeof IntegrationBody>
+      const tenantId = req.auth!.tenantId
+      await assertUnit(tenantId, unitId)
+      const view = await app.ctx.integrations.save(tenantId, kind, scopedUnit(kind, unitId), values)
+      app.ctx.resolver.invalidate(tenantId)
+      // Audit what changed, never the values
+      await db.auditLog.create({
+        data: {
+          tenantId,
+          userId: req.auth!.userId ?? null,
+          actor: req.auth!.actor,
+          action: 'integration.save',
+          entityType: 'integration',
+          entityId: view.id,
+          after: {
+            kind,
+            unitId: view.unitId,
+            fields: Object.keys(values),
+          } as Prisma.InputJsonValue,
         },
       })
-      return { items: rows, runtime: app.ctx.providerStatus }
+      return view
+    },
+  )
+
+  app.post(
+    '/integrations/:kind/test',
+    {
+      schema: {
+        tags: ['settings'],
+        params: KindParams,
+        body: z.object({ unitId: z.string().uuid().optional() }).default({}),
+      },
+      preHandler: app.requireAuth('settings:write'),
+    },
+    async (req) => {
+      const { kind } = req.params as z.infer<typeof KindParams>
+      const { unitId } = (req.body ?? {}) as { unitId?: string }
+      const tenantId = req.auth!.tenantId
+      const loaded = await app.ctx.integrations.values(tenantId, kind, scopedUnit(kind, unitId))
+      if (!loaded) throw new NotFoundError('Integration', kind)
+      const result = await checkIntegration(kind, loaded.values)
+      await app.ctx.integrations.setStatus(
+        loaded.row.id,
+        result.ok ? 'connected' : 'error',
+        result.ok ? null : result.message,
+      )
+      app.ctx.resolver.invalidate(tenantId)
+      return result
+    },
+  )
+
+  app.delete(
+    '/integrations/:kind',
+    {
+      schema: {
+        tags: ['settings'],
+        params: KindParams,
+        querystring: z.object({ unitId: z.string().uuid().optional() }),
+      },
+      preHandler: app.requireAuth('settings:write'),
+    },
+    async (req) => {
+      const { kind } = req.params as z.infer<typeof KindParams>
+      const { unitId } = req.query as { unitId?: string }
+      const tenantId = req.auth!.tenantId
+      await app.ctx.integrations.remove(tenantId, kind, scopedUnit(kind, unitId))
+      app.ctx.resolver.invalidate(tenantId)
+      await db.auditLog.create({
+        data: {
+          tenantId,
+          userId: req.auth!.userId ?? null,
+          actor: req.auth!.actor,
+          action: 'integration.remove',
+          entityType: 'integration',
+          entityId: kind,
+          after: { kind, unitId: unitId ?? null } as Prisma.InputJsonValue,
+        },
+      })
+      return { ok: true }
+    },
+  )
+
+  /** Go-live checklist for a unit: what is configured, what is still missing before the pilot. */
+  app.get(
+    '/setup-status',
+    {
+      schema: { tags: ['settings'], querystring: UnitQuery },
+      preHandler: app.requireAuth('settings:read'),
+    },
+    async (req) => {
+      const { unitId } = req.query as { unitId: string }
+      const tenantId = req.auth!.tenantId
+      const unit = await db.unit.findFirst({ where: { id: unitId, tenantId } })
+      if (!unit) throw new NotFoundError('Unit', unitId)
+      const [resolved, integrations, agent, docs, products, templates, users] = await Promise.all([
+        app.ctx.resolver.resolve(tenantId),
+        app.ctx.integrations.list(tenantId, unitId),
+        db.agentSettings.findUnique({ where: { unitId } }),
+        db.knowledgeDocument.count({ where: { tenantId, ingestStatus: 'ready' } }),
+        db.product.count({ where: { tenantId } }),
+        db.messageTemplate.count({ where: { tenantId } }),
+        db.user.count({ where: { tenantId, status: 'active' } }),
+      ])
+      const rt = resolved.status
+      const has = (kind: string) =>
+        integrations.find((i) => i.kind === kind && (i.unitId === null || i.unitId === unitId))
+      const connected = (kind: string) => has(kind)?.status === 'connected'
+      const extra = (agent?.extra as { salesMode?: string } | null) ?? {}
+      const salesMode = extra.salesMode === 'closer' ? 'closer' : 'sdr'
+      const hoursSet =
+        ((agent?.businessHours as { rules?: unknown[] } | null)?.rules ?? []).length > 0
+      const items = [
+        {
+          key: 'unit_profile',
+          label: 'Dados da unidade (endereço e telefone aparecem na confirmação da visita)',
+          required: true,
+          ok: !!(unit.address && unit.phone),
+          detail: unit.address ? unit.address : 'sem endereço',
+          tab: 'unit',
+        },
+        {
+          key: 'whatsapp',
+          label: 'WhatsApp Business (Meta) conectado',
+          required: true,
+          ok: connected('whatsapp_meta') || rt.messaging === 'meta',
+          detail: has('whatsapp_meta')
+            ? `status: ${has('whatsapp_meta')!.status}`
+            : `provider atual: ${rt.messaging}`,
+          tab: 'integrations',
+        },
+        {
+          key: 'llm',
+          label: 'Modelo de IA (Anthropic)',
+          required: true,
+          ok: rt.llm !== 'mock',
+          detail: `provider atual: ${rt.llm}`,
+          tab: 'integrations',
+        },
+        {
+          key: 'embedding',
+          label: 'Embeddings e transcrição de áudio (OpenAI)',
+          required: true,
+          ok: rt.embedding !== 'hash',
+          detail: `embeddings: ${rt.embedding} · áudio: ${rt.stt}`,
+          tab: 'integrations',
+        },
+        {
+          key: 'agent',
+          label: 'Agente configurado (modo de venda, nome, persona)',
+          required: true,
+          ok: !!agent,
+          detail: `modo: ${salesMode}`,
+          tab: 'agent',
+        },
+        {
+          key: 'business_hours',
+          label: 'Horário de atendimento da unidade',
+          required: true,
+          ok: hoursSet,
+          detail: hoursSet ? 'definido' : 'sem horários: a agenda interna não gera slots de visita',
+          tab: 'agent',
+        },
+        {
+          key: 'calendar',
+          label: 'Agenda para visitas',
+          required: true,
+          ok: connected('google_calendar') || (rt.calendar === 'internal' && hoursSet),
+          detail: connected('google_calendar') ? 'Google Calendar' : `agenda ${rt.calendar}`,
+          tab: 'integrations',
+        },
+        {
+          key: 'knowledge',
+          label: 'Base de conhecimento publicada',
+          required: true,
+          ok: docs > 0,
+          detail: `${docs} documento(s) prontos`,
+          tab: 'knowledge',
+        },
+        {
+          key: 'products',
+          label: 'Catálogo de programas (preços só são usados em modo closer)',
+          required: salesMode === 'closer',
+          ok: products > 0,
+          detail: `${products} produto(s)`,
+          tab: 'products',
+        },
+        {
+          key: 'templates',
+          label: 'Templates aprovados pela Meta (follow-up fora da janela de 24h)',
+          required: false,
+          ok: templates > 0,
+          detail: `${templates} template(s)`,
+          tab: 'integrations',
+        },
+        {
+          key: 'team',
+          label: 'Consultores cadastrados para assumir conversas',
+          required: false,
+          ok: users > 1,
+          detail: `${users} usuário(s)`,
+          tab: 'users',
+        },
+      ]
+      return { salesMode, items, ready: items.every((i) => !i.required || i.ok) }
     },
   )
 

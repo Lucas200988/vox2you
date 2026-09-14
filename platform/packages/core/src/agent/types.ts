@@ -1,5 +1,12 @@
 import type { Db } from '@vox/db'
-import type { AgentAction, Classification, Extraction, Generation, SalesBrain, ValidationResult } from '@vox/shared'
+import type {
+  AgentAction,
+  Classification,
+  Extraction,
+  Generation,
+  SalesBrain,
+  ValidationResult,
+} from '@vox/shared'
 import type { Logger } from '../logger.js'
 import type { Providers } from '../providers/index.js'
 import type { PromptRegistry } from '../prompts/registry.js'
@@ -14,6 +21,8 @@ export interface AgentDeps {
   providers: Providers
   logger: Logger
   prompts: PromptRegistry
+  /** Pre-resolves tenant-scoped providers (CRM-managed credentials) before work runs under `runWithTenant`. */
+  warmTenant?: (tenantId: string) => Promise<void>
 }
 
 export interface AgentRunInput {
@@ -31,10 +40,46 @@ export interface AgentRunInput {
 }
 
 export interface MemorySnapshot {
-  contact: { id: string; name: string | null; firstName: string | null; phone: string | null; email: string | null; profileType: string | null; source: string | null; city: string | null; company?: { name: string } | null }
-  lead: { id: string; stageKey: string; stageName: string; score: number; ownerId: string | null; interestProductId: string | null; recommendedProductId: string | null; doNotContactUntil: Date | null; createdAt: Date } | null
-  conversation: { id: string; mode: string; summary: string | null; lastInboundAt: Date | null; channelKind: string; channelId: string; contactId: string; unitId: string; leadId: string | null }
-  recent: Array<{ id: string; direction: 'inbound' | 'outbound'; authorType: string; text: string; createdAt: Date }>
+  contact: {
+    id: string
+    name: string | null
+    firstName: string | null
+    phone: string | null
+    email: string | null
+    profileType: string | null
+    source: string | null
+    city: string | null
+    company?: { name: string } | null
+  }
+  lead: {
+    id: string
+    stageKey: string
+    stageName: string
+    score: number
+    ownerId: string | null
+    interestProductId: string | null
+    recommendedProductId: string | null
+    doNotContactUntil: Date | null
+    createdAt: Date
+  } | null
+  conversation: {
+    id: string
+    mode: string
+    summary: string | null
+    lastInboundAt: Date | null
+    channelKind: string
+    channelId: string
+    contactId: string
+    unitId: string
+    leadId: string | null
+  }
+  recent: Array<{
+    id: string
+    direction: 'inbound' | 'outbound'
+    authorType: string
+    text: string
+    createdAt: Date
+  }>
   facts: Array<{ id: string; key: string; value: string; source: string; confidence: number }>
   inboundCount: number
   outboundCount: number

@@ -8,7 +8,11 @@ import { LeadService } from '../crm/lead-service.js'
 import { FollowUpService } from '../followup/service.js'
 import type { RealtimePublisher } from '../jobs/types.js'
 import type { InboundEvent } from '../providers/messaging.js'
-import { agentContext } from '../tenant/context.js'
+import { agentContext, runWithTenant } from '../tenant/context.js'
+
+type ResolvedChannel = Prisma.ChannelGetPayload<{
+  include: { unit: { select: { id: true; tenantId: true; timezone: true } } }
+}>
 
 export interface InboundResult {
   handled: boolean
@@ -74,6 +78,17 @@ export class InboundProcessor {
       )
       return { handled: false, reason: 'unknown_channel' }
     }
+    // From here on everything runs under the channel's tenant so CRM-managed credentials apply.
+    await this.deps.warmTenant?.(channel.tenantId)
+    return runWithTenant(channel.tenantId, () => this.handle(event, channel, opts))
+  }
+
+  private async handle(
+    event: InboundEvent,
+    channel: ResolvedChannel,
+    opts: { runAgent?: boolean },
+  ): Promise<InboundResult> {
+    const { db, logger } = this.deps
     const tenantId = channel.tenantId
     const unitId = channel.unitId
     const ctx = agentContext(tenantId)

@@ -6,6 +6,8 @@ const EnvSchema = z.object({
   LOG_LEVEL: z.string().default('info'),
   DATABASE_URL: z.string().min(1),
   REDIS_URL: z.string().default('redis://localhost:6379'),
+  /** Same key as the API: decrypts CRM-managed integration credentials. */
+  APP_ENCRYPTION_KEY: z.string().min(16),
   WORKER_CONCURRENCY_INBOUND: z.coerce.number().default(8),
   WORKER_CONCURRENCY_INGESTION: z.coerce.number().default(2),
   OUTBOX_POLL_MS: z.coerce.number().default(2000),

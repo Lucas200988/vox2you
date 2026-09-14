@@ -41,3 +41,24 @@ export function unitScope(ctx: TenantContext): { unitId?: { in: string[] } } {
   if (ctx.unitIds.length === 0 || ctx.role === 'system' || ctx.role === 'owner' || ctx.role === 'admin') return {}
   return { unitId: { in: ctx.unitIds } }
 }
+
+// ─── Ambient tenant (AsyncLocalStorage) ───────────────────────────────────────
+// Lets tenant-scoped infrastructure (provider credentials resolved from the CRM) be picked up by
+// code that only receives a `Providers` object: API requests enter the tenant after auth, the inbound
+// processor after channel resolution, worker jobs after loading their row.
+import { AsyncLocalStorage } from 'node:async_hooks'
+
+const tenantStore = new AsyncLocalStorage<{ tenantId: string }>()
+
+export function runWithTenant<T>(tenantId: string, fn: () => Promise<T>): Promise<T> {
+  return tenantStore.run({ tenantId }, fn)
+}
+
+/** Binds the current async context (e.g. a Fastify request) to a tenant. */
+export function enterTenant(tenantId: string): void {
+  tenantStore.enterWith({ tenantId })
+}
+
+export function currentTenantId(): string | undefined {
+  return tenantStore.getStore()?.tenantId
+}
