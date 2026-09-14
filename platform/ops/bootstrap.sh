@@ -27,6 +27,14 @@ ask ACME_EMAIL "E-mail para os certificados (Let's Encrypt)"
 if [[ -z "${GITHUB_TOKEN:-}" ]]; then
   read -r -p "Token do GitHub para clonar o repositório privado (enter se o repositório for público): " GITHUB_TOKEN || true
 fi
+# Tolera um valor colado como "export GITHUB_TOKEN=ghp_..." ou com espaços/aspas em volta:
+# um token malformado vira uma URL inválida e o clone falha com uma mensagem obscura.
+GITHUB_TOKEN="${GITHUB_TOKEN##*=}"
+GITHUB_TOKEN="$(printf '%s' "${GITHUB_TOKEN:-}" | tr -d '[:space:]"'"'")"
+if [[ -n "$GITHUB_TOKEN" && ! "$GITHUB_TOKEN" =~ ^[A-Za-z0-9_]+$ ]]; then
+  echo "✗ Token com formato inesperado. Informe apenas o valor, algo como github_pat_XXXX ou ghp_XXXX." >&2
+  exit 1
+fi
 
 echo "▶ Conferindo DNS"
 PUBLIC_IP=$(curl -fsS --max-time 10 https://api.ipify.org || curl -fsS --max-time 10 https://ifconfig.me || echo "?")
@@ -63,6 +71,8 @@ ufw allow 443/tcp >/dev/null
 ufw --force enable >/dev/null
 
 echo "▶ Código em $TARGET (branch $BRANCH)"
+# Sobra de um clone que falhou: o diretório é criado só por este script, então pode ser refeito.
+if [[ -d "$TARGET" && ! -d "$TARGET/.git" ]]; then rm -rf "$TARGET"; fi
 if [[ -d "$TARGET/.git" ]]; then
   git -C "$TARGET" fetch --quiet origin "$BRANCH" && git -C "$TARGET" checkout --quiet "$BRANCH" && git -C "$TARGET" pull --quiet origin "$BRANCH"
 else
