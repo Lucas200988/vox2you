@@ -111,6 +111,12 @@ export function createProvidersFromEnv(
   // LLM
   let llm: Providers['llm']
   const llmChoice = env.LLM_PROVIDER ?? (env.ANTHROPIC_API_KEY ? 'anthropic' : 'mock')
+  // `LLM_PROVIDER=mock` written by the bootstrap keeps winning after a key is added by hand to
+  // `.env`; credentials configured in the CRM set the provider themselves, so this only warns.
+  if (llmChoice === 'mock' && (env.ANTHROPIC_API_KEY || env.OPENAI_API_KEY))
+    logger?.warn(
+      'LLM_PROVIDER=mock com credencial presente: o agente responde com o simulador. Remova LLM_PROVIDER do .env (ou defina anthropic/openai) para usar a chave.',
+    )
   if (llmChoice === 'anthropic' && env.ANTHROPIC_API_KEY) {
     const primary = new AnthropicLLMProvider({ apiKey: env.ANTHROPIC_API_KEY })
     llm = env.OPENAI_API_KEY
@@ -148,6 +154,10 @@ export function createProvidersFromEnv(
 
   // Embeddings
   const dim = Number(env.KNOWLEDGE_EMBEDDING_DIM ?? 1536)
+  if ((env.EMBEDDING_PROVIDER ?? 'hash') === 'hash' && env.OPENAI_API_KEY)
+    logger?.warn(
+      'EMBEDDING_PROVIDER=hash com OPENAI_API_KEY presente: a base de conhecimento usa embeddings simulados. Remova EMBEDDING_PROVIDER do .env para usar a OpenAI (reindexe os documentos depois).',
+    )
   let embedding: Providers['embedding']
   if (
     (env.EMBEDDING_PROVIDER ?? (env.OPENAI_API_KEY ? 'openai' : 'hash')) === 'openai' &&
