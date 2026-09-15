@@ -37,18 +37,26 @@ jobs:
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
         run: |
           mkdir -p ~/.ssh && chmod 700 ~/.ssh
-          # Keys copied on Windows (or from a browser terminal) often carry CRLF, which OpenSSH
-          # rejects with "error in libcrypto". Strip CR and guarantee the trailing newline.
-          printf '%s\n' "$DEPLOY_SSH_KEY" | tr -d '\r' > ~/.ssh/deploy_key
+          # The secret is normalised before use, because a key copied from a browser terminal or on
+          # Windows arrives with CRLF, surrounding text (prompts, "=== copie daqui ===") or indented
+          # base64 — all of which make OpenSSH fail with the opaque "error in libcrypto".
+          printf '%s\n' "$DEPLOY_SSH_KEY" | tr -d '\r' > /tmp/raw_key
+          # keep only the BEGIN..END block, then strip whitespace from the base64 body
+          sed -n '/-----BEGIN/,/-----END/p' /tmp/raw_key \
+            | awk '/-----/ {sub(/^[[:space:]]+/, ""); sub(/[[:space:]]+$/, ""); print; next}
+                   {gsub(/[[:space:]]/, ""); if (length($0)) print}' > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           if ! ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null 2>&1; then
-            # Header/footer are not secret; the body is never printed.
-            echo "Primeira linha do secret : $(head -1 ~/.ssh/deploy_key)"
-            echo "Ultima linha do secret   : $(grep -v '^$' ~/.ssh/deploy_key | tail -1)"
-            echo "Linhas                   : $(wc -l < ~/.ssh/deploy_key)"
-            echo "::error::O secret DEPLOY_SSH_KEY nao e uma chave privada valida. Ele precisa conter o arquivo inteiro, da linha '-----BEGIN ... PRIVATE KEY-----' ate '-----END ... PRIVATE KEY-----', com as quebras de linha preservadas. Veja docs/RETOMADA.md secao 2."
+            # Counts only: printing any part of the key would be masked and is not needed.
+            echo "Diagnostico do secret DEPLOY_SSH_KEY (nenhum conteudo e exibido):"
+            echo "  linhas recebidas no secret : $(wc -l < /tmp/raw_key)"
+            echo "  linhas com -----BEGIN      : $(grep -c -- '-----BEGIN' /tmp/raw_key || true)"
+            echo "  linhas com -----END        : $(grep -c -- '-----END' /tmp/raw_key || true)"
+            echo "  linhas do bloco extraido   : $(wc -l < ~/.ssh/deploy_key)"
+            echo "::error::O secret DEPLOY_SSH_KEY nao contem uma chave privada valida. Ele precisa ter o bloco inteiro, da linha '-----BEGIN ... PRIVATE KEY-----' ate '-----END ... PRIVATE KEY-----' (texto em volta e ignorado automaticamente). Se as contagens de BEGIN/END acima forem 0, a copia nao pegou o bloco; se o bloco tiver poucas linhas, a copia veio truncada. Veja docs/RETOMADA.md secao 2."
             exit 1
           fi
+          echo "Chave lida com sucesso: $(ssh-keygen -l -f ~/.ssh/deploy_key | awk '{print $1" bits, "$4}')"
           if ! ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null || [ ! -s ~/.ssh/known_hosts ]; then
             echo "::error::Nao consegui falar com o servidor em DEPLOY_HOST na porta 22. Confira o IP no secret e se a regra de firewall SSH esta aberta no Lightsail."
             exit 1
