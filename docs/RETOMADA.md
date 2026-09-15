@@ -161,6 +161,10 @@ Resumo das etapas entregues nesta rodada (todas com testes, CI verde e enviadas 
 9. **Motivos de perda sugeridos pela IA** e **métricas novas em Analytics** (tempo até
    qualificar/visita, no-show, abandono, follow-ups respondidos, motivos de perda).
 10. **Runbooks** (`docs/RUNBOOKS.md`) para os incidentes mais prováveis do servidor.
+11. **Laboratório no Playground** — comparar A × B (outra versão de prompt ou modelo) para a
+    mensagem atual; salvar conversas como casos de teste num dataset (com regra padrão "nunca
+    citar R$"); rodar o dataset ou comparar A × B nele e ver a taxa de acerto por configuração.
+    Use antes de publicar qualquer mudança de prompt.
 
 Para o servidor receber tudo isso: faça o passo 2 (canal de atualização) e rode o workflow
 **Deploy** no GitHub. A migração nova (`notifications`) é aplicada automaticamente pelo deploy.

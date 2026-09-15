@@ -3,9 +3,9 @@ import { z } from 'zod'
 import {
   AgentOrchestrator,
   ConversationService,
+  DatasetService,
   LeadService,
-  NotFoundError,
-  assertUnitAccess,
+  openSandboxConversation,
   type TenantContext,
 } from '@vox/core'
 
@@ -29,61 +29,8 @@ const RunSchema = z.object({
 export const playgroundRoutes: FastifyPluginAsync = async (app) => {
   const db = app.ctx.db
 
-  async function sandboxConversation(auth: TenantContext, unitId: string, conversationId?: string) {
-    assertUnitAccess(auth, unitId)
-    if (conversationId) {
-      const existing = await db.conversation.findFirst({
-        where: { id: conversationId, tenantId: auth.tenantId, channel: { kind: 'playground' } },
-      })
-      if (!existing) throw new NotFoundError('Playground conversation', conversationId)
-      return existing
-    }
-    const channel = await db.channel.upsert({
-      where: { kind_externalId: { kind: 'playground', externalId: `playground-${unitId}` } },
-      update: {},
-      create: {
-        tenantId: auth.tenantId,
-        unitId,
-        kind: 'playground',
-        provider: 'mock',
-        externalId: `playground-${unitId}`,
-        name: 'Playground',
-      },
-    })
-    const stamp = Date.now()
-    return db.$transaction(async (tx) => {
-      const contact = await tx.contact.create({
-        data: {
-          tenantId: auth.tenantId,
-          name: `Playground ${auth.userId?.slice(0, 6) ?? 'user'} ${stamp}`,
-          source: 'playground',
-          attributes: { playground: true, userId: auth.userId },
-        },
-      })
-      await tx.contactIdentity.create({
-        data: {
-          tenantId: auth.tenantId,
-          contactId: contact.id,
-          channel: 'playground',
-          externalId: `pg-${contact.id}`,
-        },
-      })
-      const { conversation } = await new ConversationService(db).getOrOpen(tx, auth, {
-        unitId,
-        channelId: channel.id,
-        contactId: contact.id,
-      })
-      const { lead } = await new LeadService(db).getOrCreateOpen(tx, auth, {
-        unitId,
-        contactId: contact.id,
-        source: 'playground',
-      })
-      return tx.conversation.update({
-        where: { id: conversation.id },
-        data: { leadId: lead.id, metadata: { playground: true } },
-      })
-    })
-  }
+  const sandboxConversation = (auth: TenantContext, unitId: string, conversationId?: string) =>
+    openSandboxConversation(db, auth, unitId, { conversationId })
 
   app.post(
     '/run',
@@ -192,6 +139,64 @@ export const playgroundRoutes: FastifyPluginAsync = async (app) => {
           select: { id: true, createdAt: true, lastMessagePreview: true, summary: true },
         }),
       }
+    },
+  )
+
+  const ConfigSchema = z.object({
+    label: z.string().max(40).optional(),
+    promptVersion: z.number().int().optional(),
+    model: z.string().optional(),
+    persona: z.string().optional(),
+    env: z.enum(['production', 'staging']).optional(),
+  })
+
+  /** A/B: the same customer turn against two configurations, in two fresh sandbox conversations. */
+  app.post(
+    '/compare',
+    {
+      schema: {
+        tags: ['agent'],
+        body: z.object({
+          unitId: z.string().uuid(),
+          text: z.string().min(1).max(4000),
+          facts: z.array(z.object({ key: z.string(), value: z.string() })).optional(),
+          history: z.array(z.string().max(4000)).max(10).optional(),
+          a: ConfigSchema.default({}),
+          b: ConfigSchema.default({}),
+        }),
+      },
+      preHandler: app.requireAuth('playground:use'),
+    },
+    async (req) => {
+      const body = req.body as {
+        unitId: string
+        text: string
+        facts?: Array<{ key: string; value: string }>
+        history?: string[]
+        a: z.infer<typeof ConfigSchema>
+        b: z.infer<typeof ConfigSchema>
+      }
+      const datasets = new DatasetService(db, app.ctx.deps)
+      const input = { text: body.text, facts: body.facts, history: body.history }
+      const [a, b] = [
+        await datasets.runTurn(req.auth!, { unitId: body.unitId, label: 'A', ...body.a }, input),
+        await datasets.runTurn(req.auth!, { unitId: body.unitId, label: 'B', ...body.b }, input),
+      ]
+      const pick = (r: typeof a) => ({
+        conversationId: r.conversation.id,
+        reply: r.run.reply,
+        decision: r.run.decision,
+        decisionReason: r.run.decisionReason,
+        intent: r.run.classification?.intent ?? null,
+        confidence: r.run.confidence,
+        latencyMs: r.run.latencyMs,
+        costUsd: r.run.usage.costUsd,
+        model: r.run.model,
+        validation: r.run.validation,
+        stage: r.run.stage,
+        score: r.run.score,
+      })
+      return { a: pick(a), b: pick(b), same: (a.run.reply ?? '') === (b.run.reply ?? '') }
     },
   )
 }

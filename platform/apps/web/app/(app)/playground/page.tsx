@@ -8,6 +8,7 @@ import { DECISION_LABELS, INTENT_LABELS, cn } from '@/lib/utils'
 import type { AgentRunRow } from '@/lib/types'
 import { Badge, Button, Field, Input, Select, Textarea } from '@/components/ui/primitives'
 import { RunDetails } from '@/components/inbox/audit-drawer'
+import { LabPanel } from '@/components/playground/lab-panel'
 
 interface RunResult {
   conversationId: string
@@ -41,6 +42,15 @@ interface RunResult {
   wallMs: number
 }
 
+/** "key=valor" por linha → fatos iniciais do sandbox */
+function parseFacts(raw: string): Array<{ key: string; value: string }> {
+  return raw
+    .split('\n')
+    .map((l) => l.split('=').map((s) => s.trim()))
+    .filter((p) => p.length === 2 && p[0] && p[1])
+    .map(([key, value]) => ({ key: key!, value: value! }))
+}
+
 export default function PlaygroundPage() {
   const { unitId } = useSession()
   const [conversationId, setConversationId] = useState<string | null>(null)
@@ -65,11 +75,7 @@ export default function PlaygroundPage() {
     setMessages((m) => [...m, { role: 'customer', text: customer }])
     setText('')
     try {
-      const seedFacts = facts
-        .split('\n')
-        .map((l) => l.split('=').map((s) => s.trim()))
-        .filter((p) => p.length === 2 && p[0] && p[1])
-        .map(([key, value]) => ({ key: key!, value: value! }))
+      const seedFacts = parseFacts(facts)
       const res = await api.post<RunResult>('playground/run', {
         unitId,
         text: customer,
@@ -157,6 +163,20 @@ export default function PlaygroundPage() {
         >
           <RefreshCw className="h-3.5 w-3.5" /> Nova conversa
         </Button>
+        {unitId && (
+          <LabPanel
+            unitId={unitId}
+            text={text}
+            facts={parseFacts(facts)}
+            conversationId={conversationId}
+            config={{
+              env,
+              persona: persona || undefined,
+              promptVersion: promptVersion ? Number(promptVersion) : undefined,
+              model: model || undefined,
+            }}
+          />
+        )}
       </aside>
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex-1 space-y-2 overflow-y-auto p-4 scroll-thin">

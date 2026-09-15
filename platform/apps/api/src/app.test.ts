@@ -485,6 +485,40 @@ describe.skipIf(!RUN)('API', () => {
     expect(suggestion.statusCode, suggestion.body).toBe(200)
     expect(suggestion.json()).toHaveProperty('suggestion')
 
+    // regression datasets + A/B compare in the playground sandbox
+    const ds = await app.inject({
+      method: 'POST',
+      url: '/api/v1/datasets/',
+      headers: h,
+      payload: { name: `api-ds-${Date.now()}` },
+    })
+    expect(ds.statusCode, ds.body).toBe(201)
+    const item = await app.inject({
+      method: 'POST',
+      url: `/api/v1/datasets/${ds.json().id}/items`,
+      headers: h,
+      payload: { input: { text: 'quanto custa?' }, expected: { intent: 'price_request' } },
+    })
+    expect(item.statusCode, item.body).toBe(201)
+    const dsRun = await app.inject({
+      method: 'POST',
+      url: `/api/v1/datasets/${ds.json().id}/run`,
+      headers: h,
+      payload: { unitId },
+    })
+    expect(dsRun.statusCode, dsRun.body).toBe(200)
+    expect(dsRun.json().items).toBe(1)
+    expect(typeof dsRun.json().passRate).toBe('number')
+    const cmp = await app.inject({
+      method: 'POST',
+      url: '/api/v1/playground/compare',
+      headers: h,
+      payload: { unitId, text: 'quanto custa?', a: {}, b: { model: 'mock-alt' } },
+    })
+    expect(cmp.statusCode, cmp.body).toBe(200)
+    expect(cmp.json().a).toHaveProperty('reply')
+    expect(cmp.json().b).toHaveProperty('decision')
+
     const pg = await app.inject({
       method: 'POST',
       url: '/api/v1/playground/run',

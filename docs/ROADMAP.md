@@ -66,8 +66,8 @@ Objetivo: **receber mensagem WhatsApp (real ou simulada) → identificar/criar c
 
 ## Slice 8 — Avaliação e melhoria controlada
 - [x] `Evaluation` + scorecards (avaliador LLM) + avaliação humana por conversa (`/conversations/:id/evaluations`) + feedback 👍/👎 por mensagem
-- [ ] Datasets (schema `Dataset`/`DatasetItem` pronto; sem API/UI)
-- [ ] Comparação A/B prompt/modelo no playground (playground já aceita versão de prompt e modelo por execução)
+- [x] Datasets de regressão (`DatasetService`: casos com expectativas — intenção, decisão, texto obrigatório/proibido, regex, validação; importar de conversa; rodar em sandbox; `/datasets`; painel "Casos de teste" no playground)
+- [x] Comparação A/B prompt/modelo (turno atual via `POST /playground/compare` e dataset inteiro via `POST /datasets/:id/compare`, com vencedor por taxa de acerto)
 - [ ] Pipeline de sugestão de melhoria com aprovação humana
 
 ## Slice 9 — Conectores P1
