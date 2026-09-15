@@ -1,0 +1,170 @@
+# Production, single host: Caddy (auto HTTPS) → web + api; worker; Postgres+pgvector; Redis; daily backups.
+# Usage: cp .env.example .env (fill the "Produção" section) && ./ops/deploy.sh
+# Monitoring (optional): docker compose -f docker-compose.prod.yml --profile monitoring up -d
+name: vox
+
+x-app-env: &app-env
+  NODE_ENV: production
+  DATABASE_URL: postgresql://vox:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}@postgres:5432/vox
+  REDIS_URL: redis://redis:6379
+  WEB_ORIGIN: https://${DOMAIN_APP:?set DOMAIN_APP in .env}
+  PUBLIC_API_URL: https://${DOMAIN_API:?set DOMAIN_API in .env}
+  STORAGE_LOCAL_DIR: /app/storage
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMAIN_APP: ${DOMAIN_APP}
+      DOMAIN_API: ${DOMAIN_API}
+      ACME_EMAIL: ${ACME_EMAIL:-}
+    volumes:
+      - ./ops/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - api
+      - web
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: vox
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: vox
+    command: ["postgres", "-c", "shared_buffers=256MB", "-c", "max_connections=100", "-c", "log_min_duration_statement=1000"]
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vox -d vox"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "256mb", "--maxmemory-policy", "noeviction"]
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      <<: *app-env
+      API_PORT: "4000"
+    volumes:
+      - storage:/app/storage
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  worker:
+    build:
+      context: .
+      dockerfile: apps/worker/Dockerfile
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      <<: *app-env
+      SCHEDULERS: "1" # exactly one replica may run schedulers; set "0" on any extra worker replica
+    volumes:
+      - storage:/app/storage
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: https://${DOMAIN_API}
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: https://${DOMAIN_API}
+      API_INTERNAL_URL: http://api:4000
+    depends_on:
+      - api
+
+  backup:
+    build: ./ops/backup
+    restart: unless-stopped
+    environment:
+      PGHOST: postgres
+      PGUSER: vox
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      PGDATABASE: vox
+      BACKUP_HOUR: ${BACKUP_HOUR:-03}
+      BACKUP_KEEP_DAYS: ${BACKUP_KEEP_DAYS:-14}
+      BACKUP_RCLONE_REMOTE: ${BACKUP_RCLONE_REMOTE:-}
+    volumes:
+      - backups:/backups
+      - ./ops/backup/rclone.conf:/root/.config/rclone/rclone.conf:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ─── Optional monitoring stack (profile "monitoring"); bound to localhost, reach via SSH tunnel ───
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    profiles: ["monitoring"]
+    restart: unless-stopped
+    command: ["--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.retention.time=30d"]
+    volumes:
+      - ./ops/prometheus:/etc/prometheus:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "127.0.0.1:9090:9090"
+
+  alertmanager:
+    image: prom/alertmanager:v0.27.0
+    profiles: ["monitoring"]
+    restart: unless-stopped
+    volumes:
+      - ./ops/alertmanager:/etc/alertmanager:ro
+    ports:
+      - "127.0.0.1:9093:9093"
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    profiles: ["monitoring"]
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - ./ops/grafana:/etc/grafana/provisioning/datasources:ro
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "127.0.0.1:3001:3000"
+
+volumes:
+  pgdata:
+  redisdata:
+  storage:
+  backups:
+  caddy_data:
+  caddy_config:
+  prometheus_data:
+  grafana_data:

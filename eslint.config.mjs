@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // The conversational CRM platform is a self-contained monorepo with its own lint config.
+    "platform/**",
   ]),
 ]);
 

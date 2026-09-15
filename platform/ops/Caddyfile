@@ -1,0 +1,34 @@
+{
+	email {$ACME_EMAIL}
+}
+
+# Web app
+{$DOMAIN_APP} {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+	reverse_proxy web:3000 {
+		# SSE passthrough (/api/stream) must not be buffered
+		flush_interval -1
+	}
+}
+
+# API + WhatsApp webhook
+{$DOMAIN_API} {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options nosniff
+		-Server
+	}
+	# Internal-only endpoints never leave the docker network
+	@internal path /metrics /docs /docs/*
+	respond @internal 404
+	reverse_proxy api:4000 {
+		flush_interval -1
+	}
+}

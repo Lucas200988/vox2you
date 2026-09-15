@@ -1,0 +1,76 @@
+name: Deploy to server
+
+# Manual only: pick the branch in the GitHub UI (Actions → Deploy to server → Run workflow).
+# The runner checks out the code with GitHub's own credentials and copies it to the server over SSH,
+# so the server never needs GitHub access (no deploy key, no token).
+#
+# Required repository secrets (Settings → Secrets and variables → Actions):
+#   DEPLOY_HOST      IP or DNS of the server (e.g. 56.125.141.144)
+#   DEPLOY_USER      SSH user with passwordless sudo (ubuntu on Lightsail)
+#   DEPLOY_SSH_KEY   private key whose public half is in ~/.ssh/authorized_keys of that user
+on:
+  workflow_dispatch:
+    inputs:
+      seed:
+        description: 'Run the seed after deploy (first deploy only)'
+        type: boolean
+        default: false
+      backup:
+        description: 'Take a database backup before updating'
+        type: boolean
+        default: true
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Sync code to server
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          # .env, media, backups and build outputs live only on the server and are never overwritten.
+          rsync -az --delete \
+            --exclude '.git' --exclude 'node_modules' --exclude 'dist' --exclude '.next' \
+            --exclude 'platform/.env' --exclude 'platform/storage' --exclude 'platform/ops/backup/rclone.conf' \
+            --rsync-path='sudo rsync' \
+            -e 'ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes' \
+            ./ "$DEPLOY_USER@$DEPLOY_HOST:/opt/vox2you/"
+
+      - name: Deploy
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          SEED: ${{ inputs.seed }}
+          BACKUP: ${{ inputs.backup }}
+        run: |
+          FLAGS=""
+          [ "$BACKUP" = "true" ] && FLAGS="$FLAGS --backup"
+          [ "$SEED" = "true" ] && FLAGS="$FLAGS --seed"
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes "$DEPLOY_USER@$DEPLOY_HOST" \
+            "cd /opt/vox2you/platform && sudo BUILDKIT_PROGRESS=plain ./ops/deploy.sh $FLAGS"
+
+      - name: Smoke check
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes "$DEPLOY_USER@$DEPLOY_HOST" \
+            "cd /opt/vox2you/platform && sudo bash ops/status.sh"

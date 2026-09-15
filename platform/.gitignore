@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.next/
+coverage/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+packages/db/src/generated/
+# Ancorado: sem a barra inicial isto também esconderia packages/providers/src/storage/
+/storage/
+*.log
+
+# off-host backup credentials (copy from rclone.conf.example; never commit real keys)
+ops/backup/rclone.conf
