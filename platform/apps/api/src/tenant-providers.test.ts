@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { createDb, type Db } from '@vox/db'
-import { NoopRealtimePublisher, enterTenant, runWithTenant, seedVox2you } from '@vox/core'
+import { NoopRealtimePublisher, runWithTenant, runWithTenantSync, seedVox2you } from '@vox/core'
 import { loadConfig } from './config.js'
 import { createAppContext, type AppContext, type Queues } from './context.js'
 import { buildApp, type App } from './app.js'
@@ -102,23 +102,27 @@ describe.skipIf(!RUN)('Tenant providers from CRM credentials', () => {
     await runWithTenant(tenantId, async () => {
       expect(ctx.providers.llm.name).toBe('anthropic')
     })
-    // 3. …including code that only called enterTenant (the API request path)
-    await new Promise<void>((resolve) => {
-      enterTenant(tenantId)
+    // 3. …including callback-style scopes (how the API binds a request to its tenant)
+    runWithTenantSync(tenantId, () => {
       expect(ctx.providers.llm.name).toBe('anthropic')
-      resolve()
     })
 
     // 4. and the process-wide default stays on mock for anyone outside a tenant
     expect(ctx.providerStatus.llm).toBe('mock')
+    expect(ctx.providers.llm.name).toBe('mock')
   })
 
   it('serves the tenant provider inside an authenticated request', async () => {
-    const res = await app.inject({
-      method: 'GET',
-      url: '/__test/provider',
-      headers: { authorization: `Bearer ${token}` },
-    })
+    // Injected from *another* tenant's scope on purpose: the request must be bound by the auth hook
+    // itself, not by an ambient scope leaking from the caller. Without that binding the handler sees
+    // the process-wide providers and the agent answers with the simulator.
+    const res = await runWithTenantSync('11111111-1111-1111-1111-111111111111', () =>
+      app.inject({
+        method: 'GET',
+        url: '/__test/provider',
+        headers: { authorization: `Bearer ${token}` },
+      }),
+    )
     expect(res.statusCode, res.body).toBe(200)
     expect(res.json().llm).toBe('anthropic')
   })

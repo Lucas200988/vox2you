@@ -2,7 +2,7 @@ import fp from 'fastify-plugin'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { sha256 } from '@vox/shared'
 import {
-  enterTenant,
+  runWithTenantSync,
   ForbiddenError,
   UnauthorizedError,
   hasPermission,
@@ -68,11 +68,20 @@ export default fp(async (app, opts: { ctx: AppContext }) => {
           .catch(() => undefined)
       }
     }
-    if (req.auth) {
-      // Bind the request to its tenant so `ctx.providers` serves the tenant's CRM-configured credentials
-      enterTenant(req.auth.tenantId)
-      await ctx.resolver.resolve(req.auth.tenantId)
-    }
+    // Build the tenant's provider set now: the scope hook below is synchronous and `resolver.peek`
+    // only serves what is already cached.
+    if (req.auth) await ctx.resolver.resolve(req.auth.tenantId)
+  })
+
+  // Binding the request to its tenant must happen in a callback-style hook, never inside the async
+  // one above: Fastify chains async hooks with `hookResult.then(done, done)`, and that continuation
+  // predates the hook body, so an AsyncLocalStorage scope entered there is already gone in the route
+  // handler — `ctx.providers` would fall back to the process-wide mock LLM even with the tenant's
+  // Anthropic key configured in the CRM. `runWithTenantSync` keeps the rest of the lifecycle inside
+  // the scope, because `done()` is called from within it.
+  app.addHook('onRequest', (req, _reply, done) => {
+    if (req.auth) runWithTenantSync(req.auth.tenantId, done)
+    else done()
   })
 
   // Units of each tenant (60s cache): a `unitId` in the query/body/params must belong to the caller's

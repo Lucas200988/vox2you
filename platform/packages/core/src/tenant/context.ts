@@ -32,13 +32,24 @@ export function assertUnitAccess(ctx: TenantContext, unitId: string): void {
   if (!canAccessUnit(ctx, unitId)) throw new ForbiddenError('No access to this unit')
 }
 
-export function assertTenant(ctx: TenantContext, entity: { tenantId: string } | null | undefined, name = 'Resource'): void {
-  if (!entity || entity.tenantId !== ctx.tenantId) throw new ForbiddenError(`${name} belongs to another tenant`)
+export function assertTenant(
+  ctx: TenantContext,
+  entity: { tenantId: string } | null | undefined,
+  name = 'Resource',
+): void {
+  if (!entity || entity.tenantId !== ctx.tenantId)
+    throw new ForbiddenError(`${name} belongs to another tenant`)
 }
 
 /** Prisma where-fragment restricting to accessible units. */
 export function unitScope(ctx: TenantContext): { unitId?: { in: string[] } } {
-  if (ctx.unitIds.length === 0 || ctx.role === 'system' || ctx.role === 'owner' || ctx.role === 'admin') return {}
+  if (
+    ctx.unitIds.length === 0 ||
+    ctx.role === 'system' ||
+    ctx.role === 'owner' ||
+    ctx.role === 'admin'
+  )
+    return {}
   return { unitId: { in: ctx.unitIds } }
 }
 
@@ -54,9 +65,18 @@ export function runWithTenant<T>(tenantId: string, fn: () => Promise<T>): Promis
   return tenantStore.run({ tenantId }, fn)
 }
 
-/** Binds the current async context (e.g. a Fastify request) to a tenant. */
-export function enterTenant(tenantId: string): void {
-  tenantStore.enterWith({ tenantId })
+/**
+ * Same scope for callback-style frameworks: `fn` and everything it starts run under the tenant.
+ *
+ * Fastify is the reason this exists instead of an `enterWith` helper. It chains hooks with
+ * `hookResult.then(done, done)`, and that continuation is created *before* the hook body runs, so a
+ * store entered with `enterWith` inside an async `onRequest` hook is already gone by the time the
+ * route handler executes — the request would silently fall back to the process-wide providers (the
+ * mock LLM) even with the tenant's credentials resolved. Running the rest of the lifecycle inside
+ * `run()` keeps the scope for every promise created from there on.
+ */
+export function runWithTenantSync<T>(tenantId: string, fn: () => T): T {
+  return tenantStore.run({ tenantId }, fn)
 }
 
 export function currentTenantId(): string | undefined {
