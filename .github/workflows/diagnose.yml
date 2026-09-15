@@ -1,0 +1,64 @@
+name: Diagnose server
+
+# Manual only: prints why the running server behaves the way it does (containers, health, and which
+# providers each tenant actually gets from its CRM credentials). Values of secrets are never printed
+# — only names, presence and lengths — so the log is safe to share.
+#
+# Same repository secrets as the deploy workflow: DEPLOY_HOST, DEPLOY_USER, DEPLOY_SSH_KEY.
+on:
+  workflow_dispatch:
+    inputs:
+      logs:
+        description: 'Include the last 200 log lines of api and worker'
+        type: boolean
+        default: true
+
+concurrency:
+  group: diagnose-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Prepare SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" | tr -d '\r' > /tmp/raw_key
+          sed -n '/-----BEGIN/,/-----END/p' /tmp/raw_key \
+            | awk '/-----/ {sub(/^[[:space:]]+/, ""); sub(/[[:space:]]+$/, ""); print; next}
+                   {gsub(/[[:space:]]/, ""); if (length($0)) print}' > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null || { echo "::error::DEPLOY_SSH_KEY invalida (veja docs/RETOMADA.md secao 2)"; exit 1; }
+          ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Providers in use per tenant
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes "$DEPLOY_USER@$DEPLOY_HOST" \
+            "cd /opt/vox2you/platform && sudo docker compose -f docker-compose.prod.yml exec -T api node apps/api/dist/scripts/diagnose.js"
+
+      - name: Containers and health
+        if: always()
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes "$DEPLOY_USER@$DEPLOY_HOST" \
+            "cd /opt/vox2you/platform && sudo docker compose -f docker-compose.prod.yml ps && sudo docker compose -f docker-compose.prod.yml exec -T api wget -qO- http://127.0.0.1:4000/ready"
+
+      - name: Recent logs
+        if: ${{ always() && inputs.logs }}
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes "$DEPLOY_USER@$DEPLOY_HOST" \
+            "cd /opt/vox2you/platform && sudo docker compose -f docker-compose.prod.yml logs --tail=200 --no-color api worker" \
+            | grep -vi 'authorization\|x-api-key\|sk-ant\|sk-proj\|password' || true
