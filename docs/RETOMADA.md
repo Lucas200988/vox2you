@@ -80,6 +80,13 @@ O bloco que aparece entre `-----BEGIN OPENSSH PRIVATE KEY-----` e `-----END OPEN
 é a chave privada. Copie-o inteiro, incluindo as duas linhas de BEGIN e END. **Não envie para
 ninguém, nem no chat.** Ele vai só para o cofre de segredos do GitHub.
 
+> Se o deploy falhar com `error in libcrypto`, a chave chegou incompleta ou com quebras de linha
+> do Windows. **Alternativa sem passar pelo terminal:** a chave padrão do Lightsail já dá acesso ao
+> usuário `ubuntu`. Baixe em https://lightsail.aws.amazon.com/ls/webapp/account/keys
+> (aba **SSH keys** → região **São Paulo** → *Download*), abra o arquivo `.pem` no Bloco de Notas,
+> selecione tudo (Ctrl+A, Ctrl+C) e cole no secret `DEPLOY_SSH_KEY`. É uma cópia limpa, sem risco
+> de corromper a chave.
+
 **2b. No GitHub**, abra https://github.com/Lucas200988/vox2you/settings/secrets/actions e crie
 três segredos com **New repository secret**:
 
