@@ -172,6 +172,47 @@ describe.skipIf(!RUN)('API', () => {
     expect(after.json().unread).toBe(0)
   })
 
+  it('lets settings:write users set the SLA of a stage and the kanban exposes it', async () => {
+    const h = { authorization: `Bearer ${token}` }
+    const pipelines = await app.inject({ method: 'GET', url: '/api/v1/pipelines', headers: h })
+    expect(pipelines.statusCode, pipelines.body).toBe(200)
+    const pipeline = pipelines.json().items[0]
+    const stage =
+      pipeline.stages.find((s: { kind: string }) => s.kind === 'open') ?? pipeline.stages[1]
+    const patched = await app.inject({
+      method: 'PATCH',
+      url: `/api/v1/pipelines/${pipeline.id}/stages/${stage.id}`,
+      headers: h,
+      payload: { maxHoursInStage: 36 },
+    })
+    expect(patched.statusCode, patched.body).toBe(200)
+    expect(patched.json().maxHoursInStage).toBe(36)
+    const kanban = await app.inject({
+      method: 'GET',
+      url: `/api/v1/leads/kanban?unitId=${unitId}`,
+      headers: h,
+    })
+    expect(kanban.statusCode, kanban.body).toBe(200)
+    const col = kanban
+      .json()
+      .columns.find((c: { stage: { id: string } }) => c.stage.id === stage.id)
+    expect(col.stage.maxHoursInStage).toBe(36)
+    const invalid = await app.inject({
+      method: 'PATCH',
+      url: `/api/v1/pipelines/${pipeline.id}/stages/${stage.id}`,
+      headers: h,
+      payload: { maxHoursInStage: 0 },
+    })
+    expect(invalid.statusCode).toBe(400)
+    const cleared = await app.inject({
+      method: 'PATCH',
+      url: `/api/v1/pipelines/${pipeline.id}/stages/${stage.id}`,
+      headers: h,
+      payload: { maxHoursInStage: null },
+    })
+    expect(cleared.json().maxHoursInStage).toBeNull()
+  })
+
   it('verifies webhook challenge and rejects bad signatures', async () => {
     const ok = await app.inject({
       method: 'GET',

@@ -95,6 +95,10 @@ export const leadRoutes: FastifyPluginAsync = async (app) => {
     return { items: await new PipelineService(app.ctx.db).list(req.auth!) }
   })
 
+  app.patch('/pipelines/:id/stages/:stageId', { schema: { tags: ['crm'], params: z.object({ id: z.string().uuid(), stageId: z.string().uuid() }), body: z.object({ name: z.string().min(1).max(60).optional(), color: z.string().max(20).nullable().optional(), probability: z.number().min(0).max(1).optional(), maxHoursInStage: z.number().int().min(1).max(24 * 90).nullable().optional() }) }, preHandler: app.requireAuth('settings:write') }, async (req) => {
+    const { id, stageId } = req.params as { id: string; stageId: string }
+    return new PipelineService(app.ctx.db).updateStage(req.auth!, id, stageId, req.body as { name?: string; color?: string | null; probability?: number; maxHoursInStage?: number | null })
+  })
   app.get('/lost-reasons', { schema: { tags: ['crm'] }, preHandler: app.requireAuth('leads:read') }, async (req) => {
     return { items: await app.ctx.db.lostReason.findMany({ where: { tenantId: req.auth!.tenantId, active: true }, orderBy: { order: 'asc' } }) }
   })

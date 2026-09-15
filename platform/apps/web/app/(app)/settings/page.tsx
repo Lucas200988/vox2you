@@ -18,6 +18,7 @@ import {
   useToast,
 } from '@/components/ui/primitives'
 import { IntegrationsTab } from '@/components/settings/integrations-tab'
+import { PipelineTab } from '@/components/settings/pipeline-tab'
 import { UnitTab } from '@/components/settings/unit-tab'
 import { UsersTab } from '@/components/settings/users-tab'
 
@@ -26,6 +27,7 @@ const TABS = [
   { key: 'unit', label: 'Unidade' },
   { key: 'score', label: 'Score' },
   { key: 'followup', label: 'Follow-up' },
+  { key: 'pipeline', label: 'Funil / SLA' },
   { key: 'users', label: 'Usuários' },
   { key: 'integrations', label: 'Integrações' },
   { key: 'automations', label: 'Automações' },
@@ -41,6 +43,7 @@ export default function SettingsPage() {
       {tab === 'agent' && <AgentTab />}
       {tab === 'score' && <ScoreTab />}
       {tab === 'followup' && <FollowUpTab />}
+      {tab === 'pipeline' && <PipelineTab />}
       {tab === 'users' && <UsersTab />}
       {tab === 'integrations' && <IntegrationsTab onGoTo={(t) => setTab(t)} />}
       {tab === 'unit' && <UnitTab />}

@@ -29,6 +29,34 @@ export class PipelineService {
     })
   }
 
+  /** Edits one stage of a tenant pipeline: name, colour, probability and the SLA (max hours in stage; null = no SLA). */
+  async updateStage(
+    ctx: TenantContext,
+    pipelineId: string,
+    stageId: string,
+    patch: {
+      name?: string
+      color?: string | null
+      probability?: number
+      maxHoursInStage?: number | null
+    },
+  ) {
+    const stage = await this.db.pipelineStage.findFirst({
+      where: { id: stageId, pipelineId, pipeline: { tenantId: ctx.tenantId } },
+      select: { id: true },
+    })
+    if (!stage) throw new NotFoundError('Stage', stageId)
+    return this.db.pipelineStage.update({
+      where: { id: stageId },
+      data: {
+        ...(patch.name !== undefined ? { name: patch.name } : {}),
+        ...(patch.color !== undefined ? { color: patch.color } : {}),
+        ...(patch.probability !== undefined ? { probability: patch.probability } : {}),
+        ...(patch.maxHoursInStage !== undefined ? { maxHoursInStage: patch.maxHoursInStage } : {}),
+      },
+    })
+  }
+
   /** Creates the standard VOX2you pipeline + lost reasons for a tenant/unit if missing. */
   static async ensureDefaults(tx: DbTx, tenantId: string, unitId: string | null) {
     let pipeline = await tx.pipeline.findFirst({ where: { tenantId, unitId, isDefault: true } })

@@ -6,6 +6,7 @@ export interface Stage {
   kind: string
   probability: number
   color: string | null
+  maxHoursInStage?: number | null
 }
 
 export interface ConversationListItem {

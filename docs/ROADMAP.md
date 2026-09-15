@@ -31,7 +31,7 @@ Objetivo: **receber mensagem WhatsApp (real ou simulada) → identificar/criar c
 - [x] Lead scoring híbrido com fatores explicados; pesos configuráveis
 - [x] Next Best Action / mensagem / follow-up
 - [x] Transições de estágio automáticas/sugeridas
-- [ ] SLA por estágio com alertas
+- [x] SLA por estágio com alertas (horas máximas editáveis em Configurações → Funil / SLA; selo e contador no kanban; evento `lead.inactive` + notificação ao responsável, 1x por lead/dia)
 - [ ] Motivos de perda com sugestão IA vs confirmado (schema pronto; UI parcial)
 
 ## Slice 3 — Handoff humano e Inbox completa

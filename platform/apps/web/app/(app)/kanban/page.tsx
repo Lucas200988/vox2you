@@ -119,9 +119,14 @@ export default function KanbanPage() {
       <DndContext sensors={sensors} onDragEnd={onDragEnd}>
         <div className="flex flex-1 gap-3 overflow-x-auto p-4">
           {columns.map((col) => (
-            <Column key={col.stage.id} stage={col.stage} count={col.leads.length}>
+            <Column
+              key={col.stage.id}
+              stage={col.stage}
+              count={col.leads.length}
+              overdue={col.leads.filter((l) => isOverdue(l, col.stage)).length}
+            >
               {col.leads.map((l) => (
-                <CardItem key={l.id} lead={l} />
+                <CardItem key={l.id} lead={l} overdue={isOverdue(l, col.stage)} />
               ))}
             </Column>
           ))}
@@ -163,13 +168,24 @@ export default function KanbanPage() {
   )
 }
 
+function hoursInStage(lead: KanbanLead): number {
+  return Math.round((Date.now() - new Date(lead.stageEnteredAt).getTime()) / 36e5)
+}
+
+/** SLA per stage (Configurações → Funil): a lead is overdue once it exceeds the stage's max hours. */
+function isOverdue(lead: KanbanLead, stage: Stage): boolean {
+  return !!stage.maxHoursInStage && hoursInStage(lead) >= stage.maxHoursInStage
+}
+
 function Column({
   stage,
   count,
+  overdue,
   children,
 }: {
   stage: Stage
   count: number
+  overdue: number
   children: React.ReactNode
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: stage.id })
@@ -186,19 +202,29 @@ function Column({
           <span className="h-2 w-2 rounded-full" style={{ background: stage.color ?? '#94a3b8' }} />
           {stage.name}
         </span>
-        <span className="rounded-full bg-white px-1.5 text-[10px] text-muted">{count}</span>
+        <span className="flex items-center gap-1">
+          {overdue > 0 && (
+            <span
+              className="rounded-full bg-red-100 px-1.5 text-[10px] font-medium text-red-700"
+              title={`${overdue} lead(s) acima de ${stage.maxHoursInStage}h neste estágio`}
+            >
+              {overdue} SLA
+            </span>
+          )}
+          <span className="rounded-full bg-white px-1.5 text-[10px] text-muted">{count}</span>
+        </span>
       </header>
       <div className="flex-1 space-y-2 overflow-y-auto px-2 pb-2 scroll-thin">{children}</div>
     </div>
   )
 }
 
-function CardItem({ lead }: { lead: KanbanLead }) {
+function CardItem({ lead, overdue }: { lead: KanbanLead; overdue: boolean }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({ id: lead.id })
   const style = transform
     ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` }
     : undefined
-  const hours = Math.round((Date.now() - new Date(lead.stageEnteredAt).getTime()) / 36e5)
+  const hours = hoursInStage(lead)
   return (
     <div
       ref={setNodeRef}
@@ -207,6 +233,7 @@ function CardItem({ lead }: { lead: KanbanLead }) {
       {...listeners}
       className={cn(
         'cursor-grab rounded-lg border bg-white p-2.5 shadow-soft',
+        overdue && 'border-red-300',
         isDragging && 'opacity-60',
       )}
     >
@@ -227,7 +254,10 @@ function CardItem({ lead }: { lead: KanbanLead }) {
         <p className="mt-1 truncate text-[11px] text-brand-700">→ {lead.nextBestAction}</p>
       )}
       <div className="mt-2 flex items-center justify-between text-[10px] text-muted">
-        <span>{hours < 48 ? `${hours}h no estágio` : `${Math.round(hours / 24)}d no estágio`}</span>
+        <span className={cn(overdue && 'font-medium text-red-600')}>
+          {hours < 48 ? `${hours}h no estágio` : `${Math.round(hours / 24)}d no estágio`}
+          {overdue && ' · SLA'}
+        </span>
         {lead.owner ? (
           <Avatar name={lead.owner.name} size="sm" />
         ) : (
