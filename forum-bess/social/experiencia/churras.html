@@ -3,7 +3,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--fire:#FF6B00;--fire2:#FFB300;--red:#E03131;--g:#00D060;--gl:#00E676;--ink:#1A1208}
 body{background:#000;font-family:Montserrat,'Segoe UI',Arial,sans-serif;color:#fff}
-.art{width:1080px;height:1350px;position:relative;overflow:hidden;
+.art{width:1080px;height:1500px;position:relative;overflow:hidden;
  background:radial-gradient(circle at 50% 8%,rgba(255,179,0,.30),transparent 45%),
             radial-gradient(circle at 12% 88%,rgba(224,49,49,.26),transparent 42%),
             radial-gradient(circle at 88% 62%,rgba(255,107,0,.22),transparent 40%),
@@ -19,9 +19,9 @@ body{background:#000;font-family:Montserrat,'Segoe UI',Arial,sans-serif;color:#f
 .chip{background:#fff;border-radius:10px;padding:7px 11px;display:flex;align-items:center}
 .chip img{height:32px;width:auto;object-fit:contain;display:block}
 .top{margin-top:28px;font-size:20px;font-weight:800;letter-spacing:5px;text-transform:uppercase;color:var(--fire2)}
-.h1{margin-top:12px;font-size:78px;font-weight:900;line-height:.98;letter-spacing:-2px;text-shadow:0 6px 30px rgba(255,107,0,.45)}
+.h1{margin-top:10px;font-size:76px;font-weight:900;line-height:.98;letter-spacing:-2px;text-shadow:0 6px 30px rgba(255,107,0,.45)}
 .h1 em{font-style:normal;background:linear-gradient(180deg,var(--fire2),var(--fire));-webkit-background-clip:text;background-clip:text;color:transparent}
-.sub{margin-top:18px;font-size:27px;font-weight:700;color:rgba(255,255,255,.88);line-height:1.4;max-width:820px}
+.sub{margin-top:16px;font-size:25px;font-weight:700;color:rgba(255,255,255,.88);line-height:1.4;max-width:820px}
 .sub b{color:var(--fire2)}
 /* fila de icones grandes */
 .icons{margin-top:22px;display:flex;gap:10px;align-items:center;justify-content:center;font-size:62px;filter:drop-shadow(0 6px 18px rgba(0,0,0,.5))}
@@ -46,6 +46,24 @@ body{background:#000;font-family:Montserrat,'Segoe UI',Arial,sans-serif;color:#f
 .cta{margin-top:18px;background:linear-gradient(135deg,var(--g),var(--gl));color:#0B2B12;font-size:30px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;padding:20px 46px;border-radius:16px;box-shadow:0 12px 40px rgba(0,208,96,.4)}
 .site{margin-top:14px;font-size:20px;font-weight:800;color:rgba(255,255,255,.8);letter-spacing:1px}
 .tag{margin-top:auto;font-size:17px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.45)}
+
+/* ---- menu degustacao ---- */
+.icons{display:none}
+.mcard{margin-top:22px;width:100%;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.035));border:2px dashed rgba(255,179,0,.55);border-radius:24px;padding:24px 28px 26px;position:relative}
+.mcard::before{content:'';position:absolute;inset:7px;border:1px solid rgba(255,179,0,.16);border-radius:18px;pointer-events:none}
+.mhead{position:relative;z-index:2}
+.mhead .mt{font-size:27px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:var(--fire2);line-height:1}
+.mhead .ms{margin-top:7px;font-size:15px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.rule{margin:16px auto 0;width:180px;height:2px;background:linear-gradient(90deg,transparent,rgba(255,179,0,.85),transparent)}
+.courses{position:relative;z-index:2;margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:16px 26px;text-align:left}
+.cs .cl{font-size:15px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:var(--fire);display:flex;align-items:center;gap:7px;margin-bottom:7px}
+.cs .cv{font-size:21px;font-weight:700;color:rgba(255,255,255,.95);line-height:1.5}
+.cs.hero2{grid-column:1 / -1;background:rgba(255,107,0,.13);border:1.5px solid rgba(255,179,0,.4);border-radius:16px;padding:16px 20px}
+.cs.hero2 .cv{font-size:24px;font-weight:800}
+.cs.hero2 .cv b{color:var(--fire2)}
+/* info */
+.ic b{display:block;font-size:24px;font-weight:900}
+.ic span{display:block;font-size:16px;color:rgba(255,255,255,.62);font-weight:700;margin-top:4px;line-height:1.35}
 </style></head><body>
 <div class="art" id="a">
   <div class="smoke"></div>
@@ -56,18 +74,38 @@ body{background:#000;font-family:Montserrat,'Segoe UI',Arial,sans-serif;color:#f
     <div class="top">FMEES 2026 · Cuiabá</div>
     <div class="h1">Tá tudo <em>incluso</em><br>no seu ingresso.</div>
     <div class="sub">A <b>ABEE-MT subsidia grande parte</b> da experiência:<br>parrilla completa e chope entram junto com a programação técnica.</div>
-    <div class="icons">🔥 🥩 🍖 🧀 🍺</div>
-    <div class="menu">
-      <div class="t">🔥 Na brasa a noite toda · já incluso</div>
-      <div class="items">Picanha <span>•</span> Baby Beef <span>•</span> Steak Angus <span>•</span> Maminha <span>•</span> Shoulder <span>•</span> Choripan <span>•</span> Linguiça artesanal <span>•</span> Pastrami <span>•</span> Queijo coalho com melado <span>•</span> Pastéis <span>•</span> Guarnições <span>•</span> Sobremesa</div>
+    <div class="mcard">
+      <div class="mhead">
+        <div class="mt">Menu degustação · Parrilla</div>
+        <div class="ms">Açougue 154 · equipe do especialista Lamonnyel Moraes</div>
+        <div class="rule"></div>
+      </div>
+      <div class="courses">
+        <div class="cs hero2">
+          <div class="cl">🔥 Na brasa a noite toda</div>
+          <div class="cv"><b>Picanha</b> · <b>Maminha</b> · <b>Shoulder</b> · <b>Steak Angus</b> · <b>Baby Beef</b><br>e outros cortes especiais do Açougue 154</div>
+        </div>
+        <div class="cs">
+          <div class="cl">🥟 Entrada</div>
+          <div class="cv">Choripan · Linguiça artesanal<br>Pastrami · Queijo coalho com melado<br>Pastel de costela e de queijo</div>
+        </div>
+        <div class="cs">
+          <div class="cl">🍚 Guarnições</div>
+          <div class="cv">Arroz parrilleiro · Mandioca cremosa<br>Farofa de cebola · Vinagrete<br>Banana da terra · Batata frita</div>
+        </div>
+        <div class="cs" style="grid-column:1 / -1">
+          <div class="cl">🍮 Para fechar</div>
+          <div class="cv">Panqueca de doce de leite</div>
+        </div>
+      </div>
     </div>
     <div class="chope">
       <div class="em">🍺</div>
-      <div class="txt"><b>Chope Louvada Pilsen</b><span>+ água e refrigerante · sem custo extra</span></div>
+      <div class="txt"><b>Chope Louvada Pilsen</b><span>+ água com e sem gás, Coca-Cola, Coca Zero e Guaraná · sem custo extra</span></div>
     </div>
     <div class="info">
-      <div class="ic"><b>📍 Casarão 154</b><span>Cuiabá</span></div>
-      <div class="ic"><b>📅 28 de setembro</b><span>a partir das 17h</span></div>
+      <div class="ic"><b>📍 Casarão 154</b><span>Rua Choffi, 50 · Santa Rosa<br>Cuiabá — MT</span></div>
+      <div class="ic"><b>📅 28 de setembro</b><span>Segunda-feira<br>das 17h30 às 23h</span></div>
     </div>
     <div class="vagas">⚠️ Só 25 ingressos nessa condição</div>
     <div class="cta">Bora? Garanta o seu</div>
