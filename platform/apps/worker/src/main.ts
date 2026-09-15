@@ -1,3 +1,4 @@
+import os from 'node:os'
 import { Queue, Worker, type Job } from 'bullmq'
 import { Redis } from 'ioredis'
 import { createDb } from '@vox/db'
@@ -70,7 +71,19 @@ async function main() {
     dlq: new Queue('dead-letter', { connection }),
   }
   const inboundProcessor = new InboundProcessor(deps, realtime)
-  const ctx = { config, db, providers, logger, deps, realtime, queues, inboundProcessor }
+  const instanceId = `${os.hostname()}:${process.pid}`
+  const ctx = {
+    config,
+    db,
+    providers,
+    logger,
+    deps,
+    realtime,
+    queues,
+    inboundProcessor,
+    redis: connection,
+    instanceId,
+  }
 
   const deadLetter = (queueName: string) => async (job: Job | undefined, err: Error) => {
     if (!job) return
@@ -189,4 +202,7 @@ export type WorkerContext = {
     dlq: Queue
   }
   inboundProcessor: InboundProcessor
+  redis: Redis
+  /** hostname:pid, identifies which replica holds a scheduler tick */
+  instanceId: string
 }

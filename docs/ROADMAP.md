@@ -83,7 +83,7 @@ Objetivo: **receber mensagem WhatsApp (real ou simulada) → identificar/criar c
 - [x] Backups automatizados (diário, retenção, off-host via rclone) com restore verificado semanalmente (`ops/backup/`); scripts testados contra Postgres real
 - [x] Métricas Prometheus em `GET /metrics` + regras de alerta + stack opcional (Prometheus/Alertmanager/Grafana)
 - [x] Flag `SCHEDULERS` no worker para réplicas extras
-- [ ] Schedulers do worker (outbox, follow-ups) como jobs repetíveis do BullMQ para rodar com múltiplas réplicas (hoje: um loop por processo)
+- [x] Schedulers do worker seguros para múltiplas réplicas (lock por tick no Redis, `vox:scheduler:<nome>`; tarefas idempotentes)
 - [x] Lockout progressivo por conta no login (5 falhas → 1 min, dobrando até 30 min; limpa no sucesso), além do rate limit por IP
 - [ ] Build das imagens Docker validado em CI (o sandbox de desenvolvimento não tem daemon Docker)
 - [ ] Runbooks

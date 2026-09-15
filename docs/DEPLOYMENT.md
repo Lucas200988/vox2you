@@ -5,13 +5,13 @@
 | Processo | Imagem | Porta | Escala |
 |---|---|---|---|
 | `api` | `platform/apps/api/Dockerfile` | 4000 | N réplicas (stateless; SSE usa Redis pub/sub) |
-| `worker` | `platform/apps/worker/Dockerfile` | — | 1+ réplicas (BullMQ distribui jobs; os schedulers internos devem rodar em **uma** réplica — defina `SCHEDULERS=0` nas demais quando escalar; ver nota abaixo) |
+| `worker` | `platform/apps/worker/Dockerfile` | — | N réplicas (BullMQ distribui jobs; cada tick dos schedulers é tomado por **uma** réplica via lock no Redis — ver nota abaixo) |
 | `web` | `platform/apps/web/Dockerfile` | 3000 | N réplicas |
 | PostgreSQL 16 + pgvector | `pgvector/pgvector:pg16` | 5432 | gerenciado (RDS/Cloud SQL/Neon com pgvector) |
 | Redis 7 | `redis:7-alpine` | 6379 | gerenciado |
 | Object storage | S3/MinIO/R2 | — | — |
 
-> Nota sobre schedulers: `apps/worker/src/scheduler.ts` usa `setInterval` in-process. A réplica com `SCHEDULERS=1` roda outbox, follow-ups, SLA e limpeza; réplicas extras devem subir com `SCHEDULERS=0`. Para eliminar essa restrição, mova para BullMQ repeatable jobs (item do roadmap).
+> Nota sobre schedulers: `apps/worker/src/scheduler.ts` usa `setInterval` in-process, mas cada tick (outbox, follow-ups, lembretes de visita, SLA, limpeza) só executa na réplica que obtiver o lock `vox:scheduler:<nome>` no Redis (`SET NX PX`, TTL = intervalo). Todas as réplicas podem subir com `SCHEDULERS=1`; `SCHEDULERS=0` continua disponível para réplicas dedicadas a filas.
 
 ## Produção em um host (recomendado para o piloto)
 

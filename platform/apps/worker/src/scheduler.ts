@@ -7,8 +7,10 @@ import {
 import type { WorkerContext } from './main.js'
 
 /**
- * Lightweight in-process schedulers (single worker instance is enough for one unit; for horizontal
- * scale switch to BullMQ repeatable jobs with a lock — see docs/DEPLOYMENT.md).
+ * Lightweight schedulers. Every tick first takes a Redis lock (`SET NX PX`, TTL = interval, never
+ * released early) so that with several worker replicas each tick runs on exactly one of them; the
+ * tasks themselves are idempotent (outbox claims in a transaction, queue jobs are deduplicated by
+ * jobId, reminders/SLA record what they sent), so a late overlap is harmless.
  */
 export function startSchedulers(ctx: WorkerContext): () => void {
   const timers: NodeJS.Timeout[] = []
@@ -18,6 +20,7 @@ export function startSchedulers(ctx: WorkerContext): () => void {
       if (running) return
       running = true
       try {
+        if (!(await acquireTick(ctx, name, ms))) return
         await fn()
       } catch (err) {
         ctx.logger.error({ err, scheduler: name }, 'scheduler tick failed')
@@ -132,4 +135,21 @@ export function startSchedulers(ctx: WorkerContext): () => void {
   })
 
   return () => timers.forEach((t) => clearInterval(t))
+}
+
+/** One replica per tick: the lock lives for the whole interval, so no early release is needed. */
+export async function acquireTick(ctx: WorkerContext, name: string, intervalMs: number): Promise<boolean> {
+  try {
+    const ok = await ctx.redis.set(
+      `vox:scheduler:${name}`,
+      ctx.instanceId,
+      'PX',
+      Math.max(1000, intervalMs - 250),
+      'NX',
+    )
+    return ok === 'OK'
+  } catch (err) {
+    ctx.logger.warn({ err, scheduler: name }, 'scheduler lock unavailable; skipping tick')
+    return false
+  }
 }
