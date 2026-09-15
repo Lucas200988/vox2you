@@ -11,6 +11,7 @@ export interface RealtimeEvent {
     | 'lead.updated'
     | 'handoff'
     | 'agent.run'
+    | 'notification.new'
   tenantId: string
   unitId?: string | null
   conversationId?: string
@@ -33,6 +34,7 @@ export function useRealtime(unitId: string | undefined, onEvent?: (e: RealtimeEv
       'lead.updated',
       'handoff',
       'agent.run',
+      'notification.new',
     ]
     const listeners = types.map((type) => {
       const fn = (ev: MessageEvent) => {
@@ -43,6 +45,14 @@ export function useRealtime(unitId: string | undefined, onEvent?: (e: RealtimeEv
           return
         }
         handler.current?.(data)
+        if (data.type === 'notification.new') {
+          void mutate(
+            (key) => typeof key === 'string' && key.startsWith('notifications'),
+            undefined,
+            { revalidate: true },
+          )
+          return
+        }
         void mutate(
           (key) => typeof key === 'string' && key.startsWith('conversations'),
           undefined,

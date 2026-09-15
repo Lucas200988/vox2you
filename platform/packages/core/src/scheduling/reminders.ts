@@ -10,6 +10,7 @@ import { loadAgentSettings } from '../settings/agent-settings.js'
 import { systemContext } from '../tenant/context.js'
 import { isSessionWindowOpen } from '../window/policy.js'
 import { AppointmentService } from './appointment-service.js'
+import { createTask } from '../crm/task-service.js'
 
 export type ReminderKind = '24h' | '2h'
 export interface ReminderOutcome {
@@ -125,7 +126,7 @@ export class VisitReminderService {
       }
     }
     if (via === 'task') {
-      await this.db.task.create({
+      await createTask(this.db, {
         data: {
           tenantId: appt.tenantId,
           leadId: appt.leadId,
@@ -173,7 +174,7 @@ export class VisitReminderService {
     })
     for (const appt of pending) {
       try {
-        await this.db.task.create({
+        await createTask(this.db, {
           data: {
             tenantId: appt.tenantId,
             leadId: appt.leadId,

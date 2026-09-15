@@ -21,6 +21,10 @@ describe.skipIf(!RUN)('visit reminders and outcomes', () => {
     await env?.db.$disconnect()
   })
 
+  /** Messages the mock sent to one phone: other tests' appointments may be due at the same time. */
+  const sentTo = (phone: string) =>
+    env.messaging.sent.filter((m) => m.to.replace(/\D/g, '').endsWith(phone.slice(-8)))
+
   async function leadWithConversation(name: string) {
     const phone = randomPhone()
     const res = await inbound(env, phone, 'Oi, quero conhecer a escola', { name })
@@ -33,7 +37,7 @@ describe.skipIf(!RUN)('visit reminders and outcomes', () => {
   }
 
   it('sends the 24h reminder as text inside the window, once, with date and address', async () => {
-    const { contactId, leadId } = await leadWithConversation('Bia Lembrete')
+    const { phone, contactId, leadId } = await leadWithConversation('Bia Lembrete')
     await env.db.unit.update({
       where: { id: env.seed.unitId },
       data: { address: 'Av. Teste, 100 - Centro' },
@@ -47,14 +51,14 @@ describe.skipIf(!RUN)('visit reminders and outcomes', () => {
       startsAt,
       requireAvailability: false,
     })
-    const before = env.messaging.sent.length
+    const before = sentTo(phone).length
     const first = await service.sendDueReminders()
     expect(first.find((r) => r.appointmentId === appt.id)).toMatchObject({
       kind: '24h',
       via: 'text',
     })
-    expect(env.messaging.sent.length).toBe(before + 1)
-    const text = (env.messaging.sent.at(-1)!.payload as { text?: string }).text ?? ''
+    expect(sentTo(phone).length).toBe(before + 1)
+    const text = (sentTo(phone).at(-1)!.payload as { text?: string }).text ?? ''
     expect(text).toContain('Bia')
     expect(text).toContain('Av. Teste, 100')
     expect(text).toMatch(/\d{2}\/\d{2}/)
@@ -84,14 +88,14 @@ describe.skipIf(!RUN)('visit reminders and outcomes', () => {
       startsAt,
       requireAvailability: false,
     })
-    let before = env.messaging.sent.length
+    let before = sentTo(a.phone).length
     let res = await service.sendDueReminders()
     expect(res.find((r) => r.appointmentId === apptA.id)).toMatchObject({
       kind: '2h',
       via: 'template',
     })
-    expect(env.messaging.sent.length).toBe(before + 1)
-    expect(env.messaging.sent.at(-1)!.kind).toBe('template')
+    expect(sentTo(a.phone).length).toBe(before + 1)
+    expect(sentTo(a.phone).at(-1)!.kind).toBe('template')
 
     // 2) window closed and no approved template → task for the consultant, nothing sent
     const template = await env.db.messageTemplate.findFirst({
@@ -109,13 +113,13 @@ describe.skipIf(!RUN)('visit reminders and outcomes', () => {
         startsAt,
         requireAvailability: false,
       })
-      before = env.messaging.sent.length
+      before = sentTo(b.phone).length
       res = await service.sendDueReminders()
       expect(res.find((r) => r.appointmentId === apptB.id)).toMatchObject({
         kind: '2h',
         via: 'task',
       })
-      expect(env.messaging.sent.length).toBe(before)
+      expect(sentTo(b.phone).length).toBe(before)
       const task = await env.db.task.findFirst({
         where: { leadId: b.leadId, kind: 'call' },
         orderBy: { createdAt: 'desc' },

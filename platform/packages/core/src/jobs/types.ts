@@ -42,7 +42,14 @@ export interface SchedulerJob {
 }
 
 export interface RealtimeEvent {
-  type: 'conversation.updated' | 'message.new' | 'message.status' | 'lead.updated' | 'handoff' | 'agent.run'
+  type:
+    | 'conversation.updated'
+    | 'message.new'
+    | 'message.status'
+    | 'lead.updated'
+    | 'handoff'
+    | 'agent.run'
+    | 'notification.new'
   tenantId: string
   unitId?: string | null
   conversationId?: string

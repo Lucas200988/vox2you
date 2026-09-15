@@ -15,6 +15,8 @@ const EnvSchema = z.object({
   WEBHOOK_TIMEOUT_MS: z.coerce.number().default(10000),
   /** In-process schedulers (outbox, follow-ups, SLA, cleanup). Run them in exactly ONE replica. */
   SCHEDULERS: z.enum(['0', '1']).default('1'),
+  /** Public URL of the web app, used for links inside notification e-mails */
+  WEB_ORIGIN: z.string().url().optional(),
 })
 
 export type WorkerConfig = z.infer<typeof EnvSchema>

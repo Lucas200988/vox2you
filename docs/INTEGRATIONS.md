@@ -26,7 +26,7 @@ Credenciais são lidas de variáveis de ambiente (ver `platform/.env.example`) o
 | `StorageProvider` | `LocalFsStorageProvider` | Implementado | — |
 | `TraceSink` | `LangfuseTraceSink` | Implementado | `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, `LANGFUSE_BASE_URL` — **pendente** |
 | `TraceSink` | `ConsoleTraceSink` / `DbTraceSink` | Implementado | — |
-| `EmailProvider` | `SmtpEmailProvider` | Implementado (nodemailer) | `SMTP_*` |
+| `EmailProvider` | `SmtpEmailProvider` | Implementado (nodemailer); usado pelas notificações do vendedor e pela ação `send_email` das automações | `SMTP_*` ou Integrações → E-mail |
 | `PaymentProvider` | Mercado Pago / Asaas / Pagar.me / Stripe | Interface + `MockPaymentProvider` | — |
 | `ConversionProvider` | Meta CAPI | Interface + `NoopConversionProvider` | `META_CAPI_TOKEN`, `META_PIXEL_ID` |
 | Webhooks genéricos / n8n | `call_webhook` action | Implementado (HMAC assinado) | — |

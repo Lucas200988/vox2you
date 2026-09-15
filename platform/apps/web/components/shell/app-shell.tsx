@@ -18,6 +18,7 @@ import { cn } from '@/lib/utils'
 import { SessionProvider, useSession } from '@/lib/session'
 import { useRealtime } from '@/lib/realtime'
 import { Avatar, Select } from '@/components/ui/primitives'
+import { NotificationBell } from './notification-bell'
 import { logoutAction } from '@/app/login/actions'
 
 const NAV = [
@@ -101,6 +102,7 @@ function Shell({ children }: { children: React.ReactNode }) {
             {NAV.find((n) => pathname.startsWith(n.href))?.label ?? ''}
           </div>
           <div className="flex items-center gap-2">
+            <NotificationBell />
             <span className="text-xs text-muted">Unidade</span>
             <Select className="h-8 w-48" value={unitId} onChange={(e) => setUnitId(e.target.value)}>
               {(me?.units ?? []).map((u) => (

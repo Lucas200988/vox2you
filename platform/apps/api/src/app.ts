@@ -32,6 +32,7 @@ import { analyticsRoutes } from './routes/v1/analytics.js'
 import { schedulingRoutes } from './routes/v1/scheduling.js'
 import { simulateRoutes } from './routes/v1/simulate.js'
 import { streamRoutes } from './routes/v1/stream.js'
+import { notificationRoutes } from './routes/v1/notifications.js'
 
 export type App = Awaited<ReturnType<typeof buildApp>>
 
@@ -115,6 +116,7 @@ export async function buildApp(ctx: AppContext) {
       await v1.register(schedulingRoutes)
       await v1.register(simulateRoutes, { prefix: '/simulate' })
       await v1.register(streamRoutes, { prefix: '/stream' })
+      await v1.register(notificationRoutes, { prefix: '/notifications' })
     },
     { prefix: '/api/v1' },
   )

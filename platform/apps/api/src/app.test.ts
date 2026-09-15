@@ -131,6 +131,47 @@ describe.skipIf(!RUN)('API', () => {
     ).toBe(401)
   })
 
+  it("serves the caller's notifications and marks them read", async () => {
+    const me = await app.inject({
+      method: 'GET',
+      url: '/api/v1/auth/me',
+      headers: { authorization: `Bearer ${token}` },
+    })
+    const userId = me.json().user.id as string
+    const tenantId = me.json().user.tenantId as string
+    await db.notification.create({
+      data: { tenantId, userId, kind: 'system', title: 'Bem-vindo ao CRM' },
+    })
+    const list = await app.inject({
+      method: 'GET',
+      url: '/api/v1/notifications/?unread=1',
+      headers: { authorization: `Bearer ${token}` },
+    })
+    expect(list.statusCode, list.body).toBe(200)
+    expect(list.json().unread).toBeGreaterThanOrEqual(1)
+    const first = list.json().items[0]
+    expect(first.title).toBeTruthy()
+    const read = await app.inject({
+      method: 'POST',
+      url: `/api/v1/notifications/${first.id}/read`,
+      headers: { authorization: `Bearer ${token}` },
+    })
+    expect(read.statusCode, read.body).toBe(200)
+    expect(read.json().updated).toBe(1)
+    const all = await app.inject({
+      method: 'POST',
+      url: '/api/v1/notifications/read-all',
+      headers: { authorization: `Bearer ${token}` },
+    })
+    expect(all.statusCode, all.body).toBe(200)
+    const after = await app.inject({
+      method: 'GET',
+      url: '/api/v1/notifications/',
+      headers: { authorization: `Bearer ${token}` },
+    })
+    expect(after.json().unread).toBe(0)
+  })
+
   it('verifies webhook challenge and rejects bad signatures', async () => {
     const ok = await app.inject({
       method: 'GET',

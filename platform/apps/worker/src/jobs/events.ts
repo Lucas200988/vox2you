@@ -1,6 +1,6 @@
 import { createHmac } from 'node:crypto'
 import type { Prisma } from '@vox/db'
-import { AutomationEngine, FollowUpService, LeadService, loadFollowUpPolicy, systemContext, type AutomationAction, type DomainEventJob } from '@vox/core'
+import { AutomationEngine, FollowUpService, LeadService, NotificationService, loadFollowUpPolicy, notificationForEvent, systemContext, type AutomationAction, type DomainEventJob, createTask } from '@vox/core'
 import { sha256 } from '@vox/shared'
 import type { WorkerContext } from '../main.js'
 
@@ -17,6 +17,15 @@ export async function processDomainEvent(ctx: WorkerContext, job: DomainEventJob
   // Realtime fan-out for UI-relevant events
   if (['lead.created', 'stage.changed', 'lead.scored', 'lead.qualified', 'lead.won', 'lead.lost', 'fact.captured', 'tag.added', 'task.created'].includes(event.type) && event.aggregateType === 'lead') {
     await ctx.realtime.publish({ type: 'lead.updated', tenantId: event.tenantId, unitId: event.unitId, leadId: event.aggregateId, payload: { event: event.type, ...payload }, at: event.occurredAt.toISOString() })
+  }
+
+  // Seller notifications (bell + e-mail): handoff, SLA breach, visit outcome, tasks
+  try {
+    const notifications = new NotificationService(ctx.db, { email: () => ctx.providers.email, realtime: ctx.realtime, logger: ctx.logger, webUrl: ctx.config.WEB_ORIGIN })
+    const input = await notificationForEvent(ctx.db, notifications, { tenantId: event.tenantId, unitId: event.unitId, type: event.type, aggregateType: event.aggregateType, aggregateId: event.aggregateId, payload })
+    if (input) results['notifications'] = await notifications.notify(input)
+  } catch (err) {
+    ctx.logger.error({ err, eventId: event.id }, 'notification dispatch failed')
   }
 
   // Automations
@@ -74,7 +83,7 @@ async function runAction(ctx: WorkerContext, event: { tenantId: string; unitId: 
     case 'create_task': {
       if (!leadId) return { skipped: 'no_lead' }
       const lead = await ctx.db.lead.findUnique({ where: { id: leadId }, select: { ownerId: true } })
-      const task = await ctx.db.task.create({ data: { tenantId: event.tenantId, leadId, title: action.title, kind: action.kind ?? 'todo', priority: 'high', assigneeId: action.assigneeId ?? lead?.ownerId ?? null, dueAt: action.dueInHours ? new Date(Date.now() + action.dueInHours * 36e5) : null, createdBy: tctx.actor } })
+      const task = await createTask(ctx.db, { data: { tenantId: event.tenantId, leadId, title: action.title, kind: action.kind ?? 'todo', priority: 'high', assigneeId: action.assigneeId ?? lead?.ownerId ?? null, dueAt: action.dueInHours ? new Date(Date.now() + action.dueInHours * 36e5) : null, createdBy: tctx.actor } })
       return { task: task.id }
     }
     case 'add_tag': {

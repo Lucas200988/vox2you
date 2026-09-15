@@ -1,7 +1,7 @@
 import type { FastifyPluginAsync } from 'fastify'
 import { z } from 'zod'
 import { FactInputSchema, LeadStageChangeSchema, LeadUpdateSchema, TaskInputSchema } from '@vox/shared'
-import { FollowUpService, LeadService, NotFoundError, PipelineService, TimelineService } from '@vox/core'
+import { FollowUpService, LeadService, NotFoundError, PipelineService, TimelineService, createTask } from '@vox/core'
 
 const IdParams = z.object({ id: z.string().uuid() })
 
@@ -107,7 +107,7 @@ export const leadRoutes: FastifyPluginAsync = async (app) => {
 
   app.post('/tasks', { schema: { tags: ['crm'], body: TaskInputSchema }, preHandler: app.requireAuth('leads:write') }, async (req) => {
     const body = req.body as z.infer<typeof TaskInputSchema>
-    return app.ctx.db.task.create({ data: { tenantId: req.auth!.tenantId, leadId: body.leadId ?? null, assigneeId: body.assigneeId ?? req.auth!.userId ?? null, title: body.title, description: body.description ?? null, kind: body.kind, priority: body.priority, dueAt: body.dueAt ? new Date(body.dueAt) : null, createdBy: req.auth!.actor } })
+    return createTask(app.ctx.db, { data: { tenantId: req.auth!.tenantId, leadId: body.leadId ?? null, assigneeId: body.assigneeId ?? req.auth!.userId ?? null, title: body.title, description: body.description ?? null, kind: body.kind, priority: body.priority, dueAt: body.dueAt ? new Date(body.dueAt) : null, createdBy: req.auth!.actor } })
   })
 
   app.post('/tasks/:id/complete', { schema: { tags: ['crm'], params: IdParams }, preHandler: app.requireAuth('leads:write') }, async (req) => {

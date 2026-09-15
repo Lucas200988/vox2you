@@ -39,7 +39,7 @@ Objetivo: **receber mensagem WhatsApp (real ou simulada) → identificar/criar c
 - [x] Pausa da IA, resumo de handoff, retomada com contexto
 - [x] Copilot (sugerir, melhorar, resumir, próxima ação) — somente com ação humana
 - [x] Atribuição automática por rodízio (menos leads abertos primeiro; handoff recomenda e atribui; `POST /leads/:id/auto-assign` + botão no painel do lead). Times: pendente
-- [ ] Notificações (push/e-mail) para vendedor
+- [x] Notificações para o vendedor: sino no CRM (tempo real via SSE) + e-mail quando o SMTP está configurado em Integrações — handoff, SLA estourado, visita sem desfecho, tarefa atribuída; sem repetição em 24h; `notifyByEmail: false` em `User.settings` desliga o e-mail por usuário. Push (browser/mobile): pendente
 
 ## Slice 4 — Agenda
 - [x] `CalendarProvider` + agenda interna + Google Calendar (aguarda credencial)

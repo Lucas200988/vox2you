@@ -59,6 +59,7 @@ model Tenant {
   appointments   Appointment[]
   tasks          Task[]
   payments       Payment[]
+  notifications  Notification[]
   conversionEvts ConversionEvent[]
 
   @@map("tenants")
@@ -127,6 +128,7 @@ model User {
   ownedLeads       Lead[]          @relation("LeadOwner")
   recommendedLeads Lead[]          @relation("LeadRecommendedOwner")
   tasks            Task[]          @relation("TaskAssignee")
+  notifications    Notification[]
   notes            Note[]
   promptVersions   PromptVersion[]
   evaluations      Evaluation[]
@@ -670,6 +672,29 @@ model Deal {
   @@index([tenantId, unitId, status])
   @@index([leadId])
   @@map("deals")
+}
+
+/// In-app notification for a CRM user (bell); mirrored by e-mail when the tenant has SMTP configured.
+model Notification {
+  id        String    @id @default(uuid()) @db.Uuid
+  tenantId  String    @map("tenant_id") @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  unitId    String?   @map("unit_id") @db.Uuid
+  kind      String // handoff | sla | visit_outcome | task | hot_lead | system
+  title     String
+  body      String?
+  link      String? // in-app path, e.g. /inbox?conversation=<id>
+  dedupeKey String?   @map("dedupe_key")
+  emailedAt DateTime? @map("emailed_at") @db.Timestamptz
+  readAt    DateTime? @map("read_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt, createdAt])
+  @@index([tenantId, dedupeKey])
+  @@map("notifications")
 }
 
 model Task {

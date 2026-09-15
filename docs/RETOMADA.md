@@ -133,3 +133,26 @@ No app Meta (developers.facebook.com), produto WhatsApp:
 ## 6. Feito enquanto você esteve fora
 
 Ver a seção "Estado verificado" em `ROADMAP.md`; os commits na branch trazem o detalhe.
+
+Resumo das etapas entregues nesta rodada (todas com testes, CI verde e enviadas para a branch):
+
+1. **Remarcar/cancelar visita pela conversa** — o agente reconhece "quero remarcar" e "preciso
+   cancelar", age na visita já marcada (nunca cria uma segunda) e o cancelamento entra no
+   follow-up automático.
+2. **CI real** — o GitHub Actions roda lint, typecheck, 90 testes, build do web e das 3 imagens
+   Docker a cada push da branch (`.github/workflows/platform-ci.yml`).
+3. **Rodízio de leads** — no handoff o lead vai para o consultor da unidade com menos leads
+   abertos; botão *Distribuir automaticamente* no painel do lead (`POST /leads/:id/auto-assign`).
+4. **Isolamento entre contas provado na API** — teste com dois tenants; duas brechas menores
+   fechadas (timeline de lead alheio e `unitId` de outra conta agora dão 404/403).
+5. **Worker escalável** — os schedulers usam lock no Redis; pode subir mais réplicas sem duplicar
+   trabalho.
+6. **Notificações para o vendedor** — sino no topo do CRM (badge de não lidas, marcar como lida)
+   e e-mail espelho quando o SMTP estiver configurado em *Configurações → Integrações → E-mail*.
+   Dispara em: pedido de atendimento humano, SLA do estágio estourado, visita sem desfecho
+   registrado e tarefa criada pelo agente/automação. Um usuário pode desligar o e-mail dele com
+   `{"notifyByEmail": false}` em *Usuários* (campo settings).
+
+Para o servidor receber tudo isso: faça o passo 2 (canal de atualização) e rode o workflow
+**Deploy** no GitHub. A migração nova (`notifications`) é aplicada automaticamente pelo deploy.
+

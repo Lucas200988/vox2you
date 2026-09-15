@@ -42,6 +42,7 @@ import { computeLeadScore, DEFAULT_SCORING_WEIGHTS } from '../scoring/lead-scori
 import { loadAgentSettings } from '../settings/agent-settings.js'
 import { agentContext } from '../tenant/context.js'
 import { isSessionWindowOpen } from '../window/policy.js'
+import { createTask } from '../crm/task-service.js'
 
 const COMMERCIAL_INTENTS = new Set([
   'info_request',
@@ -1369,7 +1370,7 @@ export class AgentOrchestrator {
           })
           followUpAt = fu?.scheduledAt ?? null
         } else if (plan.strategy === 'task_for_human') {
-          await tx.task.create({
+          await createTask(tx, {
             data: {
               tenantId: ctx.input.tenantId,
               leadId,
@@ -1398,7 +1399,7 @@ export class AgentOrchestrator {
       if (!isDry) {
         for (const a of ctx.actions) {
           if (a.type === 'create_task')
-            await tx.task.create({
+            await createTask(tx, {
               data: {
                 tenantId: ctx.input.tenantId,
                 leadId,
@@ -1514,7 +1515,7 @@ export class AgentOrchestrator {
             },
             actor: 'agent',
           })
-          await tx.task.create({
+          await createTask(tx, {
             data: {
               tenantId: ctx.input.tenantId,
               leadId,
