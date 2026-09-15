@@ -56,15 +56,23 @@ O servidor não consegue falar com o GitHub (o botão de chave de deploy não ha
 definitiva: o **GitHub Actions** entra no servidor por SSH e copia o código. Precisa de três
 segredos no GitHub e de uma chave no servidor. Nenhum segredo passa pelo terminal.
 
-**2a. No servidor**, cole:
+**2a. No servidor** (terminal do Lightsail), cole a caixa abaixo. Ela cria a chave sempre para o
+usuário `ubuntu` — funciona igual se você estiver logado como `ubuntu` ou como root (`sudo -i`) — e
+imprime a chave privada na tela. Rodar de novo apenas troca a chave (a antiga é removida).
 
 ```
 echo inicio
-ssh-keygen -q -t ed25519 -f ~/.ssh/gh_actions -N '' -C github-actions
-cat ~/.ssh/gh_actions.pub >> ~/.ssh/authorized_keys
-chmod 600 ~/.ssh/authorized_keys
-echo "=== COPIE DAQUI ATÉ A LINHA END (use o botão Copy from terminal) ==="
-cat ~/.ssh/gh_actions
+sudo install -d -m 700 -o ubuntu -g ubuntu /home/ubuntu/.ssh
+sudo touch /home/ubuntu/.ssh/authorized_keys
+sudo sed -i '/github-actions/d' /home/ubuntu/.ssh/authorized_keys
+sudo rm -f /home/ubuntu/.ssh/gh_actions /home/ubuntu/.ssh/gh_actions.pub
+sudo -u ubuntu ssh-keygen -q -t ed25519 -f /home/ubuntu/.ssh/gh_actions -N '' -C github-actions
+sudo tee -a /home/ubuntu/.ssh/authorized_keys < /home/ubuntu/.ssh/gh_actions.pub >/dev/null
+sudo chown ubuntu:ubuntu /home/ubuntu/.ssh/authorized_keys
+sudo chmod 600 /home/ubuntu/.ssh/authorized_keys
+sudo -u ubuntu sudo -n true && echo "sudo sem senha: OK"
+echo "=== COPIE DA LINHA BEGIN ATE A LINHA END (botao Copy from terminal) ==="
+sudo cat /home/ubuntu/.ssh/gh_actions
 echo fim
 ```
 
@@ -82,9 +90,20 @@ três segredos com **New repository secret**:
 | `DEPLOY_SSH_KEY` | a chave privada copiada em 2a |
 
 **2c. Rodar o deploy**: https://github.com/Lucas200988/vox2you/actions/workflows/deploy.yml →
-**Run workflow** → Branch `claude/brave-fermat-k7tfvc` → deixe *backup* marcado → **Run workflow**.
-Leva uns 8 minutos. O último passo imprime o diagnóstico do servidor. Repita isso sempre que eu
-avisar que há uma atualização.
+**Run workflow** → Branch `claude/brave-fermat-k7tfvc` → deixe *backup* marcado e *seed*
+**desmarcado** (o seed é só do primeiro deploy) → **Run workflow**. Leva uns 8 minutos. As
+migrações do banco são aplicadas sozinhas quando a API sobe; o último passo imprime o diagnóstico
+do servidor. Repita isso sempre que eu avisar que há uma atualização.
+
+Se algum passo falhar, o erro aparece no próprio log do Actions:
+
+- `Permission denied (publickey)` → a chave colada no `DEPLOY_SSH_KEY` não é a mesma do servidor
+  (refaça 2a e cole de novo, incluindo as linhas BEGIN e END).
+- `Host key verification failed` → o `DEPLOY_HOST` está diferente do IP real do servidor.
+- `sudo: a password is required` → o `DEPLOY_USER` não é o `ubuntu` (ou o usuário perdeu o sudo
+  sem senha).
+- `API did not become ready` → o deploy chegou ao servidor mas os containers não subiram; rode
+  `sudo bash ops/status.sh` no servidor e veja `docs/RUNBOOKS.md` §1.
 
 Depois de apagar a chave privada da tela, limpe o terminal com `clear`.
 
