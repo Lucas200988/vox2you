@@ -77,7 +77,7 @@ Objetivo: **receber mensagem WhatsApp (real ou simulada) → identificar/criar c
 - [ ] Pagamentos (Mercado Pago/Asaas/Stripe) via `PaymentProvider`
 - [ ] HubSpot/Kommo/Pipedrive sync
 - [x] Slack (Incoming Webhook em Integrações; notificações do vendedor espelhadas no canal) · n8n/Zapier/Make via webhooks de eventos assinados (já existiam)
-- [ ] Google Sheets/Drive
+- [x] Google Sheets/Excel via exportação CSV dos leads filtrados (Funil → *Exportar CSV*, `GET /leads/export.csv`, auditado). Sync bidirecional com Drive: pendente
 
 ## Slice 10 — Operação
 - [ ] Migrar `vox2you-estoque` para `platform/apps/estoque` (após ajuste do Root Directory no Vercel)

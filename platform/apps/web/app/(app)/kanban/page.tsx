@@ -131,6 +131,15 @@ export default function KanbanPage() {
         <span className="ml-auto text-xs text-muted">
           {columns.reduce((s, c) => s + c.leads.length, 0)} leads
         </span>
+        {unitId && (
+          <a
+            className="rounded-md border px-2 py-1 text-xs text-slate-600 hover:bg-slate-50"
+            href={`/api/leads/export.csv?unitId=${unitId}${owner ? `&ownerId=${owner}` : ''}${minScore ? `&minScore=${minScore}` : ''}${q ? `&q=${encodeURIComponent(q)}` : ''}`}
+            title="Baixa os leads filtrados em CSV (abre no Google Sheets / Excel)"
+          >
+            Exportar CSV
+          </a>
+        )}
       </div>
       <DndContext sensors={sensors} onDragEnd={onDragEnd}>
         <div className="flex flex-1 gap-3 overflow-x-auto p-4">

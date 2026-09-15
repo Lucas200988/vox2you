@@ -7,6 +7,9 @@ import { ConversationService } from '../crm/conversation-service.js'
 import { LeadService } from '../crm/lead-service.js'
 import type { TenantContext } from '../tenant/context.js'
 
+/** Each item is a real agent run (LLM cost); keep runs bounded. */
+export const MAX_ITEMS_PER_RUN = 100
+
 export interface DatasetItemInput {
   /** Customer message to send (the last turn) */
   text: string
@@ -245,6 +248,10 @@ export class DatasetService {
 
   async run(ctx: TenantContext, datasetId: string, config: RunConfig): Promise<RunSummary> {
     const dataset = await this.get(ctx, datasetId)
+    if (dataset.items.length > MAX_ITEMS_PER_RUN)
+      throw new ValidationError(
+        `Dataset com mais de ${MAX_ITEMS_PER_RUN} casos: divida em datasets menores`,
+      )
     const results: ItemResult[] = []
     for (const item of dataset.items) {
       const input = item.input as unknown as DatasetItemInput

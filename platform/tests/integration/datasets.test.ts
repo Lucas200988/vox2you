@@ -93,6 +93,7 @@ describe.skipIf(!RUN)('Datasets and A/B comparison', () => {
     const ctx = ctxOf()
     const phone = randomPhone()
     await inbound(env, phone, 'Tenho vergonha de falar em público')
+    await new Promise((r) => setTimeout(r, 1100)) // provider timestamps have second precision: keep the turn order unambiguous
     const res = await inbound(env, phone, 'Quanto custa?')
     const dataset = await service.create(ctx, { name: `Importado ${Date.now()}` })
     const item = await service.addFromConversation(ctx, dataset.id, res.conversationId!, {

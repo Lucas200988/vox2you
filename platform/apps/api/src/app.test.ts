@@ -477,6 +477,15 @@ describe.skipIf(!RUN)('API', () => {
     expect(['number', 'object']).toContain(typeof conv.noShowRate)
     expect(Array.isArray(dash.json().commercial.lostReasons)).toBe(true)
     expect(Array.isArray(dash.json().insights)).toBe(true)
+    const csv = await app.inject({
+      method: 'GET',
+      url: `/api/v1/leads/export.csv?unitId=${unitId}`,
+      headers: h,
+    })
+    expect(csv.statusCode, csv.body).toBe(200)
+    expect(csv.headers['content-type']).toContain('text/csv')
+    expect(csv.body.split('\r\n')[0]).toContain('nome;telefone')
+    expect(csv.body.split('\r\n').length).toBeGreaterThan(1)
     const someLead = await db.lead.findFirst({ where: { unitId }, select: { id: true } })
     const suggestion = await app.inject({
       method: 'GET',
