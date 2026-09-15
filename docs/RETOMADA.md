@@ -172,6 +172,11 @@ Resumo das etapas entregues nesta rodada (todas com testes, CI verde e enviadas 
     Nada muda em produção até você testar (Playground/dataset) e publicar.
 14. **Slack** — em *Integrações → Slack* cole a URL de um Incoming Webhook; as notificações do
     vendedor passam a aparecer também no canal (teste de conexão manda uma mensagem).
+15. **Instagram Direct + Messenger** — em *Integrações → Instagram Direct + Messenger* (por
+    unidade) informe ID da Página, ID da conta do Instagram, Page Access Token, App Secret e um
+    verify token; na Meta assine o webhook `https://api.vox.sonare.com.br/webhooks/meta` para
+    Página e Instagram (campo `messages`). As DMs caem na mesma Inbox e o agente responde
+    dentro da janela de 24h; fora dela abre tarefa para o consultor.
 
 Para o servidor receber tudo isso: faça o passo 2 (canal de atualização) e rode o workflow
 **Deploy** no GitHub. A migração nova (`notifications`) é aplicada automaticamente pelo deploy.

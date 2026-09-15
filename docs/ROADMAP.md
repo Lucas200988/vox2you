@@ -72,7 +72,7 @@ Objetivo: **receber mensagem WhatsApp (real ou simulada) → identificar/criar c
 - [x] Pipeline de sugestão de melhoria com aprovação humana (`PromptImprovementService`: evidências de respostas bloqueadas, avaliações negativas, notas baixas e handoffs → rascunho revisado em Prompts, variáveis preservadas; publicação continua manual)
 
 ## Slice 9 — Conectores P1
-- [ ] Instagram/Messenger via `ChannelProvider`
+- [x] Instagram Direct + Messenger (`MetaMessengerProvider`, webhook `/webhooks/meta`, identidade por canal sem telefone, mesma Inbox/agente, janela de 24h → tarefa em vez de template; configurável por unidade em Integrações; aguarda Página/token reais)
 - [ ] Meta Conversions API (`ConversionProvider` pronto; adapter aguarda credencial)
 - [ ] Pagamentos (Mercado Pago/Asaas/Stripe) via `PaymentProvider`
 - [ ] HubSpot/Kommo/Pipedrive sync

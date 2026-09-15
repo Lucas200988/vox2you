@@ -126,4 +126,102 @@ export const whatsappWebhookRoutes: FastifyPluginAsync = async (app) => {
       return reply.status(200).send({ received: events.length })
     },
   )
+
+  // ── Messenger + Instagram (same Meta app, object = "page" | "instagram") ──────────────────────
+  const entryIdOf = (body: unknown): string | null =>
+    (body as { entry?: Array<{ id?: string }> })?.entry?.[0]?.id ?? null
+  const objectOf = (body: unknown): string | null => (body as { object?: string })?.object ?? null
+
+  app.get(
+    '/meta',
+    {
+      schema: {
+        tags: ['webhooks'],
+        security: [],
+        querystring: z.object({
+          'hub.mode': z.string().optional(),
+          'hub.verify_token': z.string().optional(),
+          'hub.challenge': z.string().optional(),
+        }),
+      },
+      config: { rateLimit: { max: 60, timeWindow: '1 minute' } },
+    },
+    async (req, reply) => {
+      const query = req.query as Record<string, string | undefined>
+      const ok =
+        query['hub.mode'] === 'subscribe' &&
+        !!query['hub.verify_token'] &&
+        !!query['hub.challenge'] &&
+        (await app.ctx.integrations.matchesAnyWhatsAppVerifyToken(query['hub.verify_token']))
+      if (!ok) return reply.status(403).send('Forbidden')
+      return reply.type('text/plain').send(query['hub.challenge'])
+    },
+  )
+
+  app.post(
+    '/meta',
+    {
+      schema: { tags: ['webhooks'], security: [] },
+      config: { rateLimit: { max: 600, timeWindow: '1 minute' } },
+    },
+    async (req, reply) => {
+      const object = objectOf(req.body)
+      const kind = object === 'instagram' ? 'instagram' : object === 'page' ? 'messenger' : null
+      const externalId = entryIdOf(req.body)
+      if (!kind || !externalId) return reply.status(200).send({ received: 0 })
+      const channel = await app.ctx.db.channel.findUnique({
+        where: { kind_externalId: { kind, externalId } },
+        select: { tenantId: true, status: true, provider: true, externalId: true, config: true },
+      })
+      if (!channel || channel.status !== 'active') {
+        req.log.warn({ kind, externalId }, 'meta webhook for unknown channel')
+        return reply.status(200).send({ received: 0 })
+      }
+      const providers = (await app.ctx.resolver.resolve(channel.tenantId)).providers
+      const messaging = providers.messagingFor
+        ? providers.messagingFor({
+            provider: channel.provider,
+            externalId: channel.externalId,
+            config: channel.config,
+          })
+        : providers.messaging
+      const signature = req.headers['x-hub-signature-256']
+      if (
+        !messaging.validateSignature(
+          req.rawBody ?? Buffer.from(''),
+          typeof signature === 'string' ? signature : undefined,
+        )
+      ) {
+        req.log.warn({ tenantId: channel.tenantId, kind }, 'meta webhook signature invalid')
+        return reply.status(401).send({ error: 'invalid_signature' })
+      }
+      const events = messaging.parseInbound(req.body)
+      if (!events.length) return reply.status(200).send({ received: 0 })
+      if (app.ctx.config.INBOUND_INLINE === '1') {
+        void runWithTenant(channel.tenantId, () =>
+          Promise.all(
+            events.map((e) =>
+              app.ctx.inbound
+                .process(e)
+                .catch((err) => req.log.error({ err }, 'inline inbound failed')),
+            ),
+          ),
+        )
+        return reply.status(200).send({ received: events.length, mode: 'inline' })
+      }
+      await Promise.all(
+        events.map((event) => {
+          const key =
+            event.kind === 'message'
+              ? `msg:${event.providerMessageId}`
+              : `status:${event.providerMessageId}:${event.status}`
+          const job: InboundJob = { key, event, receivedAt: new Date().toISOString() }
+          return app.ctx.queues.inbound.add('inbound', job, {
+            jobId: key.replace(/[^a-zA-Z0-9_.-]/g, '_'),
+          })
+        }),
+      )
+      return reply.status(200).send({ received: events.length })
+    },
+  )
 }

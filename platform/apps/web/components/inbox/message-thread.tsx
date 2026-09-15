@@ -22,6 +22,9 @@ import { Badge, Button, Select, Textarea, useToast } from '@/components/ui/primi
 import { CopilotPanel } from './copilot-panel'
 import { AuditDrawer } from './audit-drawer'
 
+/** Channels with a 24h customer-service window (Meta): outside it only templates (WhatsApp) or a task */
+const WINDOWED = ['whatsapp', 'instagram', 'messenger']
+
 export function MessageThread({ conversationId }: { conversationId: string }) {
   const { data: conv } = useApi<ConversationDetail>(`conversations/${conversationId}`)
   const { data: msgs } = useApi<{ items: Message[] }>(`conversations/${conversationId}/messages`, {
@@ -55,7 +58,7 @@ export function MessageThread({ conversationId }: { conversationId: string }) {
   }, [conversationId])
 
   if (!conv) return <div className="p-6 text-sm text-muted">Carregando…</div>
-  const windowOpen = conv.channel.kind !== 'whatsapp' || conv.windowRemainingMin > 0
+  const windowOpen = !WINDOWED.includes(conv.channel.kind) || conv.windowRemainingMin > 0
   const isHuman = conv.mode === 'human'
   const approved = (templates?.items ?? []).filter((t) => t.status === 'approved')
 

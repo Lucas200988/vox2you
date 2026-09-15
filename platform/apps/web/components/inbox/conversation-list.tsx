@@ -8,6 +8,9 @@ import { cn, relTime } from '@/lib/utils'
 import type { ConversationListItem } from '@/lib/types'
 import { Avatar, Badge, ScorePill, Skeleton, StageBadge } from '@/components/ui/primitives'
 
+/** Channels with a 24h customer-service window (Meta): outside it only templates (WhatsApp) or a task */
+const WINDOWED = ['whatsapp', 'instagram', 'messenger']
+
 const FILTERS = [
   { key: 'all', label: 'Todas' },
   { key: 'ai', label: 'IA' },
@@ -115,7 +118,7 @@ export function ConversationList({
                       <User className="h-3 w-3" /> {c.assignee?.name?.split(' ')[0] ?? 'Humano'}
                     </Badge>
                   )}
-                  {c.windowRemainingMin === 0 && c.channel.kind === 'whatsapp' && (
+                  {c.windowRemainingMin === 0 && WINDOWED.includes(c.channel.kind) && (
                     <Badge tone="red">
                       <Clock className="h-3 w-3" /> 24h
                     </Badge>

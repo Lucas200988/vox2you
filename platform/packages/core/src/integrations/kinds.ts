@@ -137,6 +137,52 @@ export const INTEGRATION_KINDS: IntegrationKindDef[] = [
     }),
   },
   {
+    kind: 'meta_messenger',
+    label: 'Instagram Direct + Messenger',
+    group: 'canal',
+    scope: 'unit',
+    description:
+      'DMs do Instagram e mensagens da Página do Facebook chegam na mesma Inbox e são atendidas pelo agente (janela de 24h, sem templates).',
+    docsUrl: 'https://developers.facebook.com/docs/messenger-platform/webhooks',
+    fields: [
+      {
+        key: 'pageId',
+        label: 'ID da Página do Facebook',
+        required: true,
+        placeholder: '1234567890',
+      },
+      {
+        key: 'instagramAccountId',
+        label: 'ID da conta profissional do Instagram',
+        placeholder: '17841400000000000',
+        help: 'Conta vinculada à Página; vazio = só Messenger.',
+      },
+      {
+        key: 'pageAccessToken',
+        label: 'Page Access Token (permanente)',
+        secret: true,
+        required: true,
+        help: 'Permissões: pages_messaging, instagram_manage_messages.',
+      },
+      { key: 'appSecret', label: 'App Secret', secret: true, required: true },
+      {
+        key: 'verifyToken',
+        label: 'Verify token do webhook',
+        required: true,
+        placeholder: 'qualquer-frase-sem-espacos',
+        help: 'Webhook: https://<api>/webhooks/meta com os campos messages (Página) e messages (Instagram).',
+      },
+    ],
+    toEnv: (v) =>
+      pick(v, {
+        MESSENGER_PAGE_ID: 'pageId',
+        MESSENGER_IG_ID: 'instagramAccountId',
+        MESSENGER_PAGE_TOKEN: 'pageAccessToken',
+        MESSENGER_APP_SECRET: 'appSecret',
+        MESSENGER_VERIFY_TOKEN: 'verifyToken',
+      }),
+  },
+  {
     kind: 'google_calendar',
     label: 'Google Calendar',
     group: 'agenda',

@@ -54,13 +54,14 @@ export class InboundProcessor {
     const channelInclude = {
       unit: { select: { id: true, tenantId: true, timezone: true } },
     } as const
+    const channelKind = event.channelKind ?? 'whatsapp'
     const candidates = event.channelId
       ? await db.channel.findMany({
-          where: { id: event.channelId, kind: 'whatsapp', status: 'active' },
+          where: { id: event.channelId, kind: channelKind, status: 'active' },
           include: channelInclude,
         })
       : await db.channel.findMany({
-          where: { kind: 'whatsapp', externalId: event.channelExternalId, status: 'active' },
+          where: { kind: channelKind, externalId: event.channelExternalId, status: 'active' },
           include: channelInclude,
           take: 2,
         })
@@ -126,10 +127,15 @@ export class InboundProcessor {
         tx,
         ctx,
         {
-          channel: 'whatsapp',
+          channel: channel.kind,
           externalId: event.from,
           displayName: event.fromName,
-          source: event.referral ? 'click_to_whatsapp' : 'whatsapp_organic',
+          source:
+            channel.kind === 'whatsapp'
+              ? event.referral
+                ? 'click_to_whatsapp'
+                : 'whatsapp_organic'
+              : channel.kind,
         },
       )
       const { conversation } = await this.conversations.getOrOpen(tx, ctx, {
@@ -211,7 +217,9 @@ export class InboundProcessor {
         where: { id: contact.id },
         data: {
           lastSeenAt: new Date(),
-          ...(contact.phone ? {} : { phone: normalizePhone(event.from) }),
+          ...(contact.phone || channel.kind !== 'whatsapp'
+            ? {}
+            : { phone: normalizePhone(event.from) }),
         },
       })
       return { contact, conversation, lead, message, duplicate }

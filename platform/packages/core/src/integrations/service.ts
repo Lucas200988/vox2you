@@ -104,6 +104,25 @@ export class IntegrationService {
 
     if (kind === 'whatsapp_meta' && unitId)
       await this.ensureWhatsAppChannel(tenantId, unitId, merged['phoneNumberId']!)
+    if (kind === 'meta_messenger' && unitId) {
+      await this.ensureChannel(
+        tenantId,
+        unitId,
+        'messenger',
+        'meta_messenger',
+        merged['pageId']!,
+        'Messenger',
+      )
+      if (merged['instagramAccountId'])
+        await this.ensureChannel(
+          tenantId,
+          unitId,
+          'instagram',
+          'meta_messenger',
+          merged['instagramAccountId'],
+          'Instagram Direct',
+        )
+    }
     return this.view(row)
   }
 
@@ -154,8 +173,34 @@ export class IntegrationService {
   /** Webhook verification handshake carries no tenant: accept any configured WhatsApp verify token. */
   async matchesAnyWhatsAppVerifyToken(token: string): Promise<boolean> {
     if (!token) return false
-    const rows = await this.db.integration.findMany({ where: { kind: 'whatsapp_meta' } })
+    const rows = await this.db.integration.findMany({
+      where: { kind: { in: ['whatsapp_meta', 'meta_messenger'] } },
+    })
     return rows.some((r) => this.decrypt(r)['verifyToken'] === token)
+  }
+
+  /** Channel of any kind bound to a provider id (page id, IG account id): globally unique across tenants. */
+  private async ensureChannel(
+    tenantId: string,
+    unitId: string,
+    kind: string,
+    provider: string,
+    externalId: string,
+    name: string,
+  ): Promise<void> {
+    const other = await this.db.channel.findUnique({
+      where: { kind_externalId: { kind, externalId } },
+    })
+    if (other && other.tenantId !== tenantId)
+      throw new ConflictError(`O id ${externalId} (${kind}) já está vinculado a outra conta`)
+    if (other) {
+      await this.db.channel.update({
+        where: { id: other.id },
+        data: { unitId, provider, status: 'active', name },
+      })
+      return
+    }
+    await this.db.channel.create({ data: { tenantId, unitId, kind, provider, externalId, name } })
   }
 
   private async ensureWhatsAppChannel(

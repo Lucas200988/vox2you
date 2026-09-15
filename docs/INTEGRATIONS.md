@@ -30,6 +30,7 @@ Credenciais são lidas de variáveis de ambiente (ver `platform/.env.example`) o
 | `PaymentProvider` | Mercado Pago / Asaas / Pagar.me / Stripe | Interface + `MockPaymentProvider` | — |
 | `ConversionProvider` | Meta CAPI | Interface + `NoopConversionProvider` | `META_CAPI_TOKEN`, `META_PIXEL_ID` |
 | Webhooks genéricos / n8n | `call_webhook` action | Implementado (HMAC assinado) | — |
+| Instagram Direct + Messenger | `MetaMessengerProvider` | Implementado (Graph Send API, webhook `/webhooks/meta`, janela 24h sem templates); aguarda Página/token | Integrações → Instagram Direct + Messenger (`MESSENGER_*`) |
 | Slack (alertas da equipe) | Incoming Webhook | Implementado: notificações do vendedor espelhadas num canal; teste de conexão envia uma mensagem | Integrações → Slack (`SLACK_WEBHOOK_URL`) |
 
 ## Configuração pelo CRM (sem .env)

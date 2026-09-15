@@ -2,7 +2,9 @@
 export type InboundEvent =
   | {
       kind: 'message'
-      channelExternalId: string // phone_number_id (Meta)
+      /** Channel family; whatsapp when absent (legacy producers) */
+      channelKind?: 'whatsapp' | 'instagram' | 'messenger'
+      channelExternalId: string // phone_number_id (WhatsApp), page id (Messenger) or IG account id
       /** Resolved channel id, set only by trusted in-process callers (simulator). Wins over channelExternalId. */
       channelId?: string
       providerMessageId: string
@@ -44,6 +46,7 @@ export type InboundEvent =
     }
   | {
       kind: 'status'
+      channelKind?: 'whatsapp' | 'instagram' | 'messenger'
       channelExternalId: string
       channelId?: string
       providerMessageId: string
