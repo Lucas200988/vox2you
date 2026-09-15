@@ -37,9 +37,22 @@ jobs:
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
         run: |
           mkdir -p ~/.ssh && chmod 700 ~/.ssh
-          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          # Keys copied on Windows (or from a browser terminal) often carry CRLF, which OpenSSH
+          # rejects with "error in libcrypto". Strip CR and guarantee the trailing newline.
+          printf '%s\n' "$DEPLOY_SSH_KEY" | tr -d '\r' > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          if ! ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null 2>&1; then
+            # Header/footer are not secret; the body is never printed.
+            echo "Primeira linha do secret : $(head -1 ~/.ssh/deploy_key)"
+            echo "Ultima linha do secret   : $(grep -v '^$' ~/.ssh/deploy_key | tail -1)"
+            echo "Linhas                   : $(wc -l < ~/.ssh/deploy_key)"
+            echo "::error::O secret DEPLOY_SSH_KEY nao e uma chave privada valida. Ele precisa conter o arquivo inteiro, da linha '-----BEGIN ... PRIVATE KEY-----' ate '-----END ... PRIVATE KEY-----', com as quebras de linha preservadas. Veja docs/RETOMADA.md secao 2."
+            exit 1
+          fi
+          if ! ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null || [ ! -s ~/.ssh/known_hosts ]; then
+            echo "::error::Nao consegui falar com o servidor em DEPLOY_HOST na porta 22. Confira o IP no secret e se a regra de firewall SSH esta aberta no Lightsail."
+            exit 1
+          fi
 
       - name: Sync code to server
         env:
