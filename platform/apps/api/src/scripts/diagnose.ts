@@ -1,7 +1,17 @@
 import 'dotenv/config'
 import { createDb } from '@vox/db'
-import { IntegrationService, createLogger, integrationKind } from '@vox/core'
-import { createProvidersFromEnv } from '@vox/providers'
+import {
+  IntegrationService,
+  createLogger,
+  currentTenantId,
+  integrationKind,
+  runWithTenantSync,
+} from '@vox/core'
+import {
+  createProvidersFromEnv,
+  TenantProviderResolver,
+  tenantAwareProviders,
+} from '@vox/providers'
 
 /**
  * Prints why the running server behaves the way it does: which providers each tenant actually gets,
@@ -43,6 +53,14 @@ async function main() {
     return
   }
   const integrations = new IntegrationService(db, key)
+  // Same objects the API builds in createAppContext: resolver + ambient-tenant facade.
+  const resolver = new TenantProviderResolver({
+    baseEnv: env,
+    base,
+    logger,
+    loadOverrides: (tenantId) => integrations.envOverrides(tenantId),
+  })
+  const ambient = tenantAwareProviders(base.providers, resolver, currentTenantId)
   const tenants = await db.tenant.findMany({ select: { id: true, name: true, slug: true } })
 
   for (const tenant of tenants) {
@@ -93,6 +111,40 @@ async function main() {
         console.log(
           '  ⚠ O agente desta conta responde com o SIMULADOR (nenhuma chave de IA em uso).',
         )
+
+      // Caminho real de uma requisição: o hook de autenticação resolve o tenant e prende o
+      // request ao escopo; o orquestrador lê `providers.llm` através da fachada.
+      await resolver.resolve(tenant.id)
+      const inScope = runWithTenantSync(tenant.id, () => ambient.llm.name)
+      const outOfScope = ambient.llm.name
+      console.log(
+        `  Caminho da requisição: dentro do escopo do tenant = ${inScope} · fora do escopo = ${outOfScope}`,
+      )
+      if (inScope !== effective.status.llm)
+        console.log(
+          '  ✗ A fachada não entrega o provedor da conta: o agente cai no simulador mesmo com a chave salva.',
+        )
+
+      // `--probe`: uma chamada real minúscula (poucos tokens) que prova que a chave tem saldo e que
+      // o servidor alcança a API. Fora disso o diagnóstico não gasta nada.
+      if (process.argv.includes('--probe')) {
+        try {
+          const res = await effective.providers.llm.complete({
+            model: effective.providers.models.classify,
+            messages: [{ role: 'user', content: 'Responda apenas: ok' }],
+            maxTokens: 8,
+            task: 'classify',
+          })
+          console.log(
+            `  Teste real de IA: ${res.provider} · modelo ${res.model} · ${res.latencyMs}ms · US$ ${res.costUsd.toFixed(6)} · resposta "${res.text.trim().slice(0, 40)}"`,
+          )
+        } catch (err) {
+          console.log(`  ✗ Teste real de IA FALHOU: ${(err as Error).message}`)
+          console.log(
+            '    → chave inválida, sem créditos, ou o servidor não alcança a API do provedor.',
+          )
+        }
+      }
     } catch (err) {
       console.log(`  ✗ envOverrides FALHOU: ${(err as Error).message}`)
       console.log('    → por isso o servidor continua com os provedores do .env (simulador).')

@@ -205,6 +205,28 @@ Resumo das etapas entregues nesta rodada (todas com testes, CI verde e enviadas 
     Página e Instagram (campo `messages`). As DMs caem na mesma Inbox e o agente responde
     dentro da janela de 24h; fora dela abre tarefa para o consultor.
 
+16. **Correção: o agente ignorava a chave de IA da conta** — no Playground as respostas vinham do
+    simulador (`mock`, custo US$ 0,0000) mesmo com a Anthropic conectada. O CRM resolvia as
+    credenciais certas, mas o *escopo da conta* se perdia entre o hook de autenticação e a rota:
+    o Fastify encadeia hooks assíncronos com `promise.then(done)`, e esse `done` nasce antes do
+    corpo do hook, então o `AsyncLocalStorage` entrado lá dentro já não valia no handler. Agora a
+    requisição é presa à conta num hook de callback (`runWithTenantSync`), que mantém o escopo pelo
+    resto do ciclo. O WhatsApp e o worker não eram afetados (já usavam `runWithTenant`). Há teste
+    de regressão que falha sem a correção (`apps/api/src/tenant-providers.test.ts`).
+
 Para o servidor receber tudo isso: faça o passo 2 (canal de atualização) e rode o workflow
 **Deploy** no GitHub. A migração nova (`notifications`) é aplicada automaticamente pelo deploy.
+
+### Conferir que a IA está mesmo respondendo
+
+Depois do Deploy, rode o workflow **Diagnose server** marcando a caixa
+*Make one tiny real AI call per account*. Na saída, para a conta VOX2you, procure:
+
+- `Caminho da requisição: dentro do escopo do tenant = anthropic` (ou `fallback`, quando a OpenAI
+  está conectada como reserva) — se aparecer `mock`, o servidor ainda está na versão antiga;
+- `Teste real de IA: anthropic · modelo … · US$ 0,00…` — prova que a chave tem crédito e que o
+  servidor alcança a API. Se falhar, a mensagem diz o motivo (chave inválida, sem créditos ou
+  rede bloqueada).
+
+No Playground, a resposta certa mostra o provedor **anthropic** e um custo maior que zero.
 

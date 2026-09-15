@@ -12,6 +12,10 @@ on:
         description: 'Include the last 200 log lines of api and worker'
         type: boolean
         default: true
+      probe:
+        description: 'Make one tiny real AI call per account (proves the key has credit)'
+        type: boolean
+        default: false
 
 concurrency:
   group: diagnose-${{ github.ref }}
@@ -40,9 +44,11 @@ jobs:
         env:
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
           DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          PROBE: ${{ inputs.probe }}
         run: |
+          [ "$PROBE" = "true" ] && FLAGS="--probe" || FLAGS=""
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes "$DEPLOY_USER@$DEPLOY_HOST" \
-            "cd /opt/vox2you/platform && sudo docker compose -f docker-compose.prod.yml exec -T api node apps/api/dist/scripts/diagnose.js"
+            "cd /opt/vox2you/platform && sudo docker compose -f docker-compose.prod.yml exec -T api node apps/api/dist/scripts/diagnose.js $FLAGS"
 
       - name: Containers and health
         if: always()
