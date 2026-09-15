@@ -139,7 +139,7 @@ Resumo das etapas entregues nesta rodada (todas com testes, CI verde e enviadas 
 1. **Remarcar/cancelar visita pela conversa** — o agente reconhece "quero remarcar" e "preciso
    cancelar", age na visita já marcada (nunca cria uma segunda) e o cancelamento entra no
    follow-up automático.
-2. **CI real** — o GitHub Actions roda lint, typecheck, 102 testes, build do web e das 3 imagens
+2. **CI real** — o GitHub Actions roda lint, typecheck, 106 testes, build do web e das 3 imagens
    Docker a cada push da branch (`.github/workflows/platform-ci.yml`).
 3. **Rodízio de leads** — no handoff o lead vai para o consultor da unidade com menos leads
    abertos; botão *Distribuir automaticamente* no painel do lead (`POST /leads/:id/auto-assign`).

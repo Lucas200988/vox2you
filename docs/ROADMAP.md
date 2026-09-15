@@ -4,7 +4,7 @@ Entrega em **slices verticais**: cada slice é funcional ponta a ponta (webhook/
 
 ## Estado verificado (2026-09-15, branch `claude/brave-fermat-k7tfvc`)
 
-- Suíte: 26 arquivos / 102 testes verdes com Postgres 16 + pgvector reais (`RUN_INTEGRATION=1 pnpm test`), `tsc -b` e ESLint limpos, `next build` do web OK; GitHub Actions (`platform-ci`) verde a cada push, incluindo o build das 3 imagens Docker.
+- Suíte: 28 arquivos / 106 testes verdes com Postgres 16 + pgvector reais (`RUN_INTEGRATION=1 pnpm test`), `tsc -b` e ESLint limpos, `next build` do web OK; GitHub Actions (`platform-ci`) verde a cada push, incluindo o build das 3 imagens Docker.
 - Implantado em produção (AWS Lightsail, `vox.sonare.com.br` / `api.vox.sonare.com.br`, Caddy + Docker Compose); o servidor ainda precisa ser atualizado com as etapas desta rodada (ver `RETOMADA.md` §2).
 - Fluxo comprovado por processo real (API + worker + web): simulação de WhatsApp → contato/lead/conversa → RAG híbrido → resposta da IA (mock em dev) com preço vindo **do catálogo** → guardrails → score explicado, estágio, NBA, follow-up agendado → inbox em tempo real → lead 360.
 - Provedores reais (Anthropic, OpenAI, Meta Cloud, Google Calendar, S3, Langfuse, SMTP) estão implementados mas **não exercitados**: faltam credenciais (ver `INTEGRATIONS.md`).
