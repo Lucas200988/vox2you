@@ -13,6 +13,7 @@ import {
   Package,
   Settings,
   Sparkles,
+  Megaphone,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { SessionProvider, useSession } from '@/lib/session'
@@ -28,6 +29,7 @@ const NAV = [
   { href: '/knowledge', label: 'Conhecimento', icon: BookOpen, min: 'viewer' },
   { href: '/prompts', label: 'Agente', icon: Bot, min: 'manager' },
   { href: '/playground', label: 'Playground', icon: FlaskConical, min: 'manager' },
+  { href: '/campaigns', label: 'Campanhas', icon: Megaphone, min: 'manager' },
   { href: '/analytics', label: 'Analytics', icon: BarChart3, min: 'manager' },
   { href: '/settings', label: 'Configurações', icon: Settings, min: 'manager' },
 ] as const

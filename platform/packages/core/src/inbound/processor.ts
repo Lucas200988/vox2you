@@ -6,6 +6,7 @@ import { ContactService } from '../crm/contact-service.js'
 import { ConversationService } from '../crm/conversation-service.js'
 import { LeadService } from '../crm/lead-service.js'
 import { FollowUpService } from '../followup/service.js'
+import { CampaignService } from '../campaigns/service.js'
 import type { RealtimePublisher } from '../jobs/types.js'
 import type { InboundEvent } from '../providers/messaging.js'
 import { agentContext, runWithTenant } from '../tenant/context.js'
@@ -205,6 +206,7 @@ export class InboundProcessor {
         },
       )
       if (!duplicate) await FollowUpService.cancelPendingTx(tx, lead.id, 'customer_replied')
+      if (!duplicate) await CampaignService.markRepliedTx(tx, contact.id)
       await tx.contact.update({
         where: { id: contact.id },
         data: {

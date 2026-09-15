@@ -154,6 +154,13 @@ Resumo das etapas entregues nesta rodada (todas com testes, CI verde e enviadas 
    `{"notifyByEmail": false}` em *Usuários* (campo settings).
 7. **SLA por estágio** — em *Configurações → Funil / SLA* você define as horas máximas por
    estágio; o kanban marca os leads atrasados e o responsável é notificado (1x por lead por dia).
+8. **Campanhas** — menu *Campanhas*: escolha um template aprovado do WhatsApp, filtre o segmento
+   (estágios, score, origem, dias sem interação), defina limite por minuto e janela de horário,
+   conte os destinatários e agende. Quem respondeu volta para o agente; respostas em 72h contam
+   para a campanha. Contatos com opt-out nunca recebem.
+9. **Motivos de perda sugeridos pela IA** e **métricas novas em Analytics** (tempo até
+   qualificar/visita, no-show, abandono, follow-ups respondidos, motivos de perda).
+10. **Runbooks** (`docs/RUNBOOKS.md`) para os incidentes mais prováveis do servidor.
 
 Para o servidor receber tudo isso: faça o passo 2 (canal de atualização) e rode o workflow
 **Deploy** no GitHub. A migração nova (`notifications`) é aplicada automaticamente pelo deploy.

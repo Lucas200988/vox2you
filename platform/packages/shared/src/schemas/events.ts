@@ -34,6 +34,7 @@ export const DOMAIN_EVENT_TYPES = [
   'payment.confirmed',
   'tag.added',
   'task.created',
+  'campaign.scheduled',
   'agent.run_completed',
   'agent.validation_blocked',
   'knowledge.published',

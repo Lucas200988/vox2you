@@ -1,10 +1,12 @@
 import {
+  CampaignService,
   claimUnpublishedEvents,
   FollowUpService,
   KnowledgeIngestionService,
   VisitReminderService,
 } from '@vox/core'
 import type { WorkerContext } from './main.js'
+import { withTenant } from './tenant.js'
 
 /**
  * Lightweight schedulers. Every tick first takes a Redis lock (`SET NX PX`, TTL = interval, never
@@ -78,6 +80,20 @@ export function startSchedulers(ctx: WorkerContext): () => void {
     if (outcomes.prompted || outcomes.noShow) ctx.logger.info(outcomes, 'visit outcomes processed')
   })
 
+  // Campaigns: start due ones and send one throttled batch per running campaign (per-tenant providers)
+  every(60 * 1000, 'campaigns', async () => {
+    const campaigns = new CampaignService(ctx.db, {
+      providers: ctx.providers,
+      realtime: ctx.realtime,
+      logger: ctx.logger,
+    })
+    const out = await campaigns.processTick(new Date(), (tenantId, fn) =>
+      withTenant(ctx, tenantId, fn),
+    )
+    const active = out.filter((o) => o.sent || o.failed || o.done)
+    if (active.length) ctx.logger.info({ campaigns: active }, 'campaign batches processed')
+  })
+
   // Knowledge governance: expire documents past validity (hourly)
   every(60 * 60 * 1000, 'expire-knowledge', async () => {
     const n = await new KnowledgeIngestionService(
@@ -138,7 +154,11 @@ export function startSchedulers(ctx: WorkerContext): () => void {
 }
 
 /** One replica per tick: the lock lives for the whole interval, so no early release is needed. */
-export async function acquireTick(ctx: WorkerContext, name: string, intervalMs: number): Promise<boolean> {
+export async function acquireTick(
+  ctx: WorkerContext,
+  name: string,
+  intervalMs: number,
+): Promise<boolean> {
   try {
     const ok = await ctx.redis.set(
       `vox:scheduler:${name}`,

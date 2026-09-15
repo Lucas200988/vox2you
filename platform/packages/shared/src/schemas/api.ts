@@ -219,3 +219,29 @@ export type PlaygroundRequest = z.infer<typeof PlaygroundRequestSchema>
 export type ProductInput = z.infer<typeof ProductInputSchema>
 export type OfferInput = z.infer<typeof OfferInputSchema>
 export type KnowledgeDocumentInput = z.infer<typeof KnowledgeDocumentInputSchema>
+
+export const CampaignSegmentSchema = z.object({
+  stageKeys: z.array(z.string()).optional(),
+  statuses: z.array(z.enum(['open', 'nurture', 'lost', 'won'])).optional(),
+  minScore: z.number().int().min(0).max(100).optional(),
+  maxScore: z.number().int().min(0).max(100).optional(),
+  sources: z.array(z.string()).optional(),
+  tagIds: z.array(z.string().uuid()).optional(),
+  ownerIds: z.array(z.string().uuid()).optional(),
+  inactiveForDays: z.number().int().min(1).max(365).optional(),
+  createdAfter: z.string().datetime().optional(),
+  createdBefore: z.string().datetime().optional(),
+  sendWindow: z
+    .object({ start: z.string().regex(/^\d{2}:\d{2}$/), end: z.string().regex(/^\d{2}:\d{2}$/) })
+    .optional(),
+})
+
+export const CampaignInputSchema = z.object({
+  name: z.string().min(2).max(120),
+  unitId: z.string().uuid(),
+  templateId: z.string().uuid().nullable(),
+  segment: CampaignSegmentSchema.default({}),
+  variables: z.array(z.string().max(200)).default([]),
+  rateLimitPerMin: z.number().int().min(1).max(600).optional(),
+  scheduledAt: z.string().datetime().nullable().optional(),
+})

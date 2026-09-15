@@ -55,8 +55,8 @@ Objetivo: **receber mensagem WhatsApp (real ou simulada) → identificar/criar c
 
 ## Slice 6 — Campanhas e templates
 - [x] Gestão de templates (`/settings/templates`, sync Meta via `MessagingProvider.listTemplates`) e envio de template fora da janela de 24h pela inbox
-- [ ] Segmentação + envio em lote com limites e timezone (schema `Campaign`/`CampaignRecipient` pronto; sem motor/UI)
-- [ ] Métricas de campanha
+- [x] Segmentação + envio em lote com limites e timezone (`CampaignService`: segmento por estágio/score/origem/tag/inatividade, template aprovado, limite por minuto, janela local da unidade, opt-out excluído; página Campanhas; tick do worker a cada minuto)
+- [x] Métricas de campanha (destinatários, enviadas, respostas em 72h, falhas, por status) na página Campanhas
 
 ## Slice 7 — Analytics
 - [x] Eventos de domínio modelados (outbox) desde o Slice 1
