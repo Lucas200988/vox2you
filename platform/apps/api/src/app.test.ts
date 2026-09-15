@@ -468,6 +468,13 @@ describe.skipIf(!RUN)('API', () => {
     expect(dash.statusCode, dash.body).toBe(200)
     expect(dash.json().commercial.leads).toBeGreaterThan(0)
     expect(dash.json().ai.runs).toBeGreaterThan(0)
+    const conv = dash.json().conversational
+    expect(conv).toMatchObject({
+      visitBookingRate: expect.any(Number),
+      abandonmentRate: expect.any(Number),
+    })
+    expect(['number', 'object']).toContain(typeof conv.medianHoursToQualify) // number or null
+    expect(['number', 'object']).toContain(typeof conv.noShowRate)
 
     const pg = await app.inject({
       method: 'POST',

@@ -61,7 +61,7 @@ Objetivo: **receber mensagem WhatsApp (real ou simulada) → identificar/criar c
 ## Slice 7 — Analytics
 - [x] Eventos de domínio modelados (outbox) desde o Slice 1
 - [x] Dashboard executivo inicial (leads, qualificados, agendamentos, conversão, IA vs humano, custo IA)
-- [ ] Métricas conversacionais completas (FRT, tempo até qualificação, abandono)
+- [x] Métricas conversacionais completas (FRT, resposta média, mediana até qualificar e até marcar visita, % leads com visita, no-show, abandono em 48h, follow-ups respondidos) em Analytics
 - [ ] Insights automáticos ("campanha X converte 2,3x")
 
 ## Slice 8 — Avaliação e melhoria controlada
@@ -85,5 +85,5 @@ Objetivo: **receber mensagem WhatsApp (real ou simulada) → identificar/criar c
 - [x] Flag `SCHEDULERS` no worker para réplicas extras
 - [x] Schedulers do worker seguros para múltiplas réplicas (lock por tick no Redis, `vox:scheduler:<nome>`; tarefas idempotentes)
 - [x] Lockout progressivo por conta no login (5 falhas → 1 min, dobrando até 30 min; limpa no sucesso), além do rate limit por IP
-- [ ] Build das imagens Docker validado em CI (o sandbox de desenvolvimento não tem daemon Docker)
-- [ ] Runbooks
+- [x] Build das imagens Docker validado em CI (job `docker-images` em `platform-ci.yml`, a cada push)
+- [x] Runbooks (`docs/RUNBOOKS.md`: API fora, WhatsApp, agente, filas, follow-ups, custo de IA, restore, atualização, disco, acesso, isolamento)

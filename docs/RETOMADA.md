@@ -152,6 +152,8 @@ Resumo das etapas entregues nesta rodada (todas com testes, CI verde e enviadas 
    Dispara em: pedido de atendimento humano, SLA do estágio estourado, visita sem desfecho
    registrado e tarefa criada pelo agente/automação. Um usuário pode desligar o e-mail dele com
    `{"notifyByEmail": false}` em *Usuários* (campo settings).
+7. **SLA por estágio** — em *Configurações → Funil / SLA* você define as horas máximas por
+   estágio; o kanban marca os leads atrasados e o responsável é notificado (1x por lead por dia).
 
 Para o servidor receber tudo isso: faça o passo 2 (canal de atualização) e rode o workflow
 **Deploy** no GitHub. A migração nova (`notifications`) é aplicada automaticamente pelo deploy.

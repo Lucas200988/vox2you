@@ -15,16 +15,70 @@ export class AnalyticsService {
   async dashboard(ctx: TenantContext, range: DashboardRange) {
     const tenantId = ctx.tenantId
     const unitFilter = range.unitId ? sql`AND unit_id = ${range.unitId}::uuid` : sql``
-    const leadWhere = { tenantId, ...(range.unitId ? { unitId: range.unitId } : {}), createdAt: { gte: range.from, lte: range.to } }
+    const leadWhere = {
+      tenantId,
+      ...(range.unitId ? { unitId: range.unitId } : {}),
+      createdAt: { gte: range.from, lte: range.to },
+    }
 
-    const [leads, qualified, won, lost, appointments, completedAppts, byStage, bySource, byProduct, convStats, aiStats, handoffs, followups, optOuts, responseTimes, agentRunsByDecision] = await Promise.all([
+    const [
+      leads,
+      qualified,
+      won,
+      lost,
+      appointments,
+      completedAppts,
+      byStage,
+      bySource,
+      byProduct,
+      convStats,
+      aiStats,
+      handoffs,
+      followups,
+      optOuts,
+      responseTimes,
+      agentRunsByDecision,
+      funnelTimes,
+      visitOutcomes,
+      abandonment,
+      followUpReplies,
+    ] = await Promise.all([
       this.db.lead.count({ where: leadWhere }),
       this.db.lead.count({ where: { ...leadWhere, qualifiedAt: { not: null } } }),
-      this.db.lead.count({ where: { tenantId, ...(range.unitId ? { unitId: range.unitId } : {}), wonAt: { gte: range.from, lte: range.to } } }),
-      this.db.lead.count({ where: { tenantId, ...(range.unitId ? { unitId: range.unitId } : {}), lostAt: { gte: range.from, lte: range.to } } }),
-      this.db.appointment.count({ where: { tenantId, ...(range.unitId ? { unitId: range.unitId } : {}), createdAt: { gte: range.from, lte: range.to } } }),
-      this.db.appointment.count({ where: { tenantId, ...(range.unitId ? { unitId: range.unitId } : {}), status: 'completed', startsAt: { gte: range.from, lte: range.to } } }),
-      this.db.lead.groupBy({ by: ['stageId'], where: { tenantId, ...(range.unitId ? { unitId: range.unitId } : {}), status: 'open' }, _count: { _all: true } }),
+      this.db.lead.count({
+        where: {
+          tenantId,
+          ...(range.unitId ? { unitId: range.unitId } : {}),
+          wonAt: { gte: range.from, lte: range.to },
+        },
+      }),
+      this.db.lead.count({
+        where: {
+          tenantId,
+          ...(range.unitId ? { unitId: range.unitId } : {}),
+          lostAt: { gte: range.from, lte: range.to },
+        },
+      }),
+      this.db.appointment.count({
+        where: {
+          tenantId,
+          ...(range.unitId ? { unitId: range.unitId } : {}),
+          createdAt: { gte: range.from, lte: range.to },
+        },
+      }),
+      this.db.appointment.count({
+        where: {
+          tenantId,
+          ...(range.unitId ? { unitId: range.unitId } : {}),
+          status: 'completed',
+          startsAt: { gte: range.from, lte: range.to },
+        },
+      }),
+      this.db.lead.groupBy({
+        by: ['stageId'],
+        where: { tenantId, ...(range.unitId ? { unitId: range.unitId } : {}), status: 'open' },
+        _count: { _all: true },
+      }),
       this.db.$queryRaw<Array<{ source: string | null; count: number }>>(sql`
         SELECT c.source, COUNT(*)::int AS count FROM leads l JOIN contacts c ON c.id = l.contact_id
         WHERE l.tenant_id = ${tenantId}::uuid AND l.created_at BETWEEN ${range.from} AND ${range.to} ${range.unitId ? sql`AND l.unit_id = ${range.unitId}::uuid` : sql``}
@@ -34,21 +88,52 @@ export class AnalyticsService {
         FROM leads l LEFT JOIN products p ON p.id = COALESCE(l.interest_product_id, l.recommended_product_id)
         WHERE l.tenant_id = ${tenantId}::uuid AND l.created_at BETWEEN ${range.from} AND ${range.to} ${range.unitId ? sql`AND l.unit_id = ${range.unitId}::uuid` : sql``}
         GROUP BY p.name ORDER BY leads DESC LIMIT 10`),
-      this.db.$queryRaw<Array<{ total: number; ai_only: number; human: number; avg_messages: number }>>(sql`
+      this.db.$queryRaw<
+        Array<{ total: number; ai_only: number; human: number; avg_messages: number }>
+      >(sql`
         SELECT COUNT(*)::int AS total,
                COUNT(*) FILTER (WHERE handoff_at IS NULL)::int AS ai_only,
                COUNT(*) FILTER (WHERE handoff_at IS NOT NULL)::int AS human,
                COALESCE(AVG((SELECT COUNT(*) FROM messages m WHERE m.conversation_id = cv.id)), 0)::float AS avg_messages
         FROM conversations cv WHERE cv.tenant_id = ${tenantId}::uuid AND cv.created_at BETWEEN ${range.from} AND ${range.to} ${unitFilter}`),
-      this.db.$queryRaw<Array<{ runs: number; cost: number; input_tokens: number; output_tokens: number; avg_latency: number; avg_confidence: number | null; blocked: number }>>(sql`
+      this.db.$queryRaw<
+        Array<{
+          runs: number
+          cost: number
+          input_tokens: number
+          output_tokens: number
+          avg_latency: number
+          avg_confidence: number | null
+          blocked: number
+        }>
+      >(sql`
         SELECT COUNT(*)::int AS runs, COALESCE(SUM(cost_usd),0)::float AS cost, COALESCE(SUM(input_tokens),0)::int AS input_tokens, COALESCE(SUM(output_tokens),0)::int AS output_tokens,
                COALESCE(AVG(latency_ms),0)::float AS avg_latency, AVG(confidence)::float AS avg_confidence,
                COUNT(*) FILTER (WHERE decision = 'blocked')::int AS blocked
         FROM agent_runs WHERE tenant_id = ${tenantId}::uuid AND kind = 'reply' AND created_at BETWEEN ${range.from} AND ${range.to} ${unitFilter}`),
-      this.db.domainEvent.count({ where: { tenantId, type: 'handoff.requested', occurredAt: { gte: range.from, lte: range.to }, ...(range.unitId ? { unitId: range.unitId } : {}) } }),
-      this.db.followUp.groupBy({ by: ['status'], where: { tenantId, createdAt: { gte: range.from, lte: range.to } }, _count: { _all: true } }),
-      this.db.domainEvent.count({ where: { tenantId, type: 'consent.revoked', occurredAt: { gte: range.from, lte: range.to } } }),
-      this.db.$queryRaw<Array<{ first_response_sec: number | null; avg_response_sec: number | null }>>(sql`
+      this.db.domainEvent.count({
+        where: {
+          tenantId,
+          type: 'handoff.requested',
+          occurredAt: { gte: range.from, lte: range.to },
+          ...(range.unitId ? { unitId: range.unitId } : {}),
+        },
+      }),
+      this.db.followUp.groupBy({
+        by: ['status'],
+        where: { tenantId, createdAt: { gte: range.from, lte: range.to } },
+        _count: { _all: true },
+      }),
+      this.db.domainEvent.count({
+        where: {
+          tenantId,
+          type: 'consent.revoked',
+          occurredAt: { gte: range.from, lte: range.to },
+        },
+      }),
+      this.db.$queryRaw<
+        Array<{ first_response_sec: number | null; avg_response_sec: number | null }>
+      >(sql`
         WITH pairs AS (
           SELECT m.conversation_id, m.created_at AS inbound_at,
                  (SELECT MIN(o.created_at) FROM messages o WHERE o.conversation_id = m.conversation_id AND o.direction = 'outbound' AND o.created_at > m.created_at) AS reply_at,
@@ -59,10 +144,51 @@ export class AnalyticsService {
         SELECT AVG(EXTRACT(EPOCH FROM (reply_at - inbound_at))) FILTER (WHERE rn = 1)::float AS first_response_sec,
                AVG(EXTRACT(EPOCH FROM (reply_at - inbound_at)))::float AS avg_response_sec
         FROM pairs WHERE reply_at IS NOT NULL`),
-      this.db.agentRun.groupBy({ by: ['decision'], where: { tenantId, kind: 'reply', createdAt: { gte: range.from, lte: range.to } }, _count: { _all: true } }),
+      this.db.agentRun.groupBy({
+        by: ['decision'],
+        where: { tenantId, kind: 'reply', createdAt: { gte: range.from, lte: range.to } },
+        _count: { _all: true },
+      }),
+      // Time to qualify / to book the visit (median hours) and share of leads with a visit booked
+      this.db.$queryRaw<
+        Array<{
+          median_hours_to_qualify: number | null
+          median_hours_to_visit: number | null
+          leads: number
+          leads_with_visit: number
+        }>
+      >(sql`
+        WITH l AS (
+          SELECT id, created_at, qualified_at FROM leads
+          WHERE tenant_id = ${tenantId}::uuid AND created_at BETWEEN ${range.from} AND ${range.to} ${unitFilter}
+        )
+        SELECT percentile_cont(0.5) WITHIN GROUP (ORDER BY EXTRACT(EPOCH FROM (l.qualified_at - l.created_at)) / 3600) FILTER (WHERE l.qualified_at IS NOT NULL)::float AS median_hours_to_qualify,
+               percentile_cont(0.5) WITHIN GROUP (ORDER BY EXTRACT(EPOCH FROM (a.first_appt - l.created_at)) / 3600) FILTER (WHERE a.first_appt IS NOT NULL)::float AS median_hours_to_visit,
+               COUNT(*)::int AS leads,
+               COUNT(a.first_appt)::int AS leads_with_visit
+        FROM l LEFT JOIN LATERAL (SELECT MIN(ap.created_at) AS first_appt FROM appointments ap WHERE ap.lead_id = l.id) a ON TRUE`),
+      this.db.$queryRaw<Array<{ completed: number; no_show: number }>>(sql`
+        SELECT COUNT(*) FILTER (WHERE status = 'completed')::int AS completed, COUNT(*) FILTER (WHERE status = 'no_show')::int AS no_show
+        FROM appointments WHERE tenant_id = ${tenantId}::uuid AND starts_at BETWEEN ${range.from} AND ${range.to} ${unitFilter}`),
+      // Abandoned: we answered, the customer went silent for 48h+ and nothing was closed
+      this.db.$queryRaw<Array<{ total: number; abandoned: number }>>(sql`
+        SELECT COUNT(*)::int AS total,
+               COUNT(*) FILTER (WHERE cv.status = 'open' AND cv.last_inbound_at < NOW() - INTERVAL '48 hours'
+                                  AND cv.last_outbound_at > cv.last_inbound_at AND (l.id IS NULL OR l.status = 'open'))::int AS abandoned
+        FROM conversations cv LEFT JOIN leads l ON l.id = cv.lead_id
+        WHERE cv.tenant_id = ${tenantId}::uuid AND cv.created_at BETWEEN ${range.from} AND ${range.to} ${range.unitId ? sql`AND cv.unit_id = ${range.unitId}::uuid` : sql``}`),
+      // Follow-ups that got an answer within 72h
+      this.db.$queryRaw<Array<{ sent: number; replied: number }>>(sql`
+        SELECT COUNT(*)::int AS sent,
+               COUNT(*) FILTER (WHERE EXISTS (SELECT 1 FROM messages m WHERE m.conversation_id = f.conversation_id AND m.direction = 'inbound'
+                                              AND m.created_at > f.sent_at AND m.created_at < f.sent_at + INTERVAL '72 hours'))::int AS replied
+        FROM follow_ups f WHERE f.tenant_id = ${tenantId}::uuid AND f.status = 'sent' AND f.sent_at BETWEEN ${range.from} AND ${range.to}`),
     ])
 
-    const stages = await this.db.pipelineStage.findMany({ where: { id: { in: byStage.map((s) => s.stageId) } }, select: { id: true, key: true, name: true, order: true } })
+    const stages = await this.db.pipelineStage.findMany({
+      where: { id: { in: byStage.map((s) => s.stageId) } },
+      select: { id: true, key: true, name: true, order: true },
+    })
     const conv = convStats[0]
     const ai = aiStats[0]
     return {
@@ -78,7 +204,16 @@ export class AnalyticsService {
         conversionRate: leads ? won / leads : 0,
         bySource,
         byProduct,
-        openByStage: byStage.map((s) => ({ stage: stages.find((x) => x.id === s.stageId) ?? { key: s.stageId, name: s.stageId, order: 99 }, count: s._count._all })).sort((a, b) => a.stage.order - b.stage.order),
+        openByStage: byStage
+          .map((s) => ({
+            stage: stages.find((x) => x.id === s.stageId) ?? {
+              key: s.stageId,
+              name: s.stageId,
+              order: 99,
+            },
+            count: s._count._all,
+          }))
+          .sort((a, b) => a.stage.order - b.stage.order),
       },
       conversational: {
         conversations: conv?.total ?? 0,
@@ -89,7 +224,22 @@ export class AnalyticsService {
         firstResponseSec: responseTimes[0]?.first_response_sec ?? null,
         avgResponseSec: responseTimes[0]?.avg_response_sec ?? null,
         followUps: Object.fromEntries(followups.map((f) => [f.status, f._count._all])),
+        followUpReplyRate: followUpReplies[0]?.sent
+          ? followUpReplies[0].replied / followUpReplies[0].sent
+          : null,
         optOuts,
+        medianHoursToQualify: funnelTimes[0]?.median_hours_to_qualify ?? null,
+        medianHoursToVisit: funnelTimes[0]?.median_hours_to_visit ?? null,
+        visitBookingRate: funnelTimes[0]?.leads
+          ? funnelTimes[0].leads_with_visit / funnelTimes[0].leads
+          : 0,
+        noShowRate:
+          (visitOutcomes[0]?.completed ?? 0) + (visitOutcomes[0]?.no_show ?? 0)
+            ? visitOutcomes[0]!.no_show / (visitOutcomes[0]!.completed + visitOutcomes[0]!.no_show)
+            : null,
+        abandonmentRate: abandonment[0]?.total
+          ? abandonment[0].abandoned / abandonment[0].total
+          : 0,
       },
       ai: {
         runs: ai?.runs ?? 0,
@@ -99,7 +249,9 @@ export class AnalyticsService {
         avgLatencyMs: ai?.avg_latency ?? 0,
         avgConfidence: ai?.avg_confidence ?? null,
         blockedByValidation: ai?.blocked ?? 0,
-        byDecision: Object.fromEntries(agentRunsByDecision.map((d) => [d.decision ?? 'unknown', d._count._all])),
+        byDecision: Object.fromEntries(
+          agentRunsByDecision.map((d) => [d.decision ?? 'unknown', d._count._all]),
+        ),
       },
     }
   }

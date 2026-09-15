@@ -30,7 +30,13 @@ interface Dashboard {
     firstResponseSec: number | null
     avgResponseSec: number | null
     followUps: Record<string, number>
+    followUpReplyRate: number | null
     optOuts: number
+    medianHoursToQualify: number | null
+    medianHoursToVisit: number | null
+    visitBookingRate: number
+    noShowRate: number | null
+    abandonmentRate: number
   }
   ai: {
     runs: number
@@ -45,6 +51,14 @@ interface Dashboard {
 }
 
 const pct = (v: number) => `${Math.round(v * 100)}%`
+const hours = (v: number | null) =>
+  v === null
+    ? '—'
+    : v < 1
+      ? `${Math.round(v * 60)} min`
+      : v < 48
+        ? `${v.toFixed(1)} h`
+        : `${(v / 24).toFixed(1)} d`
 const secs = (v: number | null) =>
   v === null ? '—' : v < 60 ? `${Math.round(v)}s` : `${Math.round(v / 60)} min`
 
@@ -186,6 +200,20 @@ export default function AnalyticsPage() {
                 <dd>{pct(v!.handoffRate)}</dd>
                 <dt className="text-muted">Msgs por conversa</dt>
                 <dd>{v!.avgMessagesPerConversation.toFixed(1)}</dd>
+                <dt className="text-muted">Tempo até qualificar (mediana)</dt>
+                <dd>{hours(v!.medianHoursToQualify)}</dd>
+                <dt className="text-muted">Tempo até marcar visita (mediana)</dt>
+                <dd>{hours(v!.medianHoursToVisit)}</dd>
+                <dt className="text-muted">Leads com visita marcada</dt>
+                <dd>{pct(v!.visitBookingRate)}</dd>
+                <dt className="text-muted">No-show</dt>
+                <dd>{v!.noShowRate === null ? '—' : pct(v!.noShowRate)}</dd>
+                <dt className="text-muted">Abandono (48h sem resposta)</dt>
+                <dd className={v!.abandonmentRate > 0.4 ? 'text-red-600' : ''}>
+                  {pct(v!.abandonmentRate)}
+                </dd>
+                <dt className="text-muted">Follow-ups respondidos</dt>
+                <dd>{v!.followUpReplyRate === null ? '—' : pct(v!.followUpReplyRate)}</dd>
                 <dt className="text-muted">Opt-outs</dt>
                 <dd>{v!.optOuts}</dd>
                 <dt className="text-muted">Follow-ups</dt>
