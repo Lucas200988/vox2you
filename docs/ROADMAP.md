@@ -32,7 +32,7 @@ Objetivo: **receber mensagem WhatsApp (real ou simulada) → identificar/criar c
 - [x] Next Best Action / mensagem / follow-up
 - [x] Transições de estágio automáticas/sugeridas
 - [x] SLA por estágio com alertas (horas máximas editáveis em Configurações → Funil / SLA; selo e contador no kanban; evento `lead.inactive` + notificação ao responsável, 1x por lead/dia)
-- [ ] Motivos de perda com sugestão IA vs confirmado (schema pronto; UI parcial)
+- [x] Motivos de perda com sugestão da IA (objeções/intenções/silêncio → motivo estruturado, pré-selecionado ao marcar perdido; confirmado vs sugerido separado em Analytics)
 
 ## Slice 3 — Handoff humano e Inbox completa
 - [x] Regras de handoff (explícito, emocional, desconto, baixa confiança, B2B complexo)

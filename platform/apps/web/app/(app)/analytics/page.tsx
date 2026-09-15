@@ -19,6 +19,7 @@ interface Dashboard {
     conversionRate: number
     bySource: Array<{ source: string | null; count: number }>
     byProduct: Array<{ product: string | null; leads: number; won: number }>
+    lostReasons: Array<{ reason: string; count: number; aiSuggested: number }>
     openByStage: Array<{ stage: { key: string; name: string }; count: number }>
   }
   conversational: {
@@ -151,6 +152,33 @@ export default function AnalyticsPage() {
                   </li>
                 ))}
               </ul>
+            </Card>
+            <Card title="Motivos de perda">
+              <table className="w-full text-xs">
+                <thead className="text-muted">
+                  <tr>
+                    <th className="text-left">Motivo</th>
+                    <th>Leads</th>
+                    <th title="Motivo sugerido pela IA e mantido pelo consultor">IA</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {c!.lostReasons.map((r, i) => (
+                    <tr key={i} className="border-b last:border-0">
+                      <td className="py-1">{r.reason}</td>
+                      <td className="text-center font-medium">{r.count}</td>
+                      <td className="text-center text-muted">{r.aiSuggested}</td>
+                    </tr>
+                  ))}
+                  {c!.lostReasons.length === 0 && (
+                    <tr>
+                      <td colSpan={3} className="py-2 text-center text-muted">
+                        Nenhuma perda no período
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </Card>
             <Card title="Origem dos leads">
               <table className="w-full text-xs">

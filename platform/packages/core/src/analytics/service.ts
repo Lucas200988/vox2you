@@ -42,6 +42,7 @@ export class AnalyticsService {
       visitOutcomes,
       abandonment,
       followUpReplies,
+      lostReasons,
     ] = await Promise.all([
       this.db.lead.count({ where: leadWhere }),
       this.db.lead.count({ where: { ...leadWhere, qualifiedAt: { not: null } } }),
@@ -183,6 +184,12 @@ export class AnalyticsService {
                COUNT(*) FILTER (WHERE EXISTS (SELECT 1 FROM messages m WHERE m.conversation_id = f.conversation_id AND m.direction = 'inbound'
                                               AND m.created_at > f.sent_at AND m.created_at < f.sent_at + INTERVAL '72 hours'))::int AS replied
         FROM follow_ups f WHERE f.tenant_id = ${tenantId}::uuid AND f.status = 'sent' AND f.sent_at BETWEEN ${range.from} AND ${range.to}`),
+      // Lost reasons: confirmed by a human vs kept from the AI suggestion
+      this.db.$queryRaw<Array<{ reason: string | null; count: number; ai_suggested: number }>>(sql`
+        SELECT lr.name AS reason, COUNT(*)::int AS count, COUNT(*) FILTER (WHERE l.lost_reason_suggested_by_ai)::int AS ai_suggested
+        FROM leads l LEFT JOIN lost_reasons lr ON lr.id = l.lost_reason_id
+        WHERE l.tenant_id = ${tenantId}::uuid AND l.lost_at BETWEEN ${range.from} AND ${range.to} ${range.unitId ? sql`AND l.unit_id = ${range.unitId}::uuid` : sql``}
+        GROUP BY lr.name ORDER BY count DESC LIMIT 10`),
     ])
 
     const stages = await this.db.pipelineStage.findMany({
@@ -204,6 +211,11 @@ export class AnalyticsService {
         conversionRate: leads ? won / leads : 0,
         bySource,
         byProduct,
+        lostReasons: lostReasons.map((r) => ({
+          reason: r.reason ?? 'sem motivo',
+          count: r.count,
+          aiSuggested: r.ai_suggested,
+        })),
         openByStage: byStage
           .map((s) => ({
             stage: stages.find((x) => x.id === s.stageId) ?? {

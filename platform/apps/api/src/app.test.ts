@@ -475,6 +475,15 @@ describe.skipIf(!RUN)('API', () => {
     })
     expect(['number', 'object']).toContain(typeof conv.medianHoursToQualify) // number or null
     expect(['number', 'object']).toContain(typeof conv.noShowRate)
+    expect(Array.isArray(dash.json().commercial.lostReasons)).toBe(true)
+    const someLead = await db.lead.findFirst({ where: { unitId }, select: { id: true } })
+    const suggestion = await app.inject({
+      method: 'GET',
+      url: `/api/v1/leads/${someLead!.id}/lost-suggestion`,
+      headers: h,
+    })
+    expect(suggestion.statusCode, suggestion.body).toBe(200)
+    expect(suggestion.json()).toHaveProperty('suggestion')
 
     const pg = await app.inject({
       method: 'POST',

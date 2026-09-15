@@ -138,6 +138,8 @@ export const LeadStageChangeSchema = z.object({
   reason: z.string().optional(),
   lostReasonId: z.string().uuid().optional(),
   lostReasonDetail: z.string().optional(),
+  /** true when the human kept the reason the AI suggested (kept apart in analytics) */
+  suggestedByAi: z.boolean().optional(),
 })
 
 export const LeadUpdateSchema = z.object({

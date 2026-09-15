@@ -29,6 +29,13 @@ interface KanbanLead {
   recommendedProduct: { name: string } | null
   nextBestAction: string | null
 }
+interface LostSuggestion {
+  reasonId: string
+  key: string
+  name: string
+  confidence: number
+  why: string
+}
 interface Kanban {
   columns: Array<{ stage: Stage; leads: KanbanLead[] }>
 }
@@ -48,6 +55,7 @@ export default function KanbanPage() {
   const [minScore, setMinScore] = useState(0)
   const [lost, setLost] = useState<{ leadId: string; stageId: string } | null>(null)
   const [lostReason, setLostReason] = useState('')
+  const [suggestion, setSuggestion] = useState<LostSuggestion | null>(null)
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }))
 
   const columns = useMemo(
@@ -79,6 +87,14 @@ export default function KanbanPage() {
     if (!target || current?.stage.id === stageId) return
     if (target.stage.kind === 'lost') {
       setLost({ leadId, stageId })
+      setSuggestion(null)
+      void api
+        .get<{ suggestion: LostSuggestion | null }>(`leads/${leadId}/lost-suggestion`)
+        .then((r) => {
+          setSuggestion(r.suggestion)
+          if (r.suggestion) setLostReason((cur) => cur || r.suggestion!.reasonId)
+        })
+        .catch(() => undefined)
       return
     }
     void move(leadId, stageId)
@@ -135,9 +151,15 @@ export default function KanbanPage() {
       </DndContext>
       <Dialog open={!!lost} onClose={() => setLost(null)} title="Motivo da perda">
         <p className="mb-2 text-xs text-muted">
-          Registre o motivo estruturado. Sugestões da IA aparecem no lead como "sugerido", mas esta
-          é a confirmação humana.
+          Registre o motivo estruturado. Esta é a confirmação humana; a sugestão da IA fica
+          registrada à parte.
         </p>
+        {suggestion && (
+          <p className="mb-2 rounded-lg bg-brand-50 px-2 py-1.5 text-xs text-brand-800">
+            Sugestão da IA: <span className="font-medium">{suggestion.name}</span> —{' '}
+            {suggestion.why} ({Math.round(suggestion.confidence * 100)}%)
+          </p>
+        )}
         <Select value={lostReason} onChange={(e) => setLostReason(e.target.value)}>
           <option value="">Escolha…</option>
           {(reasons?.items ?? []).map((r) => (
@@ -155,9 +177,14 @@ export default function KanbanPage() {
             variant="danger"
             disabled={!lostReason}
             onClick={async () => {
-              if (lost) await move(lost.leadId, lost.stageId, { lostReasonId: lostReason })
+              if (lost)
+                await move(lost.leadId, lost.stageId, {
+                  lostReasonId: lostReason,
+                  suggestedByAi: !!suggestion && suggestion.reasonId === lostReason,
+                })
               setLost(null)
               setLostReason('')
+              setSuggestion(null)
             }}
           >
             Marcar como perdido

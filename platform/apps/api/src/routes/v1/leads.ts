@@ -1,7 +1,7 @@
 import type { FastifyPluginAsync } from 'fastify'
 import { z } from 'zod'
 import { FactInputSchema, LeadStageChangeSchema, LeadUpdateSchema, TaskInputSchema } from '@vox/shared'
-import { FollowUpService, LeadService, NotFoundError, PipelineService, TimelineService, createTask } from '@vox/core'
+import { FollowUpService, LeadService, NotFoundError, PipelineService, TimelineService, createTask, suggestLostReason } from '@vox/core'
 
 const IdParams = z.object({ id: z.string().uuid() })
 
@@ -41,7 +41,7 @@ export const leadRoutes: FastifyPluginAsync = async (app) => {
   app.post('/leads/:id/stage', { schema: { tags: ['crm'], params: IdParams, body: LeadStageChangeSchema }, preHandler: app.requireAuth('leads:write') }, async (req) => {
     const body = req.body as z.infer<typeof LeadStageChangeSchema>
     const id = (req.params as z.infer<typeof IdParams>).id
-    const updated = await leads.moveStage(req.auth!, id, { stageId: body.stageId, stageKey: body.stageKey }, { reason: body.reason, lostReasonId: body.lostReasonId, lostReasonDetail: body.lostReasonDetail })
+    const updated = await leads.moveStage(req.auth!, id, { stageId: body.stageId, stageKey: body.stageKey }, { reason: body.reason, lostReasonId: body.lostReasonId, lostReasonDetail: body.lostReasonDetail, suggestedByAi: body.suggestedByAi })
     await publish(id, updated.unitId, { stage: updated.stage.key })
     return updated
   })
@@ -76,6 +76,9 @@ export const leadRoutes: FastifyPluginAsync = async (app) => {
     return { ok: true }
   })
 
+  app.get('/leads/:id/lost-suggestion', { schema: { tags: ['crm'], params: IdParams }, preHandler: app.requireAuth('leads:read') }, async (req) => {
+    return { suggestion: await suggestLostReason(app.ctx.db, req.auth!, (req.params as z.infer<typeof IdParams>).id) }
+  })
   app.get('/leads/:id/timeline', { schema: { tags: ['crm'], params: IdParams }, preHandler: app.requireAuth('leads:read') }, async (req) => {
     return { items: await new TimelineService(app.ctx.db).forLead(req.auth!, (req.params as z.infer<typeof IdParams>).id) }
   })
