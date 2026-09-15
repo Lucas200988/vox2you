@@ -1,3 +1,4 @@
+import { NotFoundError } from '../errors.js'
 import type { Db } from '@vox/db'
 import type { TenantContext } from '../tenant/context.js'
 
@@ -16,7 +17,7 @@ export class TimelineService {
 
   async forLead(ctx: TenantContext, leadId: string, limit = 200): Promise<TimelineItem[]> {
     const lead = await this.db.lead.findFirst({ where: { id: leadId, tenantId: ctx.tenantId }, select: { id: true, contactId: true } })
-    if (!lead) return []
+    if (!lead) throw new NotFoundError('Lead')
     const [events, notes, tasks, appointments] = await Promise.all([
       this.db.domainEvent.findMany({
         where: {

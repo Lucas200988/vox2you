@@ -33,7 +33,7 @@
 - Repositórios de `core` recebem `TenantContext` e aplicam `where: { tenantId }` sempre.
 - Conhecimento: `unitId IS NULL` = global no tenant; nunca cross-tenant.
 - **Roteamento de entrada decide o tenant.** O webhook resolve o canal pelo `phone_number_id` da Meta, portanto esse id é único globalmente (`channels(kind, external_id)`), o seed recusa adotar um canal de outro tenant e o `InboundProcessor` recusa ids ambíguos em vez de escolher um tenant. Chamadores internos confiáveis (simulador) fixam `channelId` no evento.
-- Testes: `tests/integration/channel-isolation.test.ts` (canal duplicado é rejeitado; evento vai para o tenant dono do canal) e `tests/integration/vertical-slice.test.ts` (fluxo completo dentro de um tenant). Pendente: teste dedicado provando que buscas, inbox, KB e catálogo não vazam entre dois tenants.
+- Testes: `tests/integration/channel-isolation.test.ts` (canal duplicado é rejeitado; evento vai para o tenant dono do canal) e `tests/integration/vertical-slice.test.ts` (fluxo completo dentro de um tenant). `apps/api/src/tenant-isolation.test.ts` prova, com dois tenants na mesma API, que inbox, leads, contatos, timeline, busca da KB, documentos e catálogo não vazam por id, por busca nem por filtro de unidade. O `requireAuth` ainda rejeita (403) qualquer `unitId` em query/body/params que não pertença ao tenant do usuário, independentemente do papel.
 
 ## 4. Prompt injection — política
 
