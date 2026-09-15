@@ -34,6 +34,10 @@ export class NotificationService {
       logger?: Logger
       /** Base URL of the web app for links inside e-mails (e.g. https://vox.sonare.com.br) */
       webUrl?: string
+      /** Slack Incoming Webhook URL of the tenant (Integrações → Slack); undefined = not configured */
+      slackWebhook?: (tenantId: string) => Promise<string | undefined>
+      /** Transport for Slack posts (injectable for tests) */
+      slackPost?: (url: string, payload: { text: string }) => Promise<void>
     } = {},
   ) {}
 
@@ -103,7 +107,38 @@ export class NotificationService {
         })
       }
     }
+    if (created > 0) await this.postSlack(input)
     return { created, emailed }
+  }
+
+  /** One Slack message per notification (not per recipient), best effort. */
+  private async postSlack(input: NotifyInput): Promise<void> {
+    if (!this.deps.slackWebhook) return
+    try {
+      const url = await this.deps.slackWebhook(input.tenantId)
+      if (!url) return
+      const link =
+        input.link && this.deps.webUrl
+          ? `${this.deps.webUrl.replace(/\/$/, '')}${input.link}`
+          : null
+      const text = [`*${input.title}*`, input.body ?? '', link ? `<${link}|Abrir no CRM>` : '']
+        .filter(Boolean)
+        .join('\n')
+      const post =
+        this.deps.slackPost ??
+        (async (u: string, payload: { text: string }) => {
+          const res = await fetch(u, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(payload),
+            signal: AbortSignal.timeout(8000),
+          })
+          if (!res.ok) throw new Error(`Slack ${res.status}`)
+        })
+      await post(url, { text })
+    } catch (err) {
+      this.deps.logger?.warn({ err }, 'slack notification failed')
+    }
   }
 
   private async sendEmail(

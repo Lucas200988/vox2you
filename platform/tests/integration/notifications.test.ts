@@ -159,6 +159,41 @@ describe.skipIf(!RUN)('Seller notifications', () => {
     })
   })
 
+  it('mirrors a notification to Slack once when the tenant configured a webhook', async () => {
+    const posts: Array<{ url: string; text: string }> = []
+    const withSlack = new NotificationService(env.db, {
+      webUrl: 'https://crm.example.com',
+      slackWebhook: async () => 'https://hooks.slack.com/services/T/B/x',
+      slackPost: async (url, payload) => void posts.push({ url, text: payload.text }),
+    })
+    const r = await withSlack.notify({
+      tenantId: env.seed.tenantId,
+      userIds: [sellerId, env.seed.adminUserId],
+      kind: 'handoff',
+      title: 'Cliente pediu humano',
+      body: 'motivo: pediu atendente',
+      link: '/inbox?conversation=abc',
+      email: false,
+    })
+    expect(r.created).toBe(2)
+    expect(posts).toHaveLength(1)
+    expect(posts[0]!.text).toContain('*Cliente pediu humano*')
+    expect(posts[0]!.text).toContain('https://crm.example.com/inbox?conversation=abc')
+    // no webhook → nothing posted, no error
+    const silent = new NotificationService(env.db, {
+      slackWebhook: async () => undefined,
+      slackPost: async (url, p) => void posts.push({ url, text: p.text }),
+    })
+    await silent.notify({
+      tenantId: env.seed.tenantId,
+      userIds: [sellerId],
+      kind: 'system',
+      title: 'Sem slack',
+      email: false,
+    })
+    expect(posts).toHaveLength(1)
+  })
+
   it('lists and marks read only for the owning user', async () => {
     const mine = systemContext(env.seed.tenantId)
     mine.userId = sellerId

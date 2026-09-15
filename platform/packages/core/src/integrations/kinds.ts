@@ -225,6 +225,26 @@ export const INTEGRATION_KINDS: IntegrationKindDef[] = [
       }),
   },
   {
+    kind: 'slack',
+    label: 'Slack (alertas da equipe)',
+    group: 'infra',
+    scope: 'tenant',
+    description:
+      'Incoming Webhook do Slack: as notificações do vendedor (handoff, SLA, visita sem desfecho) também vão para um canal.',
+    docsUrl: 'https://api.slack.com/messaging/webhooks',
+    fields: [
+      {
+        key: 'webhookUrl',
+        label: 'Webhook URL',
+        secret: true,
+        required: true,
+        placeholder: 'https://hooks.slack.com/services/…',
+        help: 'Slack → Apps → Incoming Webhooks → escolha o canal → copie a URL.',
+      },
+    ],
+    toEnv: (v) => pick(v, { SLACK_WEBHOOK_URL: 'webhookUrl' }),
+  },
+  {
     kind: 's3',
     label: 'Armazenamento de mídias (S3 / R2 / MinIO)',
     group: 'infra',

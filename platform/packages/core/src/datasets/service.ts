@@ -122,6 +122,11 @@ export class DatasetService {
     patch: { input?: DatasetItemInput; expected?: DatasetExpectation | null },
   ) {
     await this.get(ctx, datasetId)
+    const item = await this.db.datasetItem.findFirst({
+      where: { id: itemId, datasetId },
+      select: { id: true },
+    })
+    if (!item) throw new NotFoundError('DatasetItem', itemId)
     return this.db.datasetItem.update({
       where: { id: itemId },
       data: {

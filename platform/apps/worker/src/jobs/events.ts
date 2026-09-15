@@ -21,7 +21,7 @@ export async function processDomainEvent(ctx: WorkerContext, job: DomainEventJob
 
   // Seller notifications (bell + e-mail): handoff, SLA breach, visit outcome, tasks
   try {
-    const notifications = new NotificationService(ctx.db, { email: () => ctx.providers.email, realtime: ctx.realtime, logger: ctx.logger, webUrl: ctx.config.WEB_ORIGIN })
+    const notifications = new NotificationService(ctx.db, { email: () => ctx.providers.email, realtime: ctx.realtime, logger: ctx.logger, webUrl: ctx.config.WEB_ORIGIN, slackWebhook: (tenantId) => ctx.integrations.envOverrides(tenantId).then((e) => e['SLACK_WEBHOOK_URL']) })
     const input = await notificationForEvent(ctx.db, notifications, { tenantId: event.tenantId, unitId: event.unitId, type: event.type, aggregateType: event.aggregateType, aggregateId: event.aggregateId, payload })
     if (input) results['notifications'] = await notifications.notify(input)
   } catch (err) {

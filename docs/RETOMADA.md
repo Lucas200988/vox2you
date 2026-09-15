@@ -170,6 +170,8 @@ Resumo das etapas entregues nesta rodada (todas com testes, CI verde e enviadas 
 13. **Sugerir melhoria (IA)** em *Agente → Prompts* — analisa respostas bloqueadas, avaliações
     negativas e handoffs recentes e cria um **rascunho** revisado com o diagnóstico nas notas.
     Nada muda em produção até você testar (Playground/dataset) e publicar.
+14. **Slack** — em *Integrações → Slack* cole a URL de um Incoming Webhook; as notificações do
+    vendedor passam a aparecer também no canal (teste de conexão manda uma mensagem).
 
 Para o servidor receber tudo isso: faça o passo 2 (canal de atualização) e rode o workflow
 **Deploy** no GitHub. A migração nova (`notifications`) é aplicada automaticamente pelo deploy.

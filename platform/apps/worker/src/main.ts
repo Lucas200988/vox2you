@@ -83,6 +83,7 @@ async function main() {
     inboundProcessor,
     redis: connection,
     instanceId,
+    integrations,
   }
 
   const deadLetter = (queueName: string) => async (job: Job | undefined, err: Error) => {
@@ -205,4 +206,5 @@ export type WorkerContext = {
   redis: Redis
   /** hostname:pid, identifies which replica holds a scheduler tick */
   instanceId: string
+  integrations: IntegrationService
 }

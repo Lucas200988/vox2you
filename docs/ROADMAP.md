@@ -76,7 +76,8 @@ Objetivo: **receber mensagem WhatsApp (real ou simulada) → identificar/criar c
 - [ ] Meta Conversions API (`ConversionProvider` pronto; adapter aguarda credencial)
 - [ ] Pagamentos (Mercado Pago/Asaas/Stripe) via `PaymentProvider`
 - [ ] HubSpot/Kommo/Pipedrive sync
-- [ ] Google Sheets/Drive, Slack, n8n/Zapier/Make
+- [x] Slack (Incoming Webhook em Integrações; notificações do vendedor espelhadas no canal) · n8n/Zapier/Make via webhooks de eventos assinados (já existiam)
+- [ ] Google Sheets/Drive
 
 ## Slice 10 — Operação
 - [ ] Migrar `vox2you-estoque` para `platform/apps/estoque` (após ajuste do Root Directory no Vercel)

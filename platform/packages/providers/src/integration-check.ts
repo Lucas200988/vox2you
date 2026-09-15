@@ -125,6 +125,19 @@ export async function checkIntegration(
         await transport.verify()
         return { ok: true, message: 'Servidor SMTP autenticou' }
       }
+      case 'slack': {
+        const url = v['webhookUrl'] ?? ''
+        if (!/^https:\/\/hooks\.slack\.com\/services\//.test(url))
+          return { ok: false, message: 'URL deve começar com https://hooks.slack.com/services/' }
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ text: 'VOX2you CRM conectado a este canal ✅' }),
+          signal: AbortSignal.timeout(TIMEOUT_MS),
+        })
+        if (!res.ok) return { ok: false, message: `Slack respondeu ${res.status}` }
+        return { ok: true, message: 'Mensagem de teste enviada ao canal' }
+      }
       case 's3': {
         const client = new S3Client({
           region: v['region'] || 'us-east-1',
