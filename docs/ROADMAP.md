@@ -2,9 +2,10 @@
 
 Entrega em **slices verticais**: cada slice é funcional ponta a ponta (webhook/simulação → banco → agente → UI) antes do próximo.
 
-## Estado verificado (2026-09-14, branch `claude/brave-fermat-k7tfvc`)
+## Estado verificado (2026-09-15, branch `claude/brave-fermat-k7tfvc`)
 
-- Suíte: 15 arquivos / 59 testes verdes com Postgres 16 + pgvector reais (`RUN_INTEGRATION=1 pnpm test`), `tsc -b` e ESLint limpos, `next build` do web OK.
+- Suíte: 26 arquivos / 101 testes verdes com Postgres 16 + pgvector reais (`RUN_INTEGRATION=1 pnpm test`), `tsc -b` e ESLint limpos, `next build` do web OK; GitHub Actions (`platform-ci`) verde a cada push, incluindo o build das 3 imagens Docker.
+- Implantado em produção (AWS Lightsail, `vox.sonare.com.br` / `api.vox.sonare.com.br`, Caddy + Docker Compose); o servidor ainda precisa ser atualizado com as etapas desta rodada (ver `RETOMADA.md` §2).
 - Fluxo comprovado por processo real (API + worker + web): simulação de WhatsApp → contato/lead/conversa → RAG híbrido → resposta da IA (mock em dev) com preço vindo **do catálogo** → guardrails → score explicado, estágio, NBA, follow-up agendado → inbox em tempo real → lead 360.
 - Provedores reais (Anthropic, OpenAI, Meta Cloud, Google Calendar, S3, Langfuse, SMTP) estão implementados mas **não exercitados**: faltam credenciais (ver `INTEGRATIONS.md`).
 - Preços/ofertas/turmas do seed são **placeholders** a substituir pela unidade antes de qualquer uso real.
@@ -62,13 +63,13 @@ Objetivo: **receber mensagem WhatsApp (real ou simulada) → identificar/criar c
 - [x] Eventos de domínio modelados (outbox) desde o Slice 1
 - [x] Dashboard executivo inicial (leads, qualificados, agendamentos, conversão, IA vs humano, custo IA)
 - [x] Métricas conversacionais completas (FRT, resposta média, mediana até qualificar e até marcar visita, % leads com visita, no-show, abandono em 48h, follow-ups respondidos) em Analytics
-- [ ] Insights automáticos ("campanha X converte 2,3x")
+- [x] Insights automáticos (regras sobre o período: produto que converte acima da média, concentração de origem, poucas visitas marcadas, no-show, abandono, follow-ups, motivo de perda dominante, respostas bloqueadas, handoffs, SLA, tempo de 1ª resposta) no topo do Analytics
 
 ## Slice 8 — Avaliação e melhoria controlada
 - [x] `Evaluation` + scorecards (avaliador LLM) + avaliação humana por conversa (`/conversations/:id/evaluations`) + feedback 👍/👎 por mensagem
 - [x] Datasets de regressão (`DatasetService`: casos com expectativas — intenção, decisão, texto obrigatório/proibido, regex, validação; importar de conversa; rodar em sandbox; `/datasets`; painel "Casos de teste" no playground)
 - [x] Comparação A/B prompt/modelo (turno atual via `POST /playground/compare` e dataset inteiro via `POST /datasets/:id/compare`, com vencedor por taxa de acerto)
-- [ ] Pipeline de sugestão de melhoria com aprovação humana
+- [x] Pipeline de sugestão de melhoria com aprovação humana (`PromptImprovementService`: evidências de respostas bloqueadas, avaliações negativas, notas baixas e handoffs → rascunho revisado em Prompts, variáveis preservadas; publicação continua manual)
 
 ## Slice 9 — Conectores P1
 - [ ] Instagram/Messenger via `ChannelProvider`

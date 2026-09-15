@@ -476,6 +476,7 @@ describe.skipIf(!RUN)('API', () => {
     expect(['number', 'object']).toContain(typeof conv.medianHoursToQualify) // number or null
     expect(['number', 'object']).toContain(typeof conv.noShowRate)
     expect(Array.isArray(dash.json().commercial.lostReasons)).toBe(true)
+    expect(Array.isArray(dash.json().insights)).toBe(true)
     const someLead = await db.lead.findFirst({ where: { unitId }, select: { id: true } })
     const suggestion = await app.inject({
       method: 'GET',

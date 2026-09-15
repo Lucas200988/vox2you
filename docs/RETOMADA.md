@@ -165,6 +165,11 @@ Resumo das etapas entregues nesta rodada (todas com testes, CI verde e enviadas 
     mensagem atual; salvar conversas como casos de teste num dataset (com regra padrão "nunca
     citar R$"); rodar o dataset ou comparar A × B nele e ver a taxa de acerto por configuração.
     Use antes de publicar qualquer mudança de prompt.
+12. **Insights no Analytics** — o topo da página lista o que se destaca no período (produto que
+    converte acima da média, poucas visitas marcadas, no-show, abandono, SLA estourado…).
+13. **Sugerir melhoria (IA)** em *Agente → Prompts* — analisa respostas bloqueadas, avaliações
+    negativas e handoffs recentes e cria um **rascunho** revisado com o diagnóstico nas notas.
+    Nada muda em produção até você testar (Playground/dataset) e publicar.
 
 Para o servidor receber tudo isso: faça o passo 2 (canal de atualização) e rode o workflow
 **Deploy** no GitHub. A migração nova (`notifications`) é aplicada automaticamente pelo deploy.

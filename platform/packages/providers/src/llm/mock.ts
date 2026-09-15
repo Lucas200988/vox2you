@@ -95,6 +95,22 @@ export class MockLLMProvider implements LLMProvider {
           reply:
             'Oi! Fiquei pensando no que você comentou. Posso te ajudar com algum próximo passo?',
         }
+      case 'improve': {
+        // Echo the current prompt (kept between the markers) with one extra guardrail appended,
+        // so variables survive and the draft is reviewable.
+        const user = req.messages.find((m) => m.role === 'user')?.content ?? ''
+        const body = typeof user === 'string' ? user : ''
+        const m = body.match(/<<<PROMPT\n([\s\S]*?)\nPROMPT>>>/)
+        const current = m?.[1] ?? 'Prompt revisado (mock).'
+        return {
+          analysis: 'Simulação: as falhas apontam para respostas longas e menção a valores.',
+          changes: [
+            'Reforça a regra de nunca citar valores fora do catálogo',
+            'Pede respostas mais curtas',
+          ],
+          revisedPrompt: `${current}\n\n- (revisão sugerida) Responda em no máximo 3 frases e nunca cite valores que não estejam em <catalog>.`,
+        }
+      }
       default:
         return { text: 'ok' }
     }

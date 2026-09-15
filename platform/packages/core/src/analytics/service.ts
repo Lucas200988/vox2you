@@ -192,14 +192,38 @@ export class AnalyticsService {
         GROUP BY lr.name ORDER BY count DESC LIMIT 10`),
     ])
 
+    const overdueSla = await this.db.$queryRaw<Array<{ count: number }>>(sql`
+      SELECT COUNT(*)::int AS count FROM leads l JOIN pipeline_stages s ON s.id = l.stage_id
+      WHERE l.tenant_id = ${tenantId}::uuid AND l.status = 'open' AND s.max_hours_in_stage IS NOT NULL
+        AND l.stage_entered_at < NOW() - (s.max_hours_in_stage || ' hours')::interval ${range.unitId ? sql`AND l.unit_id = ${range.unitId}::uuid` : sql``}`)
     const stages = await this.db.pipelineStage.findMany({
       where: { id: { in: byStage.map((s) => s.stageId) } },
       select: { id: true, key: true, name: true, order: true },
     })
     const conv = convStats[0]
     const ai = aiStats[0]
+    const insights = buildInsights({
+      leads,
+      won,
+      lost,
+      bySource,
+      byProduct,
+      lostReasons: lostReasons.map((r) => ({ reason: r.reason ?? 'sem motivo', count: r.count })),
+      abandonmentRate: abandonment[0]?.total ? abandonment[0].abandoned / abandonment[0].total : 0,
+      noShow: visitOutcomes[0] ?? { completed: 0, no_show: 0 },
+      followUpReplies: followUpReplies[0] ?? { sent: 0, replied: 0 },
+      visitBookingRate: funnelTimes[0]?.leads
+        ? funnelTimes[0].leads_with_visit / funnelTimes[0].leads
+        : 0,
+      blocked: ai?.blocked ?? 0,
+      runs: ai?.runs ?? 0,
+      handoffRate: conv?.total ? handoffs / conv.total : 0,
+      overdueSla: overdueSla[0]?.count ?? 0,
+      firstResponseSec: responseTimes[0]?.first_response_sec ?? null,
+    })
     return {
       range,
+      insights,
       commercial: {
         leads,
         qualified,
@@ -267,4 +291,116 @@ export class AnalyticsService {
       },
     }
   }
+}
+
+export interface Insight {
+  kind: string
+  severity: 'good' | 'warn' | 'info'
+  text: string
+}
+
+/** Rule-based insights over the period's numbers: only what stands out, in plain Portuguese. */
+export function buildInsights(d: {
+  leads: number
+  won: number
+  lost: number
+  bySource: Array<{ source: string | null; count: number }>
+  byProduct: Array<{ product: string | null; leads: number; won: number }>
+  lostReasons: Array<{ reason: string; count: number }>
+  abandonmentRate: number
+  noShow: { completed: number; no_show: number }
+  followUpReplies: { sent: number; replied: number }
+  visitBookingRate: number
+  blocked: number
+  runs: number
+  handoffRate: number
+  overdueSla: number
+  firstResponseSec: number | null
+}): Insight[] {
+  const out: Insight[] = []
+  const pct = (v: number) => `${Math.round(v * 100)}%`
+  if (d.leads >= 10) {
+    const avg = d.won / d.leads
+    const best = d.byProduct
+      .filter((p) => p.leads >= 5)
+      .map((p) => ({ ...p, rate: p.won / p.leads }))
+      .sort((a, b) => b.rate - a.rate)[0]
+    if (best && avg > 0 && best.rate >= avg * 1.5)
+      out.push({
+        kind: 'product_converts',
+        severity: 'good',
+        text: `"${best.product ?? 'sem produto'}" converte ${(best.rate / avg).toFixed(1)}x a média (${pct(best.rate)} vs ${pct(avg)}).`,
+      })
+    const top = d.bySource[0]
+    if (top && top.count / d.leads >= 0.6)
+      out.push({
+        kind: 'source_concentration',
+        severity: 'info',
+        text: `${pct(top.count / d.leads)} dos leads vêm de "${top.source ?? 'origem desconhecida'}": dependência alta de um canal.`,
+      })
+  }
+  if (d.leads >= 10 && d.visitBookingRate < 0.2)
+    out.push({
+      kind: 'low_booking',
+      severity: 'warn',
+      text: `Só ${pct(d.visitBookingRate)} dos leads chegaram a marcar visita. Revise o convite do agente (Prompts) e os horários disponíveis (Agenda).`,
+    })
+  if (d.leads >= 10 && d.visitBookingRate >= 0.4)
+    out.push({
+      kind: 'good_booking',
+      severity: 'good',
+      text: `${pct(d.visitBookingRate)} dos leads marcaram visita no período.`,
+    })
+  const visits = d.noShow.completed + d.noShow.no_show
+  if (visits >= 5 && d.noShow.no_show / visits >= 0.3)
+    out.push({
+      kind: 'no_show',
+      severity: 'warn',
+      text: `No-show em ${pct(d.noShow.no_show / visits)} das visitas. Confira se os lembretes (24h/2h) estão saindo e se o template está aprovado.`,
+    })
+  if (d.abandonmentRate >= 0.4)
+    out.push({
+      kind: 'abandonment',
+      severity: 'warn',
+      text: `${pct(d.abandonmentRate)} das conversas ficaram sem resposta do cliente por 48h+. Vale reforçar os follow-ups ou uma campanha de reativação.`,
+    })
+  if (d.followUpReplies.sent >= 10) {
+    const rate = d.followUpReplies.replied / d.followUpReplies.sent
+    out.push({
+      kind: 'followup_reply',
+      severity: rate >= 0.25 ? 'good' : 'info',
+      text: `Follow-ups respondidos: ${pct(rate)} de ${d.followUpReplies.sent} enviados.`,
+    })
+  }
+  if (d.lost >= 5 && d.lostReasons[0] && d.lostReasons[0].count / d.lost >= 0.4)
+    out.push({
+      kind: 'lost_reason',
+      severity: 'info',
+      text: `"${d.lostReasons[0].reason}" responde por ${pct(d.lostReasons[0].count / d.lost)} das perdas. Um argumento pronto para essa objeção no Sales Brain pode ajudar.`,
+    })
+  if (d.runs >= 20 && d.blocked / d.runs >= 0.1)
+    out.push({
+      kind: 'blocked',
+      severity: 'warn',
+      text: `${pct(d.blocked / d.runs)} das respostas da IA foram bloqueadas pela validação. Use "Sugerir melhoria (IA)" em Prompts com esse período.`,
+    })
+  if (d.runs >= 20 && d.handoffRate >= 0.3)
+    out.push({
+      kind: 'handoff',
+      severity: 'info',
+      text: `${pct(d.handoffRate)} das conversas pediram humano. Veja os motivos em Execuções recentes.`,
+    })
+  if (d.overdueSla > 0)
+    out.push({
+      kind: 'sla',
+      severity: d.overdueSla >= 5 ? 'warn' : 'info',
+      text: `${d.overdueSla} lead(s) acima do SLA do estágio agora. Abra o Funil para distribuir.`,
+    })
+  if (d.firstResponseSec !== null && d.firstResponseSec > 300)
+    out.push({
+      kind: 'frt',
+      severity: 'warn',
+      text: `Primeira resposta leva em média ${Math.round(d.firstResponseSec / 60)} min. Verifique o worker (filas) e o modo humano nas conversas.`,
+    })
+  return out.slice(0, 6)
 }

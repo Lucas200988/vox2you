@@ -105,7 +105,7 @@ export default function PromptsPage() {
 
 function PromptsTab() {
   const { data } = useApi<{ items: Prompt[] }>('prompts')
-  const { can } = useSession()
+  const { unitId, can } = useSession()
   const toast = useToast()
   const [selected, setSelected] = useState<string | null>(null)
   const [draft, setDraft] = useState('')
@@ -178,6 +178,30 @@ function PromptsTab() {
                 }}
               >
                 Salvar rascunho
+              </Button>
+              <Button
+                variant="secondary"
+                disabled={!can('admin')}
+                title="Analisa respostas bloqueadas, avaliações negativas e handoffs recentes e cria um rascunho revisado"
+                onClick={async () => {
+                  const focus = window.prompt(
+                    'Foco da melhoria (opcional). Ex.: "convidar para a visita mais cedo"',
+                    '',
+                  )
+                  if (focus === null) return
+                  try {
+                    const r = await api.post<{ analysis: string; changes: string[] }>(
+                      `prompts/${prompt.key}/suggest`,
+                      { unitId, focus: focus || undefined },
+                    )
+                    await refresh()
+                    toast.show(`Rascunho sugerido: ${r.analysis}`)
+                  } catch (e) {
+                    toast.show((e as Error).message, 'err')
+                  }
+                }}
+              >
+                Sugerir melhoria (IA)
               </Button>
             </div>
             <p className="mt-1 text-[11px] text-muted">

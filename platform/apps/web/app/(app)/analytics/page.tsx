@@ -8,6 +8,7 @@ import type { AgentRunRow } from '@/lib/types'
 import { Badge, Card, Stat } from '@/components/ui/primitives'
 
 interface Dashboard {
+  insights: Array<{ kind: string; severity: 'good' | 'warn' | 'info'; text: string }>
   commercial: {
     leads: number
     qualified: number
@@ -102,6 +103,25 @@ export default function AnalyticsPage() {
         <p className="text-sm text-muted">Carregando…</p>
       ) : (
         <>
+          {data.insights.length > 0 && (
+            <Card title="Insights do período">
+              <ul className="space-y-1 text-sm">
+                {data.insights.map((i) => (
+                  <li key={i.kind} className="flex items-start gap-2">
+                    <span
+                      className={cn(
+                        'mt-1.5 h-2 w-2 shrink-0 rounded-full',
+                        i.severity === 'good' && 'bg-green-500',
+                        i.severity === 'warn' && 'bg-amber-500',
+                        i.severity === 'info' && 'bg-slate-400',
+                      )}
+                    />
+                    <span>{i.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          )}
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-7">
             <Stat label="Leads" value={c!.leads} />
             <Stat
