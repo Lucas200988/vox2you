@@ -29,6 +29,9 @@ type Row = Prisma.IntegrationGetPayload<Record<string, never>>
  * AES-256-GCM encrypted into `credentialsEnc` with APP_ENCRYPTION_KEY and never returned to clients.
  */
 export class IntegrationService {
+  /** kind -> decryption error, surfaced by `unreadable()` (never the credential itself). */
+  private readonly failures = new Map<string, string>()
+
   constructor(
     private readonly db: Db,
     private readonly encryptionKey: string,
@@ -165,9 +168,31 @@ export class IntegrationService {
       const def = integrationKind(row.kind)
       if (!def || seen.has(row.kind)) continue
       seen.add(row.kind)
-      Object.assign(out, def.toEnv(this.decrypt(row)))
+      // One unreadable credential (wrong APP_ENCRYPTION_KEY, corrupted blob) must not take down the
+      // whole tenant: the others still apply and the failure is recorded on that integration.
+      try {
+        Object.assign(out, def.toEnv(this.decrypt(row)))
+      } catch (err) {
+        this.failures.set(`${tenantId}:${row.kind}`, (err as Error).message)
+        await this.db.integration
+          .update({
+            where: { id: row.id },
+            data: {
+              status: 'error',
+              lastError: `Credenciais ilegíveis: ${(err as Error).message}`,
+            },
+          })
+          .catch(() => undefined)
+      }
     }
     return out
+  }
+
+  /** Kinds whose stored credentials could not be decrypted, for the setup checklist. */
+  unreadable(tenantId: string): string[] {
+    return [...this.failures.keys()]
+      .filter((k) => k.startsWith(`${tenantId}:`))
+      .map((k) => k.slice(tenantId.length + 1))
   }
 
   /** Webhook verification handshake carries no tenant: accept any configured WhatsApp verify token. */
