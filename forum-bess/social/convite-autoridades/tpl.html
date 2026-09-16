@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--n:#082A43;--deep:#03101C;--g:#00B84E;--gl:#00D060;--au:#D8B25A;--au2:#F2DFA8}
+body{background:#000;font-family:Montserrat,'Segoe UI',Georgia,serif;color:#fff}
+.art{width:1080px;height:1440px;position:relative;overflow:hidden;display:flex;flex-direction:column;
+ background:radial-gradient(circle at 50% 4%,rgba(216,178,90,.18),transparent 44%),
+            radial-gradient(circle at 12% 92%,rgba(0,184,78,.14),transparent 42%),
+            linear-gradient(170deg,#0B3050,#082A43 46%,#03101C)}
+.tex{position:absolute;inset:0;opacity:.06;background-image:radial-gradient(rgba(255,255,255,.7) 1px,transparent 1px);background-size:26px 26px}
+.tb{position:absolute;top:0;left:0;right:0;height:8px;background:linear-gradient(90deg,var(--au),var(--au2),var(--au))}
+.bb{position:absolute;bottom:0;left:0;right:0;height:8px;background:linear-gradient(90deg,var(--au),var(--au2),var(--au))}
+.frame{position:absolute;inset:30px;border:1.5px solid rgba(216,178,90,.42);border-radius:8px;pointer-events:none}
+.frame::before{content:'';position:absolute;inset:9px;border:1px solid rgba(216,178,90,.18);border-radius:4px}
+.selo{position:absolute;top:56px;right:64px;width:126px;z-index:6;filter:drop-shadow(0 8px 20px rgba(0,0,0,.6))}
+.wrap{position:relative;z-index:3;flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:66px 86px 58px}
+.logos{align-self:flex-start;display:flex;gap:10px}
+.chip{background:#fff;border-radius:9px;padding:6px 10px;display:flex;align-items:center}
+.chip img{height:28px;width:auto;object-fit:contain;display:block}
+.orn{margin-top:40px;display:flex;align-items:center;gap:14px;color:var(--au)}
+.orn .ln{width:78px;height:1px;background:linear-gradient(90deg,transparent,var(--au))}
+.orn .ln.r{background:linear-gradient(90deg,var(--au),transparent)}
+.orn .dm{font-size:13px}
+.kick{margin-top:16px;font-size:16px;font-weight:800;letter-spacing:8px;text-transform:uppercase;color:var(--au2)}
+.h1{margin-top:20px;font-size:74px;font-weight:900;line-height:1;letter-spacing:-1.5px;font-family:Montserrat,sans-serif}
+.h1 em{font-style:normal;background:linear-gradient(180deg,var(--au2),var(--au));-webkit-background-clip:text;background-clip:text;color:transparent}
+.ev{margin-top:22px;font-size:17px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.62);line-height:1.7}
+.lead{margin-top:26px;font-size:21px;font-weight:600;color:rgba(255,255,255,.82);line-height:1.65;max-width:740px;font-family:Montserrat,sans-serif}
+.lead b{color:var(--au2);font-weight:800}
+.cort{margin-top:26px;border:1.5px solid var(--au);background:rgba(216,178,90,.12);border-radius:50px;padding:13px 40px;font-size:22px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:var(--au2);font-family:Montserrat,sans-serif}
+.box{margin-top:30px;width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(216,178,90,.28);border-radius:16px;padding:26px 30px;font-family:Montserrat,sans-serif}
+.box .bt{font-size:14px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:var(--au);margin-bottom:18px}
+.rows{display:grid;grid-template-columns:1fr 1fr;gap:14px 26px;text-align:left}
+.r{display:flex;align-items:flex-start;gap:11px;font-size:17px;font-weight:600;color:rgba(255,255,255,.9);line-height:1.4}
+.r i{font-style:normal;color:var(--au);font-size:15px;margin-top:2px;flex-shrink:0}
+.info{margin-top:24px;display:flex;gap:12px;width:100%;font-family:Montserrat,sans-serif}
+.ic{flex:1;background:rgba(0,0,0,.28);border:1px solid rgba(216,178,90,.26);border-radius:14px;padding:14px 10px}
+.ic b{display:block;font-size:19px;font-weight:900;line-height:1.2}
+.ic span{display:block;font-size:13px;color:rgba(255,255,255,.58);font-weight:700;margin-top:4px;line-height:1.35}
+.rsvp{margin-top:26px;font-family:Montserrat,sans-serif}
+.rsvp .t{font-size:13px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:var(--au);margin-bottom:8px}
+.rsvp .v{font-size:20px;font-weight:800;color:#fff;line-height:1.5}
+.sign{margin-top:auto;padding-top:26px;font-family:Montserrat,sans-serif}
+.sign .ln{width:190px;height:1px;background:rgba(216,178,90,.5);margin:0 auto 12px}
+.sign .n{font-size:17px;font-weight:900;letter-spacing:1px}
+.sign .c{font-size:13px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:2px;text-transform:uppercase;margin-top:5px}
+.pat{margin-top:22px;width:100%}
+.pat .pl{font-size:10px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:10px;font-family:Montserrat,sans-serif}
+.pat .band{background:#fff;border-radius:11px;padding:10px 13px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:9px 15px}
+.pat .band img{height:22px;max-width:96px;width:auto;object-fit:contain;display:block}
+.pat .band .dk{background:#0b1a2e;border-radius:6px;padding:4px 8px;display:flex;align-items:center}
+</style></head><body>
+<div class="art" id="a">
+  <div class="tex"></div><div class="tb"></div><div class="bb"></div><div class="frame"></div>
+  <img class="selo" src="data:image/png;base64,__SELO__"/>
+  <div class="wrap">
+    <div class="logos">
+      <span class="chip"><img src="data:image/png;base64,__ABEE__"/></span>
+      <span class="chip"><img src="data:image/png;base64,__CREA__"/></span>
+      <span class="chip"><img src="data:image/png;base64,__MUTUA__"/></span>
+    </div>
+    <div class="orn"><span class="ln"></span><span class="dm">◆</span><span class="ln r"></span></div>
+    <div class="kick">Convite Especial</div>
+    <div class="h1">É com honra que<br><em>convidamos V. Sa.</em></div>
+    <div class="ev">Fórum Mato-Grossense de Engenharia<br>Elétrica e Energias Sustentáveis · FMEES 2026</div>
+    <div class="lead">A <b>ABEE-MT</b>, com o apoio institucional do <b>CREA-MT</b> e da <b>Mútua</b>, tem a satisfação de convidá-lo(a) para a edição de Cuiabá do Fórum — um encontro dedicado ao armazenamento de energia e ao futuro do setor elétrico em Mato Grosso.</div>
+    <div class="cort">✦ Cortesia institucional ✦</div>
+    <div class="box">
+      <div class="bt">Seu convite dá direito a</div>
+      <div class="rows">
+        <div class="r"><i>◆</i>Acesso integral à programação técnica</div>
+        <div class="r"><i>◆</i>Lugar reservado na abertura oficial</div>
+        <div class="r"><i>◆</i>Palestras com WEG, Sungrow, DCCO, BelEnergy e e4uatro</div>
+        <div class="r"><i>◆</i>Jantar completo na parrilla do Casarão 154</div>
+        <div class="r"><i>◆</i>Bebidas inclusas, incluindo chope Louvada Pilsen</div>
+        <div class="r"><i>◆</i>Participação no Sorteio Presença Premiada</div>
+        <div class="r"><i>◆</i>Networking com lideranças do setor elétrico</div>
+        <div class="r"><i>◆</i>Confraternização de encerramento até as 23h</div>
+        <div class="r"><i>◆</i>Certificado de participação</div>
+        <div class="r"><i>◆</i>Isento de qualquer custo</div>
+      </div>
+    </div>
+    <div class="info">
+      <div class="ic"><b>28 de setembro de 2026</b><span>Segunda-feira · 17h30 às 23h</span></div>
+      <div class="ic"><b>Casarão 154</b><span>Rua Choffi, 50 · Santa Rosa · Cuiabá — MT</span></div>
+    </div>
+    <div class="rsvp">
+      <div class="t">Confirmação de presença</div>
+      <div class="v">(65) 98463-3872 · amee.mt@gmail.com</div>
+    </div>
+    <div class="sign">
+      <div class="ln"></div>
+      <div class="n">ABEE-MT</div>
+      <div class="c">Associação Brasileira de Engenheiros Eletricistas · Seção Mato Grosso</div>
+    </div>
+    <div class="pat">
+      <div class="pl">Patrocinadores</div>
+      <div class="band">
+        <img src="data:image/png;base64,__WEG__"/>
+        <img src="data:image/png;base64,__SUNGROW__"/>
+        <img src="data:image/png;base64,__DCCO__"/>
+        <img src="data:image/png;base64,__BELENERGY__"/>
+        <img src="data:image/png;base64,__E4__"/>
+        <img src="data:image/png;base64,__SOLVAZ2__"/>
+        <img src="data:image/png;base64,__SONARE__"/>
+        <img src="data:image/png;base64,__CABERLIN__"/>
+        <img src="data:image/png;base64,__RUAH__"/>
+        <img src="data:image/png;base64,__GDPRO__"/>
+        <span class="dk"><img src="__CCRURI__"/></span>
+      </div>
+    </div>
+  </div>
+</div></body></html>
