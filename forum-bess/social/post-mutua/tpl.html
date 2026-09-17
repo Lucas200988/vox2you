@@ -1,0 +1,100 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--mz:#0B57A4;--mz2:#0A4B8F;--mzl:#1E7FD4;--n:#082A43;--g:#00B84E;--gl:#00D060;--w:#fff}
+body{background:#000;font-family:Montserrat,'Segoe UI',Arial,sans-serif;color:#fff}
+.art{width:1080px;height:1430px;position:relative;overflow:hidden;display:flex;flex-direction:column;
+ background:radial-gradient(circle at 50% 5%,rgba(30,127,212,.34),transparent 46%),
+            radial-gradient(circle at 88% 82%,rgba(0,184,78,.16),transparent 44%),
+            linear-gradient(168deg,#0B57A4,#08427D 46%,#04213F)}
+.grid{position:absolute;inset:0;opacity:.08;background-image:linear-gradient(rgba(255,255,255,.55) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.55) 1px,transparent 1px);background-size:60px 60px}
+.tb{position:absolute;top:0;left:0;right:0;height:10px;background:linear-gradient(90deg,var(--mzl),#fff,var(--mzl))}
+.bb{position:absolute;bottom:0;left:0;right:0;height:10px;background:linear-gradient(90deg,var(--g),var(--gl),var(--g))}
+.wrap{position:relative;z-index:3;flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:52px 60px 42px}
+.mlogo{background:#fff;border-radius:18px;padding:16px 30px;box-shadow:0 14px 40px rgba(0,0,0,.4)}
+.mlogo img{height:76px;width:auto;object-fit:contain;display:block}
+.kick{margin-top:24px;font-size:17px;font-weight:800;letter-spacing:6px;text-transform:uppercase;color:#BFDEFF}
+.h1{margin-top:14px;font-size:62px;font-weight:900;line-height:1.02;letter-spacing:-1.5px;text-shadow:0 8px 30px rgba(0,0,0,.4)}
+.h1 em{font-style:normal;color:#8FE9B4}
+.ev{margin-top:20px;width:100%;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.28);border-radius:18px;padding:22px 26px}
+.ev .t1{font-size:15px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:#BFDEFF}
+.ev .t2{margin-top:9px;font-size:27px;font-weight:900;line-height:1.2}
+.ev .t3{margin-top:9px;font-size:18px;font-weight:700;color:rgba(255,255,255,.82);line-height:1.5}
+.lead{margin-top:22px;font-size:20px;font-weight:600;color:rgba(255,255,255,.88);line-height:1.6;max-width:840px}
+.lead b{color:#fff;font-weight:800}
+.box{margin-top:22px;width:100%;background:rgba(0,0,0,.24);border:1px solid rgba(255,255,255,.18);border-radius:18px;padding:22px 26px}
+.box .bt{font-size:14px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:#8FE9B4;margin-bottom:15px}
+.rows{display:grid;grid-template-columns:1fr 1fr;gap:12px 24px;text-align:left}
+.r{display:flex;align-items:flex-start;gap:10px;font-size:17px;font-weight:600;color:rgba(255,255,255,.92);line-height:1.35}
+.r i{font-style:normal;color:#8FE9B4;font-size:14px;margin-top:3px;flex-shrink:0}
+.info{margin-top:20px;display:flex;gap:12px;width:100%}
+.ic{flex:1;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:14px 10px}
+.ic b{display:block;font-size:20px;font-weight:900;line-height:1.2}
+.ic span{display:block;font-size:14px;color:rgba(255,255,255,.72);font-weight:700;margin-top:4px;line-height:1.35}
+.cta{margin-top:22px;background:linear-gradient(135deg,var(--g),var(--gl));color:#04301A;font-size:26px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;padding:18px 44px;border-radius:14px;box-shadow:0 12px 36px rgba(0,208,96,.36)}
+.site{margin-top:11px;font-size:18px;font-weight:800;color:rgba(255,255,255,.8);letter-spacing:.5px}
+.foot{margin-top:auto;padding-top:22px;width:100%}
+.foot .lb{font-size:11px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:11px}
+.foot .band{background:#fff;border-radius:13px;padding:11px 14px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:9px 16px}
+.foot .band img{height:25px;max-width:104px;width:auto;object-fit:contain;display:block}
+.foot .band .dk{background:#0b1a2e;border-radius:6px;padding:4px 8px;display:flex;align-items:center}
+.org{margin-top:14px;display:flex;align-items:center;justify-content:center;gap:16px}
+.org .chip{background:#fff;border-radius:9px;padding:6px 11px;display:flex;align-items:center}
+.org .chip img{height:28px;width:auto;object-fit:contain;display:block}
+.org .tx{font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.6);text-align:left;line-height:1.5}
+</style></head><body>
+<div class="art" id="a">
+  <div class="grid"></div><div class="tb"></div><div class="bb"></div>
+  <div class="wrap">
+    <div class="mlogo"><img src="data:image/png;base64,__MUTUA__"/></div>
+    <div class="kick">Patrocínio e apoio institucional</div>
+    <div class="h1">A Mútua-MT<br>apoia o <em>futuro da energia</em><br>em Mato Grosso.</div>
+    <div class="ev">
+      <div class="t1">Fórum · FMEES 2026</div>
+      <div class="t2">Fórum Mato-Grossense de Engenharia Elétrica e Energias Sustentáveis</div>
+      <div class="t3">Armazenamento de energia (BESS) · Edição Cuiabá</div>
+    </div>
+    <div class="lead">A <b>Mútua</b> — Caixa de Assistência dos Profissionais do CREA — patrocina o Fórum realizado pela <b>ABEE-MT</b>, com apoio institucional do <b>CREA-MT</b>. Uma noite dedicada a qualificar o engenheiro mato-grossense no tema mais estratégico do setor elétrico.</div>
+    <div class="box">
+      <div class="bt">O que acontece na noite</div>
+      <div class="rows">
+        <div class="r"><i>◆</i>Abertura institucional ABEE-MT, CREA-MT e Mútua-MT</div>
+        <div class="r"><i>◆</i>Palestras com WEG, DCCO, Condutive e Sungrow</div>
+        <div class="r"><i>◆</i>Sorteio Presença Premiada logo na abertura, às 18h</div>
+        <div class="r"><i>◆</i>Jantar e networking com todo o público reunido</div>
+        <div class="r"><i>◆</i>Palestra de encerramento com a e4uatro</div>
+        <div class="r"><i>◆</i>Certificado de participação</div>
+      </div>
+    </div>
+    <div class="info">
+      <div class="ic"><b>28 de setembro de 2026</b><span>Segunda-feira · 17h30 às 23h</span></div>
+      <div class="ic"><b>Casarão 154</b><span>Rua Choffi, 50 · Cuiabá — MT</span></div>
+    </div>
+    <div class="cta">Inscrições abertas</div>
+    <div class="site">forumbess.abeemt.org.br</div>
+    <div class="foot">
+      <div class="org">
+        <span class="chip"><img src="data:image/png;base64,__ABEE__"/></span>
+        <span class="tx">Realização<br>ABEE-MT</span>
+        <span class="chip"><img src="data:image/png;base64,__CREA__"/></span>
+        <span class="tx">Apoio<br>institucional</span>
+      </div>
+      <div class="lb" style="margin-top:18px">Patrocinadores</div>
+      <div class="band">
+        <img src="data:image/png;base64,__WEG__"/>
+        <img src="data:image/png;base64,__SUNGROW__"/>
+        <img src="data:image/png;base64,__DCCO__"/>
+        <img src="data:image/png;base64,__BELENERGY__"/>
+        <img src="data:image/png;base64,__E4__"/>
+        <img src="data:image/png;base64,__SOLVAZ2__"/>
+        <img src="data:image/png;base64,__MIESE__"/>
+        <img src="data:image/png;base64,__STANDART__"/>
+        <img src="data:image/png;base64,__SONARE__"/>
+        <img src="data:image/png;base64,__CABERLIN__"/>
+        <img src="data:image/png;base64,__RUAH__"/>
+        <img src="data:image/png;base64,__GDPRO__"/>
+        <span class="dk"><img src="__CCRURI__"/></span>
+      </div>
+    </div>
+  </div>
+</div></body></html>
