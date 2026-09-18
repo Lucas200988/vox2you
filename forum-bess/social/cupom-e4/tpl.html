@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--n:#0E2A4A;--deep:#061627;--e4g:#8DC63F;--e4b:#1B3A6B;--g:#00B84E;--gl:#00D060;--am:#FFC107}
+body{background:#000;font-family:Montserrat,'Segoe UI',Arial,sans-serif;color:#fff}
+.art{width:1080px;height:1160px;position:relative;overflow:hidden;display:flex;flex-direction:column;
+ background:radial-gradient(circle at 50% 6%,rgba(141,198,63,.26),transparent 46%),
+            radial-gradient(circle at 86% 80%,rgba(27,58,107,.5),transparent 46%),
+            linear-gradient(168deg,#123A6B,#0E2A4A 48%,#061627)}
+.grid{position:absolute;inset:0;opacity:.07;background-image:linear-gradient(rgba(255,255,255,.6) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px);background-size:60px 60px}
+.tb{position:absolute;top:0;left:0;right:0;height:10px;background:linear-gradient(90deg,var(--e4b),var(--e4g),var(--e4b))}
+.bb{position:absolute;bottom:0;left:0;right:0;height:10px;background:linear-gradient(90deg,var(--e4b),var(--e4g),var(--e4b))}
+.selo{position:absolute;top:30px;right:40px;width:124px;z-index:6;filter:drop-shadow(0 8px 20px rgba(0,0,0,.6))}
+.wrap{position:relative;z-index:3;flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:46px 56px 38px}
+.e4{background:#fff;border-radius:16px;padding:16px 30px;box-shadow:0 12px 36px rgba(0,0,0,.42)}
+.e4 img{height:62px;width:auto;object-fit:contain;display:block}
+.kick{margin-top:20px;font-size:16px;font-weight:800;letter-spacing:6px;text-transform:uppercase;color:var(--e4g)}
+.h1{margin-top:10px;font-size:112px;font-weight:900;line-height:.88;letter-spacing:-4px;text-shadow:0 8px 32px rgba(0,0,0,.45)}
+.h1 em{font-style:normal;color:var(--e4g)}
+.h2{margin-top:12px;font-size:30px;font-weight:800;color:rgba(255,255,255,.9);line-height:1.3}
+/* cupom */
+.tk{margin-top:26px;width:100%;position:relative;background:#fff;color:var(--n);border-radius:20px;padding:26px 30px;box-shadow:0 18px 46px rgba(0,0,0,.45)}
+.tk::before,.tk::after{content:'';position:absolute;width:38px;height:38px;border-radius:50%;background:#0E2A4A;top:50%;transform:translateY(-50%)}
+.tk::before{left:-19px}.tk::after{right:-19px}
+.tk .lb{font-size:14px;font-weight:900;letter-spacing:5px;text-transform:uppercase;color:#7A8794}
+.tk .code{margin-top:10px;font-size:62px;font-weight:900;letter-spacing:4px;color:var(--e4b);line-height:1;font-family:'Courier New',monospace}
+.tk .dash{margin:16px auto 0;width:86%;border-top:2.5px dashed #C9D4DE}
+.tk .hint{margin-top:14px;font-size:17px;font-weight:700;color:#5A6B7B;line-height:1.5}
+.tk .hint b{color:var(--n)}
+/* inclusos */
+.box{margin-top:22px;width:100%;background:rgba(0,0,0,.26);border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:22px 26px}
+.box .bt{font-size:14px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:var(--e4g);margin-bottom:14px}
+.rows{display:grid;grid-template-columns:1fr 1fr;gap:11px 24px;text-align:left}
+.r{display:flex;align-items:flex-start;gap:10px;font-size:17px;font-weight:600;color:rgba(255,255,255,.92);line-height:1.35}
+.r i{font-style:normal;color:var(--e4g);font-size:14px;margin-top:3px;flex-shrink:0}
+.info{margin-top:20px;display:flex;gap:12px;width:100%}
+.ic{flex:1;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:13px 10px}
+.ic b{display:block;font-size:20px;font-weight:900;line-height:1.2}
+.ic span{display:block;font-size:14px;color:rgba(255,255,255,.68);font-weight:700;margin-top:4px;line-height:1.35}
+.cta{margin-top:22px;background:linear-gradient(135deg,var(--g),var(--gl));color:#04301A;font-size:27px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;padding:18px 46px;border-radius:14px;box-shadow:0 12px 36px rgba(0,208,96,.36)}
+.site{margin-top:11px;font-size:19px;font-weight:800;color:rgba(255,255,255,.82);letter-spacing:.5px}
+.foot{margin-top:auto;padding-top:20px;width:100%}
+.foot .lb{font-size:10px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:10px}
+.foot .band{background:#fff;border-radius:12px;padding:10px 13px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 14px}
+.foot .band img{height:22px;max-width:94px;width:auto;object-fit:contain;display:block}
+.foot .band .dk{background:#0b1a2e;border-radius:6px;padding:4px 7px;display:flex;align-items:center}
+.org{margin-top:12px;display:flex;align-items:center;justify-content:center;gap:10px}
+.org .chip{background:#fff;border-radius:8px;padding:5px 9px;display:flex;align-items:center}
+.org .chip img{height:24px;width:auto;object-fit:contain;display:block}
+</style></head><body>
+<div class="art" id="a">
+  <div class="grid"></div><div class="tb"></div><div class="bb"></div>
+  <img class="selo" src="data:image/png;base64,__SELO__"/>
+  <div class="wrap">
+    <div class="e4"><img src="data:image/png;base64,__E4__"/></div>
+    <div class="kick">Cupom exclusivo · e4uatro</div>
+    <div class="h1"><em>50%</em> OFF</div>
+    <div class="h2">no seu ingresso do FMEES 2026</div>
+    <div class="tk">
+      <div class="lb">Use o cupom</div>
+      <div class="code">DESCONTOE4</div>
+      <div class="dash"></div>
+      <div class="hint">Aplique o cupom na hora da inscrição em<br><b>forumbess.abeemt.org.br</b></div>
+    </div>
+    <div class="box">
+      <div class="bt">Com o ingresso você tem</div>
+      <div class="rows">
+        <div class="r"><i>◆</i>Palestras com WEG, DCCO, Condutive e Sungrow</div>
+        <div class="r"><i>◆</i>Jantar na parrilla do Casarão 154</div>
+        <div class="r"><i>◆</i>Chope, água e refrigerantes inclusos</div>
+        <div class="r"><i>◆</i>Sorteio Presença Premiada às 18h</div>
+        <div class="r"><i>◆</i>Palestra de encerramento da e4uatro</div>
+        <div class="r"><i>◆</i>Certificado de participação</div>
+      </div>
+    </div>
+    <div class="info">
+      <div class="ic"><b>28 de setembro</b><span>Segunda · 17h30 às 23h</span></div>
+      <div class="ic"><b>Casarão 154</b><span>Rua Choffi, 50 · Cuiabá — MT</span></div>
+    </div>
+    <div class="cta">Garanta o seu</div>
+    <div class="site">forumbess.abeemt.org.br</div>
+    <div class="foot">
+      <div class="org">
+        <span class="chip"><img src="data:image/png;base64,__ABEE__"/></span>
+        <span class="chip"><img src="data:image/png;base64,__CREA__"/></span>
+        <span class="chip"><img src="data:image/png;base64,__MUTUA__"/></span>
+      </div>
+      <div class="lb" style="margin-top:16px">Patrocinadores</div>
+      <div class="band">
+        <img src="data:image/png;base64,__WEG__"/>
+        <img src="data:image/png;base64,__SUNGROW__"/>
+        <img src="data:image/png;base64,__DCCO__"/>
+        <img src="data:image/png;base64,__BELENERGY__"/>
+        <img src="data:image/png;base64,__E4B__"/>
+        <img src="data:image/png;base64,__SOLVAZ2__"/>
+        <img src="data:image/png;base64,__MIESE__"/>
+        <img src="data:image/png;base64,__STANDART__"/>
+        <img src="data:image/png;base64,__SONARE__"/>
+        <img src="data:image/png;base64,__CABERLIN__"/>
+        <img src="data:image/png;base64,__RUAH__"/>
+        <img src="data:image/png;base64,__GDPRO__"/>
+        <span class="dk"><img src="__CCRURI__"/></span>
+      </div>
+    </div>
+  </div>
+</div></body></html>
