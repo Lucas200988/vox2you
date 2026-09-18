@@ -1,5 +1,5 @@
 const { chromium } = require('/opt/node22/lib/node_modules/playwright');
 (async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
-const p=await b.newPage({viewport:{width:1080,height:1240},deviceScaleFactor:2});
+const p=await b.newPage({viewport:{width:1080,height:1700},deviceScaleFactor:2});
 await p.goto('file://'+process.cwd()+'/cupom-e4.html',{waitUntil:'load'});await p.waitForTimeout(800);
 const el=await p.$('#a'); await el.screenshot({path:'cupom-e4.png'}); console.log('ok'); await b.close();})();

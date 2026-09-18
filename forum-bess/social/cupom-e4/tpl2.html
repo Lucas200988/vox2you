@@ -1,0 +1,120 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--fire:#FF6B00;--fire2:#FFB300;--red:#E03131;--g:#00D060;--e4g:#8DC63F}
+body{background:#000;font-family:Montserrat,'Segoe UI',Arial,sans-serif;color:#fff}
+.art{width:1080px;height:1620px;position:relative;overflow:hidden;display:flex;flex-direction:column;
+ background:radial-gradient(circle at 50% 6%,rgba(255,179,0,.34),transparent 46%),
+            radial-gradient(circle at 14% 86%,rgba(224,49,49,.28),transparent 44%),
+            radial-gradient(circle at 88% 58%,rgba(255,107,0,.24),transparent 42%),
+            linear-gradient(170deg,#2A1806,#1A0E04 54%,#0B0703)}
+.ember{position:absolute;border-radius:50%;filter:blur(1px)}
+.smoke{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(255,107,0,.2),transparent 56%)}
+.tb{position:absolute;top:0;left:0;right:0;height:12px;background:linear-gradient(90deg,var(--red),var(--fire),var(--fire2),var(--fire),var(--red))}
+.bb{position:absolute;bottom:0;left:0;right:0;height:12px;background:linear-gradient(90deg,var(--red),var(--fire),var(--fire2),var(--fire),var(--red))}
+.selo{position:absolute;top:30px;right:40px;width:126px;z-index:6;filter:drop-shadow(0 8px 20px rgba(0,0,0,.65))}
+.wrap{position:relative;z-index:3;flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:44px 54px 36px}
+.e4{align-self:flex-start;background:#fff;border-radius:14px;padding:12px 22px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.e4 img{height:50px;width:auto;object-fit:contain;display:block}
+.kick{margin-top:26px;font-size:18px;font-weight:800;letter-spacing:6px;text-transform:uppercase;color:var(--fire2)}
+.h1{margin-top:12px;font-size:78px;font-weight:900;line-height:.95;letter-spacing:-2.5px;text-shadow:0 8px 32px rgba(255,107,0,.4)}
+.h1 em{font-style:normal;background:linear-gradient(180deg,var(--fire2),var(--fire));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{margin-top:18px;font-size:27px;font-weight:700;color:rgba(255,255,255,.9);line-height:1.35;max-width:850px}
+.sub b{color:var(--fire2)}
+/* cupom */
+.tk{margin-top:24px;width:100%;position:relative;background:#fff;color:#1A1208;border-radius:20px;padding:22px 30px;box-shadow:0 18px 50px rgba(0,0,0,.55);display:flex;align-items:center;gap:26px}
+.tk::before,.tk::after{content:'';position:absolute;width:34px;height:34px;border-radius:50%;background:#150B03;top:50%;transform:translateY(-50%)}
+.tk::before{left:-17px}.tk::after{right:-17px}
+.tk .off{flex-shrink:0;text-align:center;padding-right:24px;border-right:3px dashed #E2D2BC}
+.tk .off b{display:block;font-size:76px;font-weight:900;line-height:.9;color:var(--red);letter-spacing:-3px}
+.tk .off span{display:block;font-size:22px;font-weight:900;letter-spacing:4px;color:var(--red)}
+.tk .cd{flex:1;text-align:left}
+.tk .cd .lb{font-size:13px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:#8A7A66}
+.tk .cd .code{margin-top:5px;font-size:54px;font-weight:900;letter-spacing:2px;color:#1A1208;line-height:1;font-family:'Courier New',monospace}
+.tk .cd .hint{margin-top:7px;font-size:15px;font-weight:700;color:#7A6A56;line-height:1.4}
+/* menu */
+.menu{margin-top:22px;width:100%;background:rgba(255,255,255,.055);border:2px dashed rgba(255,179,0,.55);border-radius:22px;padding:22px 26px;position:relative}
+.menu::before{content:'';position:absolute;inset:7px;border:1px solid rgba(255,179,0,.16);border-radius:16px;pointer-events:none}
+.menu .mt{position:relative;z-index:2;font-size:23px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:var(--fire2)}
+.menu .ms{position:relative;z-index:2;margin-top:6px;font-size:14px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.menu .big{position:relative;z-index:2;margin-top:15px;font-size:29px;font-weight:900;line-height:1.35;color:#fff}
+.menu .big b{color:var(--fire2)}
+.menu .sm{position:relative;z-index:2;margin-top:11px;font-size:19px;font-weight:700;color:rgba(255,255,255,.8);line-height:1.5}
+.chope{margin-top:16px;width:100%;background:linear-gradient(135deg,rgba(255,179,0,.22),rgba(255,107,0,.12));border:2px solid rgba(255,179,0,.6);border-radius:20px;padding:18px 26px;display:flex;align-items:center;justify-content:center;gap:16px}
+.chope .em{font-size:50px}
+.chope .tx{text-align:left}
+.chope .tx b{display:block;font-size:27px;font-weight:900;color:var(--fire2);line-height:1.1}
+.chope .tx span{display:block;font-size:18px;font-weight:700;color:rgba(255,255,255,.85);margin-top:3px}
+.info{margin-top:18px;display:flex;gap:12px;width:100%}
+.ic{flex:1;background:rgba(0,0,0,.38);border:1.5px solid rgba(255,255,255,.2);border-radius:15px;padding:14px 10px}
+.ic b{display:block;font-size:22px;font-weight:900;line-height:1.2}
+.ic span{display:block;font-size:15px;color:rgba(255,255,255,.62);font-weight:700;margin-top:4px;line-height:1.35}
+.tec{margin-top:16px;font-size:18px;font-weight:700;color:rgba(255,255,255,.68);line-height:1.5}
+.tec b{color:#fff}
+.cta{margin-top:20px;background:linear-gradient(135deg,#00B84E,var(--g));color:#04301A;font-size:30px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;padding:20px 50px;border-radius:15px;box-shadow:0 14px 42px rgba(0,208,96,.4)}
+.site{margin-top:11px;font-size:19px;font-weight:800;color:rgba(255,255,255,.82)}
+.foot{margin-top:auto;padding-top:20px;width:100%}
+.foot .lb{font-size:10px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:9px}
+.foot .band{background:#fff;border-radius:12px;padding:10px 13px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 14px}
+.foot .band img{height:22px;max-width:92px;width:auto;object-fit:contain;display:block}
+.foot .band .dk{background:#0b1a2e;border-radius:6px;padding:4px 7px;display:flex;align-items:center}
+.org{margin-top:12px;display:flex;align-items:center;justify-content:center;gap:9px}
+.org .chip{background:#fff;border-radius:8px;padding:5px 9px;display:flex;align-items:center}
+.org .chip img{height:23px;width:auto;object-fit:contain;display:block}
+</style></head><body>
+<div class="art" id="a">
+  <div class="smoke"></div><div class="tb"></div><div class="bb"></div>
+  <img class="selo" src="data:image/png;base64,__SELO__"/>
+  <div class="wrap">
+    <div class="e4"><img src="data:image/png;base64,__E4__"/></div>
+    <div class="kick">Cupom exclusivo · e4uatro</div>
+    <div class="h1">Picanha na brasa,<br>chope gelado<br>e o <em>futuro da energia</em>.</div>
+    <div class="sub">O encontro dos engenheiros de MT é no <b>Casarão 154</b> — e a e4uatro está te pagando <b>metade do ingresso</b>.</div>
+    <div class="tk">
+      <div class="off"><b>50%</b><span>OFF</span></div>
+      <div class="cd">
+        <div class="lb">Use o cupom</div>
+        <div class="code">DESCONTOE4</div>
+        <div class="hint">na inscrição em forumbess.abeemt.org.br</div>
+      </div>
+    </div>
+    <div class="menu">
+      <div class="mt">🔥 Na parrilla a noite toda</div>
+      <div class="ms">Açougue 154 · equipe do especialista Lamonnyel Moraes</div>
+      <div class="big"><b>Picanha</b> · <b>Maminha</b> · <b>Shoulder</b><br><b>Steak Angus</b> · <b>Baby Beef</b></div>
+      <div class="sm">Entradas: choripan, linguiça artesanal, pastrami,<br>queijo coalho com melado e pastéis de costela e queijo<br>Guarnições e panqueca de doce de leite para fechar</div>
+    </div>
+    <div class="chope">
+      <div class="em">🍺</div>
+      <div class="tx"><b>Chope Louvada Pilsen</b><span>+ água e refrigerantes · tudo incluso, sem custo extra</span></div>
+    </div>
+    <div class="info">
+      <div class="ic"><b>📅 28 de setembro</b><span>Segunda · 17h30 às 23h</span></div>
+      <div class="ic"><b>📍 Casarão 154</b><span>Rua Choffi, 50 · Cuiabá — MT</span></div>
+    </div>
+    <div class="tec">E antes de sentar à mesa: <b>palestras de WEG, DCCO, Condutive, Sungrow, BelEnergy e e4uatro</b> sobre armazenamento de energia.</div>
+    <div class="cta">Bora? Garanta o seu</div>
+    <div class="site">forumbess.abeemt.org.br</div>
+    <div class="foot">
+      <div class="org">
+        <span class="chip"><img src="data:image/png;base64,__ABEE__"/></span>
+        <span class="chip"><img src="data:image/png;base64,__CREA__"/></span>
+        <span class="chip"><img src="data:image/png;base64,__MUTUA__"/></span>
+      </div>
+      <div class="lb" style="margin-top:15px">Patrocinadores</div>
+      <div class="band">
+        <img src="data:image/png;base64,__WEG__"/><img src="data:image/png;base64,__SUNGROW__"/><img src="data:image/png;base64,__DCCO__"/>
+        <img src="data:image/png;base64,__BELENERGY__"/><img src="data:image/png;base64,__E4B__"/><img src="data:image/png;base64,__SOLVAZ2__"/>
+        <img src="data:image/png;base64,__MIESE__"/><img src="data:image/png;base64,__STANDART__"/><img src="data:image/png;base64,__SONARE__"/>
+        <img src="data:image/png;base64,__CABERLIN__"/><img src="data:image/png;base64,__RUAH__"/><img src="data:image/png;base64,__GDPRO__"/>
+        <span class="dk"><img src="__CCRURI__"/></span>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const art=document.getElementById('a');let seed=13;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647;};
+for(let i=0;i<80;i++){const d=document.createElement('div');d.className='ember';const s=2+rnd()*7;
+ d.style.cssText=`width:${s}px;height:${s}px;left:${rnd()*100}%;top:${30+rnd()*68}%;background:${rnd()>.45?'#FFB300':'#FF6B00'};opacity:${.2+rnd()*.6}`;art.appendChild(d);}
+</script>
+</body></html>
