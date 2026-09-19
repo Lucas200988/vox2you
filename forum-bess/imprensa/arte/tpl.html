@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--n:#071B2C;--g:#00B84E;--gl:#00D060;--am:#FFC107;--red:#E03131}
+body{background:#111;font-family:Montserrat,'Segoe UI',Arial,sans-serif;color:#fff}
+.art{position:relative;overflow:hidden;display:flex;flex-direction:column;
+ background:radial-gradient(circle at 78% 12%,rgba(0,208,96,.2),transparent 44%),
+            radial-gradient(circle at 12% 92%,rgba(255,193,7,.1),transparent 42%),
+            linear-gradient(165deg,#0B2E4C,#071B2C 52%,#03101B)}
+.grid{position:absolute;inset:0;opacity:.08;background-image:linear-gradient(rgba(255,255,255,.6) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px);background-size:56px 56px}
+.tb{position:absolute;top:0;left:0;right:0;height:9px;background:linear-gradient(90deg,var(--g),var(--gl),var(--am))}
+.selo{position:absolute;bottom:26px;right:30px;width:112px;z-index:6;filter:drop-shadow(0 6px 18px rgba(0,0,0,.6))}
+.wrap{position:relative;z-index:3;flex:1;display:flex;flex-direction:column;padding:64px 64px 56px}
+.tag{align-self:flex-start;background:var(--red);border-radius:6px;padding:8px 16px;font-size:16px;font-weight:900;letter-spacing:4px;text-transform:uppercase}
+.kick{margin-top:22px;font-size:17px;font-weight:800;letter-spacing:5px;text-transform:uppercase;color:var(--gl)}
+.h1{margin-top:16px;font-size:82px;font-weight:900;line-height:1.02;letter-spacing:-2.2px;max-width:92%}
+.h1 em{font-style:normal;color:var(--gl)}
+.rule{margin-top:26px;width:110px;height:5px;background:var(--gl);border-radius:3px}
+.sub{margin-top:26px;font-size:27px;font-weight:600;color:rgba(255,255,255,.8);line-height:1.45;max-width:88%}
+.sub b{color:#fff;font-weight:800}
+.facts{margin-top:38px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:24px 26px;display:flex;flex-direction:column;gap:13px}
+.f{display:flex;align-items:center;gap:13px;font-size:23px;font-weight:700;color:rgba(255,255,255,.92)}
+.f i{font-style:normal;font-size:24px;width:32px;text-align:center;flex-shrink:0}
+.f b{color:var(--gl)}
+.bar{margin-top:auto;border-top:1px solid rgba(255,255,255,.18);padding-top:20px;display:flex;align-items:center;gap:16px}
+.chip{background:#fff;border-radius:9px;padding:6px 11px;display:flex;align-items:center}
+.chip img{height:30px;width:auto;object-fit:contain;display:block}
+.cred{font-size:14px;font-weight:700;color:rgba(255,255,255,.55);line-height:1.5;letter-spacing:.3px}
+.cred b{color:rgba(255,255,255,.85)}
+</style></head><body>
+<div class="art" id="feed" style="width:1080px;height:1080px">
+  <div class="grid"></div><div class="tb"></div>
+  <img class="selo" src="data:image/png;base64,__SELO__" alt="Patrocínio Mútua"/>
+  <div class="wrap">
+    <div class="tag">Energia</div>
+    <div class="kick">Mato Grosso</div>
+    <div class="h1">MT ganha o primeiro fórum técnico sobre <em>armazenamento de energia</em></div>
+    <div class="rule"></div>
+    <div class="sub">Realizado pela <b>ABEE-MT</b>, o FMEES 2026 reúne engenheiros, projetistas e fabricantes em Cuiabá e Rondonópolis.</div>
+    <div class="facts">
+      <div class="f"><i>📅</i><b>28/09</b>&nbsp;Cuiabá · Casarão 154&nbsp;&nbsp;|&nbsp;&nbsp;<b>30/09</b>&nbsp;Rondonópolis</div>
+      <div class="f"><i>🔋</i>Palestras de WEG, DCCO, Condutive, Sungrow, BelEnergy e e4uatro</div>
+      <div class="f"><i>🔗</i>forumbess.abeemt.org.br</div>
+    </div>
+    <div class="bar">
+      <span class="chip"><img src="data:image/png;base64,__ABEE__"/></span>
+      <span class="chip"><img src="data:image/png;base64,__CREA__"/></span>
+      <div class="cred"><b>Realização</b> ABEE-MT<br><b>Apoio institucional</b> CREA-MT e Mútua</div>
+    </div>
+  </div>
+</div>
+</body></html>
