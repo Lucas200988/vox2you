@@ -11,16 +11,21 @@ body{background:#111;font-family:Montserrat,'Segoe UI',Arial,sans-serif;color:#f
 .glow{position:absolute;width:520px;height:520px;border-radius:50%;right:-150px;top:-150px;background:radial-gradient(circle,rgba(255,179,0,.30),transparent 68%)}
 .tb{position:absolute;top:0;left:0;right:0;height:10px;background:linear-gradient(90deg,var(--g),var(--gl),var(--sun))}
 .bb{position:absolute;bottom:0;left:0;right:0;height:10px;background:linear-gradient(90deg,var(--sun),var(--gl),var(--g))}
-.selo{position:absolute;top:34px;right:42px;width:122px;z-index:6;filter:drop-shadow(0 8px 20px rgba(0,0,0,.6))}
-.wrap{position:relative;z-index:3;flex:1;display:flex;flex-direction:column;padding:70px 66px 56px}
-.loc{align-self:flex-start;display:flex;align-items:center;gap:11px;background:rgba(255,179,0,.16);border:2px solid var(--sun);border-radius:50px;padding:11px 24px}
-.loc b{font-size:25px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:var(--sun)}
-.h1{margin-top:40px;font-size:104px;font-weight:900;line-height:.94;letter-spacing:-4px}
+.selo{position:absolute;top:30px;right:38px;width:112px;z-index:6;filter:drop-shadow(0 8px 20px rgba(0,0,0,.6))}
+.wrap{position:relative;z-index:3;flex:1;display:flex;flex-direction:column;padding:56px 60px 50px}
+.abee{display:flex;align-items:center;gap:20px;background:#fff;border-radius:20px;padding:18px 26px;box-shadow:0 14px 40px rgba(0,0,0,.45);align-self:flex-start}
+.abee img{height:104px;width:auto;object-fit:contain;display:block}
+.abee .tx{text-align:left;border-left:2px solid #DCE4EA;padding-left:20px}
+.abee .tx b{display:block;font-size:29px;font-weight:900;color:#082A43;letter-spacing:-.5px;line-height:1}
+.abee .tx span{display:block;font-size:14px;font-weight:700;color:#5A6B7B;line-height:1.4;margin-top:7px;letter-spacing:.2px}
+.loc{margin-top:26px;align-self:flex-start;display:flex;align-items:center;gap:11px;background:rgba(255,179,0,.16);border:2px solid var(--sun);border-radius:50px;padding:10px 22px}
+.loc b{font-size:23px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:var(--sun)}
+.h1{margin-top:28px;font-size:94px;font-weight:900;line-height:.94;letter-spacing:-4px}
 .h1 em{font-style:normal;background:linear-gradient(180deg,var(--am),#FF8A00);-webkit-background-clip:text;background-clip:text;color:transparent}
-.sub{margin-top:34px;font-size:33px;font-weight:700;color:rgba(255,255,255,.88);line-height:1.38;max-width:90%}
+.sub{margin-top:26px;font-size:30px;font-weight:700;color:rgba(255,255,255,.88);line-height:1.38;max-width:90%}
 .sub b{color:var(--gl)}
-.why{margin-top:46px;flex:1;display:flex;flex-direction:column;justify-content:center;gap:30px}
-.w{display:flex;align-items:flex-start;gap:18px;font-size:30px;font-weight:700;color:rgba(255,255,255,.9);line-height:1.3}
+.why{margin-top:34px;flex:1;display:flex;flex-direction:column;justify-content:center;gap:24px}
+.w{display:flex;align-items:flex-start;gap:16px;font-size:27px;font-weight:700;color:rgba(255,255,255,.9);line-height:1.3}
 .w i{font-style:normal;font-size:30px;width:40px;text-align:center;flex-shrink:0}
 .when{margin-top:10px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.22);border-radius:18px;padding:22px 26px;display:flex;align-items:center;gap:22px}
 .when .d{font-size:60px;font-weight:900;line-height:.9;color:var(--sun);letter-spacing:-2px}
@@ -38,6 +43,10 @@ body{background:#111;font-family:Montserrat,'Segoe UI',Arial,sans-serif;color:#f
   <div class="grid"></div><div class="glow"></div><div class="tb"></div><div class="bb"></div>
   <img class="selo" src="data:image/png;base64,__SELO__" alt="Patrocínio Mútua"/>
   <div class="wrap">
+    <div class="abee">
+      <img src="data:image/png;base64,__ABEE__" alt="ABEE-MT"/>
+      <div class="tx"><b>ABEE-MT</b><span>Associação Brasileira de<br>Engenheiros Eletricistas<br>Seção Mato Grosso</span></div>
+    </div>
     <div class="loc"><span style="font-size:24px">📍</span><b>Rondonópolis</b></div>
     <div class="h1">Guardar energia<br><em>virou negócio.</em></div>
     <div class="sub">E o maior polo do agro de Mato Grosso vai ser um dos <b>primeiros a entender como</b>.</div>
@@ -53,9 +62,9 @@ body{background:#111;font-family:Montserrat,'Segoe UI',Arial,sans-serif;color:#f
     <div class="cta">Quero minha vaga</div>
     <div class="site">forumbess.abeemt.org.br</div>
     <div class="inst">
-      <span class="chip"><img src="data:image/png;base64,__ABEE__"/></span>
+      <span class="tx" style="text-align:right">Apoio<br>institucional</span>
       <span class="chip"><img src="data:image/png;base64,__CREA__"/></span>
-      <span class="tx">Realização ABEE-MT<br>Apoio CREA-MT e Mútua</span>
+      <span class="chip"><img src="data:image/png;base64,__MUTUA__"/></span>
     </div>
   </div>
 </div></body></html>
