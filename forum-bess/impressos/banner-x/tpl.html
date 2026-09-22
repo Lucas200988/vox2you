@@ -12,37 +12,47 @@ html,body{background:#000;font-family:Montserrat,'Segoe UI',Arial,sans-serif;col
 .tb{position:absolute;top:0;left:0;right:0;height:9px;background:linear-gradient(90deg,var(--g),var(--gl),var(--am))}
 .bb{position:absolute;bottom:0;left:0;right:0;height:9px;background:linear-gradient(90deg,var(--am),var(--gl),var(--g))}
 .selo{position:absolute;top:44px;right:46px;width:118px;z-index:6;filter:drop-shadow(0 6px 16px rgba(0,0,0,.6))}
-.wrap{position:relative;z-index:3;flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:42px 44px 30px}
+.wrap{position:relative;z-index:3;flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:40px 44px 34px}
 .org{align-self:flex-start;display:flex;gap:10px;align-items:center}
+.assoc{align-self:flex-start;display:flex;align-items:center;gap:16px;background:#fff;border-radius:18px;padding:12px 20px 12px 14px;box-shadow:0 10px 30px rgba(0,0,0,.45);max-width:560px}
+.assoc img{height:72px;width:auto;object-fit:contain;display:block}
+.assoc .tx{text-align:left;border-left:2px solid #DCE4EA;padding-left:16px}
+.assoc .tx b{display:block;font-size:26px;font-weight:900;color:#082A43;line-height:1;letter-spacing:-.5px}
+.assoc .tx span{display:block;font-size:12.5px;font-weight:700;color:#5A6B7B;line-height:1.35;margin-top:5px}
+.convite{margin-top:18px;width:100%;background:linear-gradient(135deg,rgba(0,184,78,.22),rgba(0,208,96,.10));border:2px solid rgba(0,208,96,.6);border-radius:18px;padding:11px 20px;display:flex;align-items:center;gap:14px;text-align:left}
+.convite .em{font-size:34px;flex-shrink:0}
+.convite b{display:block;font-size:21px;font-weight:900;line-height:1.15}
+.convite span{display:block;font-size:14.5px;font-weight:700;color:rgba(255,255,255,.78);margin-top:4px;line-height:1.4}
+
 .chip{background:#fff;border-radius:9px;padding:7px 12px;display:flex;align-items:center}
 .chip img{height:30px;width:auto;object-fit:contain;display:block}
-.welcome{margin-top:30px;font-size:19px;font-weight:800;letter-spacing:8px;text-transform:uppercase;color:var(--gl)}
+.welcome{margin-top:12px;font-size:19px;font-weight:800;letter-spacing:8px;text-transform:uppercase;color:var(--gl)}
 .brand{margin-top:8px;display:flex;align-items:center;justify-content:center;gap:20px}
-.bolt{font-size:86px;line-height:1;filter:drop-shadow(0 6px 18px rgba(255,193,7,.45))}
-.t1{font-size:122px;font-weight:900;letter-spacing:-4px;line-height:.9}
-.t2{font-size:50px;font-weight:900;letter-spacing:9px;color:var(--gl);line-height:1;margin-top:6px}
-.full{margin-top:22px;font-size:27px;font-weight:800;line-height:1.35;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.92);max-width:640px}
+.bolt{font-size:72px;line-height:1;filter:drop-shadow(0 6px 18px rgba(255,193,7,.45))}
+.t1{font-size:98px;font-weight:900;letter-spacing:-4px;line-height:.9}
+.t2{font-size:44px;font-weight:900;letter-spacing:9px;color:var(--gl);line-height:1;margin-top:6px}
+.full{margin-top:12px;font-size:23px;font-weight:800;line-height:1.35;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.92);max-width:640px}
 .tema{margin-top:14px;background:rgba(0,208,96,.14);border:2px solid rgba(0,208,96,.55);border-radius:60px;padding:9px 28px;font-size:20px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--gl)}
-.dates{margin-top:30px;display:flex;gap:18px;width:100%}
+.dates{margin-top:16px;display:flex;gap:18px;width:100%}
 .dc{flex:1;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.22);border-radius:18px;padding:14px 14px;display:flex;align-items:center;gap:14px;text-align:left}
 .dc .d{font-size:60px;font-weight:900;line-height:.85;color:var(--am);letter-spacing:-3px}
 .dc .d small{display:block;font-size:17px;font-weight:900;letter-spacing:5px;color:rgba(255,255,255,.7);margin-top:8px}
 .dc .t{font-size:25px;font-weight:900;line-height:1.1}
 .dc .t span{display:block;font-size:16px;font-weight:700;color:rgba(255,255,255,.62);margin-top:6px;line-height:1.35}
-.qrrow{margin-top:30px;display:flex;align-items:center;gap:20px;background:#fff;border-radius:18px;padding:12px 20px;color:var(--n)}
-.qrrow img{width:134px;height:134px;display:block}
+.qrrow{margin-top:18px;display:flex;align-items:center;gap:20px;background:#fff;border-radius:18px;padding:12px 20px;color:var(--n)}
+.qrrow img{width:128px;height:128px;display:block}
 .qrrow .tx{text-align:left}
-.qrrow .tx b{display:block;font-size:25px;font-weight:900;line-height:1.1;letter-spacing:-.5px}
-.qrrow .tx span{display:block;font-size:15px;font-weight:700;color:#5A6B7B;margin-top:8px;line-height:1.4}
+.qrrow .tx b{display:block;font-size:23px;font-weight:900;line-height:1.1;letter-spacing:-.5px}
+.qrrow .tx span{display:block;font-size:14px;font-weight:700;color:#5A6B7B;margin-top:8px;line-height:1.4}
 .qrrow .tx em{font-style:normal;display:block;margin-top:6px;font-size:19px;font-weight:900;color:var(--g)}
-.pat{margin-top:auto;width:100%;padding-top:20px}
+.pat{margin-top:auto;width:100%;padding-top:14px}
 .pat .pl{font-size:13px;font-weight:900;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:10px}
-.pat .band{background:#fff;border-radius:18px;padding:16px 18px;display:grid;grid-template-columns:repeat(5,1fr);gap:14px 10px;align-items:center;justify-items:center}
-.pat .band img{height:30px;max-width:112px;width:auto;object-fit:contain;display:block}
-.pat .band img.tall{height:46px}
+.pat .band{background:#fff;border-radius:18px;padding:16px 18px;display:grid;grid-template-columns:repeat(5,1fr);gap:11px 10px;align-items:center;justify-items:center}
+.pat .band img{height:27px;max-width:108px;width:auto;object-fit:contain;display:block}
+.pat .band img.tall{height:42px}
 .pat .band .dk{background:#0b1a2e;border-radius:8px;padding:6px 10px;display:flex;align-items:center;justify-content:center}
 .pat .band .dk img{height:28px}
-.ft{margin-top:16px;display:flex;align-items:center;justify-content:space-between;width:100%}
+.ft{margin-top:12px;display:flex;align-items:center;justify-content:space-between;width:100%}
 .ft .lb{font-size:12px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:8px;text-align:center}
 .ft .row{display:flex;gap:10px;align-items:center;justify-content:center}
 .ft .chip img{height:32px}
@@ -51,10 +61,9 @@ html,body{background:#000;font-family:Montserrat,'Segoe UI',Arial,sans-serif;col
   <div class="grid"></div><div class="tb"></div><div class="bb"></div>
   <img class="selo" src="data:image/png;base64,__SELO__" alt="Patrocínio Mútua"/>
   <div class="wrap">
-    <div class="org">
-      <span class="chip"><img src="data:image/png;base64,__ABEE__"/></span>
-      <span class="chip"><img src="data:image/png;base64,__CREA__"/></span>
-      <span class="chip"><img src="data:image/png;base64,__MUTUA__"/></span>
+    <div class="assoc">
+      <img src="data:image/png;base64,__ABEE__" alt="ABEE-MT"/>
+      <div class="tx"><b>ABEE-MT</b><span>Associação Brasileira de Engenheiros Eletricistas<br>Seção Mato Grosso</span></div>
     </div>
     <div class="welcome">Bem-vindo(a) ao</div>
     <div class="brand">
@@ -68,8 +77,12 @@ html,body{background:#000;font-family:Montserrat,'Segoe UI',Arial,sans-serif;col
       <div class="dc"><div class="d">30<small>SET</small></div><div class="t">Rondonópolis<span>Mato Grosso</span></div></div>
     </div>
     <div class="qrrow">
-      <img src="data:image/png;base64,__QR__" alt="QR"/>
-      <div class="tx"><b>Aponte a câmera</b><span>Programação completa, inscrições e informações do evento</span><em>forumbess.abeemt.org.br</em></div>
+      <img src="data:image/png;base64,__QRABEE__" alt="QR"/>
+      <div class="tx"><b>🎁 Cadastre-se e concorra ao sorteio</b><span>Aponte a câmera, faça seu cadastro na ABEE-MT e participe do <strong>Sorteio Presença Premiada</strong>, às 18h.</span><em>abeemt.org.br</em></div>
+    </div>
+    <div class="convite">
+      <div class="em">🤝</div>
+      <div><b>Faça parte da ABEE-MT</b><span>Eventos técnicos, cursos, networking e representação da engenharia elétrica em Mato Grosso — o ano todo.</span></div>
     </div>
     <div class="pat">
       <div class="pl">Patrocinadores</div>
