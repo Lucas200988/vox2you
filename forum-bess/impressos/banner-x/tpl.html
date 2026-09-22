@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/>
+<style>
+/* 1 px = 1 mm  →  800 x 1200 px = 80 x 120 cm */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--n:#082A43;--deep:#04182A;--g:#00B84E;--gl:#00D060;--am:#FFC107}
+html,body{background:#000;font-family:Montserrat,'Segoe UI',Arial,sans-serif;color:#fff}
+.bn{width:800px;height:1200px;position:relative;overflow:hidden;display:flex;flex-direction:column;
+ background:radial-gradient(circle at 50% 8%,rgba(0,208,96,.28),transparent 42%),
+            radial-gradient(circle at 90% 60%,rgba(255,193,7,.12),transparent 40%),
+            linear-gradient(170deg,#0B3252,#082A43 46%,#04182A)}
+.grid{position:absolute;inset:0;opacity:.07;background-image:linear-gradient(rgba(255,255,255,.6) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px);background-size:40px 40px}
+.tb{position:absolute;top:0;left:0;right:0;height:9px;background:linear-gradient(90deg,var(--g),var(--gl),var(--am))}
+.bb{position:absolute;bottom:0;left:0;right:0;height:9px;background:linear-gradient(90deg,var(--am),var(--gl),var(--g))}
+.selo{position:absolute;top:44px;right:46px;width:118px;z-index:6;filter:drop-shadow(0 6px 16px rgba(0,0,0,.6))}
+.wrap{position:relative;z-index:3;flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:42px 44px 30px}
+.org{align-self:flex-start;display:flex;gap:10px;align-items:center}
+.chip{background:#fff;border-radius:9px;padding:7px 12px;display:flex;align-items:center}
+.chip img{height:30px;width:auto;object-fit:contain;display:block}
+.welcome{margin-top:30px;font-size:19px;font-weight:800;letter-spacing:8px;text-transform:uppercase;color:var(--gl)}
+.brand{margin-top:8px;display:flex;align-items:center;justify-content:center;gap:20px}
+.bolt{font-size:86px;line-height:1;filter:drop-shadow(0 6px 18px rgba(255,193,7,.45))}
+.t1{font-size:122px;font-weight:900;letter-spacing:-4px;line-height:.9}
+.t2{font-size:50px;font-weight:900;letter-spacing:9px;color:var(--gl);line-height:1;margin-top:6px}
+.full{margin-top:22px;font-size:27px;font-weight:800;line-height:1.35;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.92);max-width:640px}
+.tema{margin-top:14px;background:rgba(0,208,96,.14);border:2px solid rgba(0,208,96,.55);border-radius:60px;padding:9px 28px;font-size:20px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--gl)}
+.dates{margin-top:30px;display:flex;gap:18px;width:100%}
+.dc{flex:1;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.22);border-radius:18px;padding:14px 14px;display:flex;align-items:center;gap:14px;text-align:left}
+.dc .d{font-size:60px;font-weight:900;line-height:.85;color:var(--am);letter-spacing:-3px}
+.dc .d small{display:block;font-size:17px;font-weight:900;letter-spacing:5px;color:rgba(255,255,255,.7);margin-top:8px}
+.dc .t{font-size:25px;font-weight:900;line-height:1.1}
+.dc .t span{display:block;font-size:16px;font-weight:700;color:rgba(255,255,255,.62);margin-top:6px;line-height:1.35}
+.qrrow{margin-top:30px;display:flex;align-items:center;gap:20px;background:#fff;border-radius:18px;padding:12px 20px;color:var(--n)}
+.qrrow img{width:134px;height:134px;display:block}
+.qrrow .tx{text-align:left}
+.qrrow .tx b{display:block;font-size:25px;font-weight:900;line-height:1.1;letter-spacing:-.5px}
+.qrrow .tx span{display:block;font-size:15px;font-weight:700;color:#5A6B7B;margin-top:8px;line-height:1.4}
+.qrrow .tx em{font-style:normal;display:block;margin-top:6px;font-size:19px;font-weight:900;color:var(--g)}
+.pat{margin-top:auto;width:100%;padding-top:20px}
+.pat .pl{font-size:13px;font-weight:900;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:10px}
+.pat .band{background:#fff;border-radius:18px;padding:16px 18px;display:grid;grid-template-columns:repeat(5,1fr);gap:14px 10px;align-items:center;justify-items:center}
+.pat .band img{height:30px;max-width:112px;width:auto;object-fit:contain;display:block}
+.pat .band img.tall{height:46px}
+.pat .band .dk{background:#0b1a2e;border-radius:8px;padding:6px 10px;display:flex;align-items:center;justify-content:center}
+.pat .band .dk img{height:28px}
+.ft{margin-top:16px;display:flex;align-items:center;justify-content:space-between;width:100%}
+.ft .lb{font-size:12px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:8px;text-align:center}
+.ft .row{display:flex;gap:10px;align-items:center;justify-content:center}
+.ft .chip img{height:32px}
+</style></head><body>
+<div class="bn" id="a">
+  <div class="grid"></div><div class="tb"></div><div class="bb"></div>
+  <img class="selo" src="data:image/png;base64,__SELO__" alt="Patrocínio Mútua"/>
+  <div class="wrap">
+    <div class="org">
+      <span class="chip"><img src="data:image/png;base64,__ABEE__"/></span>
+      <span class="chip"><img src="data:image/png;base64,__CREA__"/></span>
+      <span class="chip"><img src="data:image/png;base64,__MUTUA__"/></span>
+    </div>
+    <div class="welcome">Bem-vindo(a) ao</div>
+    <div class="brand">
+      <div class="bolt">⚡</div>
+      <div><div class="t1">FMEES</div><div class="t2">2026</div></div>
+    </div>
+    <div class="full">Fórum Mato-Grossense de Engenharia Elétrica e Energias Sustentáveis</div>
+    <div class="tema">🔋 Armazenamento de Energia · BESS</div>
+    <div class="dates">
+      <div class="dc"><div class="d">28<small>SET</small></div><div class="t">Cuiabá<span>Casarão 154<br>17h30 às 23h</span></div></div>
+      <div class="dc"><div class="d">30<small>SET</small></div><div class="t">Rondonópolis<span>Mato Grosso</span></div></div>
+    </div>
+    <div class="qrrow">
+      <img src="data:image/png;base64,__QR__" alt="QR"/>
+      <div class="tx"><b>Aponte a câmera</b><span>Programação completa, inscrições e informações do evento</span><em>forumbess.abeemt.org.br</em></div>
+    </div>
+    <div class="pat">
+      <div class="pl">Patrocinadores</div>
+      <div class="band">
+        <img src="data:image/png;base64,__WEG__"/>
+        <img src="data:image/png;base64,__SUNGROW__"/>
+        <img src="data:image/png;base64,__DCCO__"/>
+        <img src="data:image/png;base64,__BELENERGY__"/>
+        <img class="tall" src="data:image/png;base64,__E4__"/>
+        <img class="tall" src="data:image/png;base64,__SOLVAZ2__"/>
+        <img class="tall" src="data:image/png;base64,__MIESE__"/>
+        <img src="data:image/png;base64,__STANDART__"/>
+        <img src="data:image/png;base64,__VOGEL__"/>
+        <img src="data:image/png;base64,__SONARE__"/>
+        <img class="tall" src="data:image/png;base64,__CABERLIN__"/>
+        <img class="tall" src="data:image/png;base64,__RUAH__"/>
+        <img class="tall" src="data:image/png;base64,__GDPRO__"/>
+        <span class="dk"><img src="__CCRURI__"/></span>
+        <img class="tall" src="data:image/png;base64,__MUTUA__"/>
+      </div>
+    </div>
+    <div class="ft">
+      <div><div class="lb">Realização</div><div class="row"><span class="chip"><img src="data:image/png;base64,__ABEE__"/></span></div></div>
+      <div><div class="lb">Apoio institucional</div><div class="row"><span class="chip"><img src="data:image/png;base64,__CREA__"/></span><span class="chip"><img src="data:image/png;base64,__MUTUA__"/></span></div></div>
+    </div>
+  </div>
+</div></body></html>
