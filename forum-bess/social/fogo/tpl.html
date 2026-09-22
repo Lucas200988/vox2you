@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--fire:#FF6B00;--fire2:#FFB300;--hot:#FFE08A;--red:#D7261E;--g:#00D060}
+body{background:#000;font-family:Montserrat,'Segoe UI',Arial,sans-serif;color:#fff}
+.art{position:relative;overflow:hidden;display:flex;flex-direction:column;background:#0A0502}
+/* fogo */
+.fire{position:absolute;left:0;right:0;bottom:0;height:62%;pointer-events:none}
+.fl{position:absolute;bottom:-12%;border-radius:50% 50% 45% 45%;filter:blur(38px);opacity:.95;mix-blend-mode:screen}
+.f1{left:-8%;width:52%;height:70%;background:radial-gradient(ellipse at 50% 100%,#FFE08A 0%,#FF9A00 22%,#E3400A 48%,transparent 72%)}
+.f2{left:28%;width:56%;height:92%;background:radial-gradient(ellipse at 50% 100%,#FFF3B0 0%,#FFB300 20%,#FF5A00 45%,transparent 70%)}
+.f3{left:58%;width:54%;height:74%;background:radial-gradient(ellipse at 50% 100%,#FFE08A 0%,#FF8A00 24%,#C62D0A 50%,transparent 72%)}
+.f4{left:14%;width:34%;height:58%;background:radial-gradient(ellipse at 50% 100%,#FFF7C8 0%,#FFC400 30%,transparent 65%);opacity:.8}
+.f5{left:50%;width:30%;height:60%;background:radial-gradient(ellipse at 50% 100%,#FFF7C8 0%,#FFC400 30%,transparent 65%);opacity:.75}
+.floor{position:absolute;left:0;right:0;bottom:0;height:16%;background:linear-gradient(180deg,transparent,rgba(255,120,0,.55) 60%,#FF9A1A)}
+.vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,transparent 40%,rgba(0,0,0,.55) 100%)}
+.ember{position:absolute;border-radius:50%;filter:blur(.6px)}
+.selo{position:absolute;top:34px;right:42px;width:124px;z-index:8;filter:drop-shadow(0 8px 20px rgba(0,0,0,.7))}
+.wrap{position:relative;z-index:5;flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:60px 60px 46px}
+.org{align-self:flex-start;display:flex;gap:9px}
+.chip{background:#fff;border-radius:9px;padding:6px 10px;display:flex;align-items:center}
+.chip img{height:28px;width:auto;object-fit:contain;display:block}
+.kick{margin-top:54px;font-size:19px;font-weight:800;letter-spacing:7px;text-transform:uppercase;color:var(--fire2)}
+.h1{margin-top:14px;font-size:118px;font-weight:900;line-height:.9;letter-spacing:-5px;text-shadow:0 10px 40px rgba(0,0,0,.6)}
+.h1 em{font-style:normal;background:linear-gradient(180deg,#FFF3B0,#FFB300 55%,#FF6B00);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 28px rgba(255,150,0,.55))}
+.sub{margin-top:26px;font-size:29px;font-weight:700;line-height:1.4;max-width:860px;color:rgba(255,255,255,.92);text-shadow:0 4px 18px rgba(0,0,0,.6)}
+.sub b{color:var(--hot)}
+.cuts{margin-top:auto;display:flex;flex-wrap:wrap;justify-content:center;gap:12px 14px;max-width:940px}
+.cut{background:rgba(0,0,0,.42);border:2px solid rgba(255,179,0,.7);border-radius:50px;padding:14px 30px;font-size:30px;font-weight:900;letter-spacing:.5px;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.6);backdrop-filter:blur(2px)}
+.plus{margin-top:18px;font-size:22px;font-weight:700;color:rgba(255,255,255,.88);text-shadow:0 3px 14px rgba(0,0,0,.7)}
+.plus b{color:var(--hot)}
+.inc{margin-top:22px;background:rgba(0,0,0,.55);border:2px solid rgba(255,255,255,.25);border-radius:18px;padding:16px 30px;font-size:26px;font-weight:900;letter-spacing:.5px;backdrop-filter:blur(3px)}
+.inc span{color:var(--g)}
+.info{margin-top:20px;font-size:24px;font-weight:800;text-shadow:0 3px 14px rgba(0,0,0,.8);line-height:1.45}
+.info b{color:var(--fire2)}
+.cta{margin-top:20px;background:linear-gradient(135deg,#00B84E,var(--g));color:#04301A;font-size:32px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;padding:20px 54px;border-radius:16px;box-shadow:0 14px 42px rgba(0,0,0,.5)}
+.site{margin-top:12px;font-size:20px;font-weight:800;color:#fff;text-shadow:0 3px 12px rgba(0,0,0,.9)}
+</style></head><body>
+<div class="art" id="a" style="width:1080px;height:1350px">
+  <div class="fire"><div class="fl f1"></div><div class="fl f3"></div><div class="fl f2"></div><div class="fl f4"></div><div class="fl f5"></div><div class="floor"></div></div>
+  <div class="vig"></div>
+  <img class="selo" src="data:image/png;base64,__SELO__" alt="Patrocínio Mútua"/>
+  <div class="wrap">
+    <div class="org">
+      <span class="chip"><img src="data:image/png;base64,__ABEE__"/></span>
+      <span class="chip"><img src="data:image/png;base64,__CREA__"/></span>
+      <span class="chip"><img src="data:image/png;base64,__MUTUA__"/></span>
+    </div>
+    <div class="kick">FMEES 2026 · Casarão 154</div>
+    <div class="h1">Tem <em>fogo de chão</em><br>no Fórum.</div>
+    <div class="sub">Cortes especiais assados na brasa pela equipe do <b>Açougue 154</b>, chope gelado e a engenharia elétrica de MT reunida na mesma mesa.</div>
+    <div class="cuts">
+      <span class="cut">🥩 Picanha</span><span class="cut">Maminha</span><span class="cut">Shoulder</span>
+      <span class="cut">Steak Angus</span><span class="cut">Baby Beef</span>
+    </div>
+    <div class="plus">+ entradas, guarnições e panqueca de doce de leite · <b>🍺 Chope Louvada Pilsen</b></div>
+    <div class="inc">Tudo isso <span>já incluso</span> no seu ingresso</div>
+    <div class="info"><b>28 de setembro</b> · 17h30 às 23h<br>Casarão 154 · Rua Choffi, 50 · Cuiabá</div>
+    <div class="cta">Garanta o seu</div>
+    <div class="site">forumbess.abeemt.org.br</div>
+  </div>
+</div>
+<script>
+const art=document.getElementById('a');let seed=21;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647;};
+for(let i=0;i<110;i++){const d=document.createElement('div');d.className='ember';const s=2+rnd()*6;
+ d.style.cssText=`width:${s}px;height:${s}px;left:${rnd()*100}%;top:${28+rnd()*70}%;background:${rnd()>.5?'#FFD36B':'#FF7A00'};opacity:${.25+rnd()*.7};z-index:4`;art.appendChild(d);}
+</script>
+</body></html>
