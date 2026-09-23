@@ -92,7 +92,7 @@ Data: 30 de setembro de 2026 (quarta-feira)
 Local: [a confirmar]
 
 Inscrições: forumbess.abeemt.org.br
-Informações: (65) 98463-3872 · amee.mt@gmail.com · @abee_mt
+Informações: (65) 99281-2397 · amee.mt@gmail.com · @abee_mt
 Realização: ABEE-MT
 Apoio institucional: CREA-MT e Mútua
 Patrocínio: Mútua

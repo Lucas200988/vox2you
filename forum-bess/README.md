@@ -36,6 +36,6 @@ e Energias Sustentáveis 2026 (BESS)**, organizado pela ABEE-MT.
 ## Contato configurado na página
 
 - E-mail: amee.mt@gmail.com
-- WhatsApp: (65) 98463-3872
+- WhatsApp: (65) 99281-2397
 - Instagram: @abee_mt
 - Site: www.abeemt.org.br
