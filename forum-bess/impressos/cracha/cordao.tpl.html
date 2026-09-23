@@ -1,0 +1,22 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#fff;font-family:Montserrat,'Segoe UI',Arial,sans-serif}
+/* fita 20 mm x 900 mm (arte aberta) */
+.strip{width:900mm;height:20mm;position:relative;overflow:hidden;background:#082A43;display:flex;align-items:center}
+.edge{position:absolute;left:0;right:0;height:1.2mm;background:linear-gradient(90deg,#00B84E,#00D060,#FFC107,#00D060,#00B84E)}
+.edge.t{top:0}.edge.b{bottom:0}
+.seq{display:flex;align-items:center;gap:0;white-space:nowrap}
+.u{display:flex;align-items:center;gap:6mm;padding:0 9mm;height:20mm;border-right:.35mm solid rgba(255,255,255,.18)}
+.u .chip{background:#fff;border-radius:1.6mm;padding:1.2mm 1.8mm;display:flex;align-items:center}
+.u .chip img{height:9.5mm;width:auto;object-fit:contain;display:block}
+.u .b{color:#fff;font-size:8mm;font-weight:900;letter-spacing:.4mm;line-height:1}
+.u .s{color:rgba(255,255,255,.75);font-size:2.6mm;font-weight:700;letter-spacing:.35mm;text-transform:uppercase;line-height:1.35}
+.u .bolt{font-size:7mm;line-height:1;filter:drop-shadow(0 .4mm 1mm rgba(0,0,0,.4))}
+.u .site{color:#00D060;font-size:3.4mm;font-weight:800;letter-spacing:.3mm}
+</style></head><body>
+<div class="strip" id="s">
+  <div class="edge t"></div><div class="edge b"></div>
+  <div class="seq">__UNITS__</div>
+</div>
+</body></html>

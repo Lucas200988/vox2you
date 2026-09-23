@@ -1,0 +1,127 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/>
+<style>
+/* unidades em mm — crachá 100 x 150 mm */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--n:#082A43;--deep:#04182A;--g:#00B84E;--gl:#00D060;--am:#FFC107;--mut:#5A6B7B}
+html,body{background:#fff;font-family:Montserrat,'Segoe UI',Arial,sans-serif;color:var(--n)}
+.page{width:100mm;height:150mm;position:relative;overflow:hidden;background:#fff;page-break-after:always}
+.page:last-child{page-break-after:auto}
+/* furo / rasgo para o cordão */
+.slot{position:absolute;top:5mm;left:50%;transform:translateX(-50%);width:16mm;height:4mm;border-radius:2mm;background:#fff;border:.3mm dashed #B8C4CE;z-index:9}
+/* ===== FRENTE ===== */
+.top{height:46mm;padding:11mm 7mm 5mm;position:relative;overflow:hidden;color:#fff;
+ background:radial-gradient(circle at 85% 20%,rgba(0,208,96,.28),transparent 45%),linear-gradient(160deg,#0B3252,#082A43 55%,#04182A)}
+.top.staff{background:radial-gradient(circle at 85% 20%,rgba(255,193,7,.3),transparent 45%),linear-gradient(160deg,#00994A,#007A3B 55%,#04512A)}
+.top .grid{position:absolute;inset:0;opacity:.09;background-image:linear-gradient(rgba(255,255,255,.7) .3mm,transparent .3mm),linear-gradient(90deg,rgba(255,255,255,.7) .3mm,transparent .3mm);background-size:6mm 6mm}
+.top .row{position:relative;z-index:2;display:flex;align-items:center;gap:3mm}
+.top .chip{background:#fff;border-radius:2mm;padding:1.5mm 2.4mm;display:flex;align-items:center}
+.top .chip img{height:9mm;width:auto;object-fit:contain;display:block}
+.top .brand b{display:block;font-size:7.4mm;font-weight:900;letter-spacing:-.2mm;line-height:1}
+.top .brand span{display:block;font-size:2.35mm;font-weight:700;letter-spacing:.2mm;color:rgba(255,255,255,.72);margin-top:1.2mm;line-height:1.35}
+.top .ev{position:relative;z-index:2;margin-top:4.5mm;font-size:3.1mm;font-weight:800;letter-spacing:.6mm;text-transform:uppercase;color:var(--gl);line-height:1.3}
+.top.staff .ev{color:#FFE082}
+.top .ev small{display:block;font-size:2.4mm;font-weight:700;letter-spacing:.3mm;color:rgba(255,255,255,.75);text-transform:none;margin-top.6mm}
+.role{position:absolute;left:0;right:0;top:46mm;height:9mm;display:flex;align-items:center;justify-content:center;font-size:4.2mm;font-weight:900;letter-spacing:1.6mm;text-transform:uppercase;color:#fff;background:var(--g)}
+.role.staff{background:var(--am);color:#3A2A00}
+.mid{padding:14mm 7mm 0;height:70mm}
+.lbl{font-size:2.3mm;font-weight:900;letter-spacing:.8mm;text-transform:uppercase;color:#8B99A6}
+.nome{margin-top:2.5mm;height:16mm;border-bottom:.45mm solid var(--n);display:flex;align-items:flex-end;padding-bottom:1.5mm;font-size:8.5mm;font-weight:900;letter-spacing:-.2mm;line-height:1;white-space:nowrap;overflow:hidden}
+.emp{margin-top:6mm;height:9mm;border-bottom:.35mm solid #C9D4DE;display:flex;align-items:flex-end;padding-bottom:1.2mm;font-size:4.2mm;font-weight:700;color:var(--mut);white-space:nowrap;overflow:hidden}
+.foot{position:absolute;left:0;right:0;bottom:0;height:25mm;border-top:.35mm solid #E1E8EE;padding:3.2mm 7mm;display:flex;align-items:center;justify-content:space-between;gap:3mm}
+.foot .d b{display:block;font-size:3.6mm;font-weight:900;line-height:1.15}
+.foot .d span{display:block;font-size:2.5mm;font-weight:700;color:var(--mut);margin-top:.8mm;line-height:1.35}
+.foot .qr{width:17mm;height:17mm;flex-shrink:0}
+.foot .qr img{width:100%;height:100%;display:block}
+.stripe{position:absolute;left:0;right:0;bottom:0;height:2.2mm;background:linear-gradient(90deg,var(--g),var(--gl),var(--am))}
+/* ===== VERSO ===== */
+.back{padding:12mm 7mm 6mm;height:100%;display:flex;flex-direction:column}
+.back .h{font-size:3.2mm;font-weight:900;letter-spacing:.9mm;text-transform:uppercase;color:var(--n);display:flex;align-items:center;gap:2mm}
+.back .h::after{content:'';flex:1;height:.3mm;background:#DCE4EA}
+.back .sub{margin-top:1.4mm;font-size:2.5mm;font-weight:700;color:var(--mut)}
+.prog{margin-top:3mm;display:flex;flex-direction:column;gap:0}
+.pr{display:grid;grid-template-columns:13mm 1fr;gap:2mm;padding:1.35mm 0;border-bottom:.25mm solid #EEF2F5;font-size:2.65mm;line-height:1.25}
+.pr b{font-weight:900;color:var(--g)}
+.pr span{font-weight:700;color:var(--n)}
+.pr.hl{background:rgba(0,184,78,.09);margin:0 -2mm;padding-left:2mm;padding-right:2mm;border-radius:1.2mm}
+.pr.hl b{color:#B07A00}
+.sorteio{margin-top:3mm;background:var(--n);color:#fff;border-radius:2.2mm;padding:2.6mm 3.5mm;font-size:2.7mm;font-weight:800;line-height:1.4}
+.sorteio em{font-style:normal;color:var(--gl)}
+.pats{margin-top:auto}
+.pats .l{font-size:2.1mm;font-weight:900;letter-spacing:.7mm;text-transform:uppercase;color:#8B99A6;margin-bottom:1.6mm;text-align:center}
+.pats .band{display:grid;grid-template-columns:repeat(5,1fr);gap:1.8mm 1.6mm;align-items:center;justify-items:center;border:.3mm solid #E1E8EE;border-radius:2mm;padding:2.2mm 2.4mm}
+.pats .band img{height:4.2mm;max-width:15mm;width:auto;object-fit:contain;display:block}
+.pats .band img.tall{height:6mm}
+.pats .band .dk{background:#0b1a2e;border-radius:1mm;padding:.8mm 1.4mm;display:flex}
+.pats .band .dk img{height:3.6mm}
+.org{margin-top:2.6mm;display:flex;align-items:center;justify-content:center;gap:2.2mm}
+.org .chip{border:.3mm solid #E1E8EE;border-radius:1.5mm;padding:1mm 2mm;display:flex}
+.org .chip img{height:5mm;width:auto;object-fit:contain;display:block}
+.org .t{font-size:2mm;font-weight:800;letter-spacing:.4mm;text-transform:uppercase;color:#8B99A6;line-height:1.4}
+</style></head><body>
+
+<!-- ===================== FRENTE · PARTICIPANTE ===================== -->
+<div class="page" id="p1">
+  <div class="slot"></div>
+  <div class="top __TOPCLS__">
+    <div class="grid"></div>
+    <div class="row">
+      <span class="chip"><img src="data:image/png;base64,__ABEE__"/></span>
+      <div class="brand"><b>ABEE-MT</b><span>Associação Brasileira de<br>Engenheiros Eletricistas · Seção MT</span></div>
+    </div>
+    <div class="ev">⚡ FMEES 2026<small>Fórum Mato-Grossense de Engenharia Elétrica e Energias Sustentáveis</small></div>
+  </div>
+  <div class="role __ROLECLS__">__ROLE__</div>
+  <div class="mid">
+    <div class="lbl">Nome</div>
+    <div class="nome">__NOME__</div>
+    <div class="lbl" style="margin-top:5mm">__LBL2__</div>
+    <div class="emp">__EMPRESA__</div>
+  </div>
+  <div class="foot">
+    <div class="d"><b>28 · SET · 2026</b><span>Casarão 154 · Cuiabá — MT<br>17h30 às 23h</span></div>
+    <div class="qr"><img src="data:image/png;base64,__QR__"/></div>
+  </div>
+  <div class="stripe"></div>
+</div>
+
+<!-- ===================== VERSO · PROGRAMAÇÃO ===================== -->
+<div class="page" id="p2">
+  <div class="slot"></div>
+  <div class="back">
+    <div class="h">Programação</div>
+    <div class="sub">28 de setembro · Casarão 154 · Cuiabá</div>
+    <div class="prog">
+      <div class="pr"><b>17h30</b><span>Credenciamento e networking</span></div>
+      <div class="pr hl"><b>18h00</b><span>🎁 Sorteio Presença Premiada</span></div>
+      <div class="pr"><b>18h10</b><span>Abertura institucional</span></div>
+      <div class="pr"><b>18h25</b><span>WEG</span></div>
+      <div class="pr"><b>18h55</b><span>DCCO</span></div>
+      <div class="pr"><b>19h10</b><span>Condutive</span></div>
+      <div class="pr"><b>19h40</b><span>Sungrow</span></div>
+      <div class="pr hl"><b>20h10</b><span>🔥 Jantar · fogo de chão + networking</span></div>
+      <div class="pr"><b>20h55</b><span>BelEnergy</span></div>
+      <div class="pr"><b>21h10</b><span>e4uatro · encerramento</span></div>
+      <div class="pr"><b>21h40</b><span>Encerramento oficial</span></div>
+      <div class="pr hl"><b>21h50</b><span>🥂 Confraternização até as 23h</span></div>
+    </div>
+    <div class="sorteio">🎁 Sorteio às <em>18h em ponto</em> — só concorre quem estiver no salão.</div>
+    <div class="pats">
+      <div class="l">Patrocinadores</div>
+      <div class="band">
+        <img src="data:image/png;base64,__WEG__"/><img src="data:image/png;base64,__SUNGROW__"/><img src="data:image/png;base64,__DCCO__"/>
+        <img src="data:image/png;base64,__BELENERGY__"/><img class="tall" src="data:image/png;base64,__E4__"/>
+        <img class="tall" src="data:image/png;base64,__SOLVAZ2__"/><img class="tall" src="data:image/png;base64,__MIESE__"/><img src="data:image/png;base64,__STANDART__"/>
+        <img src="data:image/png;base64,__VOGEL__"/><img class="tall" src="data:image/png;base64,__SONARE__"/>
+        <img class="tall" src="data:image/png;base64,__CABERLIN__"/><img class="tall" src="data:image/png;base64,__RUAH__"/><img class="tall" src="data:image/png;base64,__GDPRO__"/>
+        <span class="dk"><img src="__CCRURI__"/></span><img class="tall" src="data:image/png;base64,__MUTUA__"/>
+      </div>
+      <div class="org">
+        <span class="t">Apoio</span>
+        <span class="chip"><img src="data:image/png;base64,__CREA__"/></span>
+        <span class="chip"><img src="data:image/png;base64,__SELO__"/></span>
+      </div>
+    </div>
+  </div>
+  <div class="stripe"></div>
+</div>
+</body></html>
