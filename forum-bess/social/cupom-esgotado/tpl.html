@@ -15,22 +15,27 @@ body{background:#000;font-family:Montserrat,'Segoe UI',Arial,sans-serif;color:#f
 .chip{background:#fff;border-radius:9px;padding:6px 10px;display:flex;align-items:center}
 .chip img{height:28px;width:auto;object-fit:contain;display:block}
 .kick{margin-top:40px;font-size:18px;font-weight:800;letter-spacing:6px;text-transform:uppercase;color:rgba(255,255,255,.6)}
-.h1{margin-top:12px;font-size:104px;font-weight:900;line-height:.92;letter-spacing:-4px;text-shadow:0 8px 32px rgba(0,0,0,.5)}
+.h1{margin-top:12px;font-size:88px;font-weight:900;line-height:.92;letter-spacing:-4px;text-shadow:0 8px 32px rgba(0,0,0,.5)}
 .h1 em{font-style:normal;color:var(--am)}
 /* bilhete carimbado */
-.tk{margin-top:36px;width:100%;position:relative;background:#fff;color:#1A1208;border-radius:20px;padding:26px 34px;display:flex;align-items:center;gap:26px;box-shadow:0 18px 50px rgba(0,0,0,.5);opacity:.92}
+.tk{margin-top:30px;width:100%;position:relative;background:#fff;color:#1A1208;border-radius:20px;padding:20px 32px;display:flex;align-items:center;gap:24px;box-shadow:0 18px 50px rgba(0,0,0,.5)}
+.tk.dead{opacity:.72;transform:scale(.94)}
+.tk.live{margin-top:22px;border:4px solid var(--gl);box-shadow:0 0 0 6px rgba(0,208,96,.18),0 18px 50px rgba(0,0,0,.5)}
+.tk.live .off b{color:var(--red)}.tk.live .off span{color:var(--red)}
+.tk.live .cd .lb{color:#8A7A66}.tk.live .cd .code{color:#1A1208;text-decoration:none}.tk.live .cd .hint{color:#5A6B7B}
+.badge{position:absolute;top:-18px;right:26px;background:var(--red);color:#fff;border-radius:50px;padding:8px 20px;font-size:17px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;box-shadow:0 8px 22px rgba(224,36,44,.5)}
 .tk::before,.tk::after{content:'';position:absolute;width:36px;height:36px;border-radius:50%;background:#0A2A45;top:50%;transform:translateY(-50%)}
 .tk::before{left:-18px}.tk::after{right:-18px}
 .tk .off{flex-shrink:0;text-align:center;padding-right:26px;border-right:3px dashed #D9D2C6}
-.tk .off b{display:block;font-size:72px;font-weight:900;line-height:.9;color:#8A8A8A;letter-spacing:-3px}
+.tk .off b{display:block;font-size:60px;font-weight:900;line-height:.9;color:#8A8A8A;letter-spacing:-3px}
 .tk .off span{display:block;font-size:20px;font-weight:900;letter-spacing:4px;color:#8A8A8A}
 .tk .cd{flex:1;text-align:left}
 .tk .cd .lb{font-size:13px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:#9A9A9A}
-.tk .cd .code{margin-top:5px;font-size:50px;font-weight:900;letter-spacing:2px;color:#6E6E6E;line-height:1;font-family:'Courier New',monospace;text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:6px}
+.tk .cd .code{margin-top:5px;font-size:42px;font-weight:900;letter-spacing:2px;color:#6E6E6E;line-height:1;font-family:'Courier New',monospace;text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:6px}
 .tk .cd .hint{margin-top:7px;font-size:15px;font-weight:700;color:#9A9A9A}
-.stamp{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-12deg);border:7px solid var(--red);color:var(--red);border-radius:14px;padding:10px 30px;font-size:74px;font-weight:900;letter-spacing:6px;text-transform:uppercase;background:rgba(255,255,255,.55);box-shadow:0 0 0 4px rgba(255,255,255,.55);z-index:3;
+.stamp{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-10deg);border:6px solid var(--red);color:var(--red);border-radius:12px;padding:6px 24px;font-size:54px;font-weight:900;letter-spacing:6px;text-transform:uppercase;background:rgba(255,255,255,.55);box-shadow:0 0 0 4px rgba(255,255,255,.55);z-index:3;
  mask-image:radial-gradient(circle at 30% 40%,#000 60%,rgba(0,0,0,.75) 100%);-webkit-mask-image:radial-gradient(circle at 30% 40%,#000 60%,rgba(0,0,0,.75) 100%)}
-.thanks{margin-top:26px;font-size:26px;font-weight:700;color:rgba(255,255,255,.85);line-height:1.45;max-width:860px}
+.thanks{margin-top:24px;font-size:24px;font-weight:700;color:rgba(255,255,255,.85);line-height:1.45;max-width:860px}
 .thanks b{color:#fff}
 /* virada */
 .turn{margin-top:auto;width:100%;background:rgba(0,0,0,.28);border:2px solid rgba(0,208,96,.55);border-radius:22px;padding:26px 30px}
@@ -54,21 +59,26 @@ body{background:#000;font-family:Montserrat,'Segoe UI',Arial,sans-serif;color:#f
       <span class="chip"><img src="data:image/png;base64,__CREA__"/></span>
       <span class="chip"><img src="data:image/png;base64,__MUTUA__"/></span>
     </div>
-    <div class="kick">Cupom e4uatro · 50% off</div>
-    <div class="h1">Os cupons<br><em>voaram.</em></div>
-    <div class="tk">
+    <div class="kick">Cupons de desconto</div>
+    <div class="h1">Os de 50% voaram.<br><em>Os de 20% estão<br>acabando.</em></div>
+    <div class="tk dead">
       <div class="off"><b>50%</b><span>OFF</span></div>
-      <div class="cd"><div class="lb">Cupom</div><div class="code">DESCONTOE4</div><div class="hint">todos os cupons foram utilizados</div></div>
+      <div class="cd"><div class="lb">1ª leva</div><div class="code">CUPOM</div><div class="hint">todos utilizados</div></div>
       <div class="stamp">Esgotado</div>
     </div>
-    <div class="thanks">Obrigado à <b>e4uatro</b> pela cortesia — e a todo mundo que correu e garantiu.</div>
+    <div class="tk live">
+      <div class="badge">Últimas unidades</div>
+      <div class="off"><b>20%</b><span>OFF</span></div>
+      <div class="cd"><div class="lb">2ª leva · ainda disponível</div><div class="code">CUPOM 20%</div><div class="hint">use na inscrição enquanto durar</div></div>
+    </div>
+    <div class="thanks">Obrigado aos <b>patrocinadores</b> que ofereceram os cupons. Se você ainda não usou o seu, <b>é agora</b>.</div>
     <div class="turn">
-      <div class="t">Ainda dá tempo de ir.<br><em>Mas o lote também está no fim.</em></div>
+      <div class="t">Com ou sem cupom, <em>ainda dá tempo de ir.</em></div>
       <div class="s">Fogo de chão no Casarão 154, chope, palestras de <b>WEG, DCCO, Condutive, Sungrow, BelEnergy e e4uatro</b> — tudo incluso no ingresso.</div>
     </div>
     <div class="info"><b>28 de setembro</b> · 17h30 às 23h · Casarão 154 · Cuiabá</div>
     <div class="cta">Garantir ingresso</div>
     <div class="site">forumbess.abeemt.org.br</div>
-    <div class="e4"><span>Cortesia</span><span class="chip"><img src="data:image/png;base64,__E4__"/></span></div>
+    <div class="e4" style="display:none"><span>Cortesia</span><span class="chip"><img src="data:image/png;base64,__E4__"/></span></div>
   </div>
 </div></body></html>
