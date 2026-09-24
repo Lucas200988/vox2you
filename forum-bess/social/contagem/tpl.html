@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--n:#082A43;--g:#00B84E;--gl:#00D060;--am:#FFC107}
+body{background:#000;font-family:Montserrat,'Segoe UI',Arial,sans-serif;color:#fff}
+.art{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;
+ background:#0A1F33;
+ background-image:
+  radial-gradient(ellipse at 50% 22%,rgba(0,208,96,.22),transparent 55%),
+  radial-gradient(ellipse at 50% 100%,rgba(0,0,0,.65),transparent 60%),
+  repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 2px,transparent 2px 7px),
+  repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 2px,transparent 2px 7px),
+  linear-gradient(180deg,#0E2C48,#081E33 60%,#04121F)}
+.noise{position:absolute;inset:0;opacity:.18;background-image:radial-gradient(rgba(255,255,255,.35) .8px,transparent .8px);background-size:5px 5px;mix-blend-mode:overlay}
+.vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(0,0,0,.55) 100%)}
+.selo{position:absolute;top:32px;right:42px;width:122px;z-index:9;filter:drop-shadow(0 8px 20px rgba(0,0,0,.6))}
+/* cordão */
+.lan{position:absolute;top:-60px;left:50%;width:44px;height:var(--lanh);transform:translateX(-50%) rotate(-1.2deg);transform-origin:top center;z-index:3;
+ background:linear-gradient(90deg,#061A2B,#082A43 30%,#0B3252 50%,#082A43 70%,#061A2B);box-shadow:0 10px 30px rgba(0,0,0,.6)}
+.lan::before,.lan::after{content:'';position:absolute;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--g),var(--gl),var(--am))}
+.lan::before{left:0}.lan::after{right:0}
+.lan .txt{position:absolute;left:50%;top:0;transform:translateX(-50%) rotate(90deg);transform-origin:left top;white-space:nowrap;margin-left:-8px;margin-top:150px;font-size:16px;font-weight:900;letter-spacing:5px;color:rgba(255,255,255,.55)}
+.clip{position:absolute;top:calc(var(--lanh) - 80px);left:50%;transform:translateX(-50%) rotate(-1.2deg);width:110px;height:56px;border-radius:12px;background:linear-gradient(180deg,#E8EDF2,#B8C4CE);z-index:5;box-shadow:0 8px 18px rgba(0,0,0,.5)}
+.clip::after{content:'';position:absolute;left:50%;top:38px;width:26px;height:40px;transform:translateX(-50%);border:6px solid #C9D3DC;border-top:0;border-radius:0 0 14px 14px}
+/* crachá pendurado */
+.card{position:relative;z-index:4;margin-top:var(--cardtop);width:820px;background:#fff;border-radius:34px;overflow:hidden;color:var(--n);
+ transform:rotate(-1.2deg);box-shadow:0 40px 90px rgba(0,0,0,.65),0 0 0 1px rgba(0,0,0,.15)}
+.card .hole{position:absolute;top:22px;left:50%;transform:translateX(-50%);width:120px;height:26px;border-radius:14px;background:#0A1F33;box-shadow:inset 0 3px 6px rgba(0,0,0,.6)}
+.card .top{background:linear-gradient(160deg,#0B3252,#082A43 55%,#04182A);padding:74px 50px 34px;color:#fff;position:relative}
+.card .top .row{display:flex;align-items:center;gap:22px}
+.card .top .chip{background:#fff;border-radius:14px;padding:10px 14px;display:flex}
+.card .top .chip img{height:58px;width:auto;object-fit:contain;display:block}
+.card .top b{display:block;font-size:44px;font-weight:900;line-height:1;letter-spacing:-1px}
+.card .top span{display:block;font-size:16px;font-weight:700;color:rgba(255,255,255,.7);margin-top:6px;line-height:1.35}
+.card .ev{margin-top:22px;font-size:20px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:var(--gl)}
+.card .tarja{background:var(--g);color:#fff;text-align:center;font-size:26px;font-weight:900;letter-spacing:9px;text-transform:uppercase;padding:16px}
+.card .mid{padding:44px 50px 40px;text-align:center}
+.card .lb{font-size:20px;font-weight:900;letter-spacing:6px;text-transform:uppercase;color:#8B99A6}
+.card .num{font-size:var(--numsz);font-weight:900;line-height:.86;letter-spacing:-10px;color:var(--n);margin-top:8px}
+.card .num em{font-style:normal;color:var(--g)}
+.card .dias{font-size:64px;font-weight:900;letter-spacing:2px;color:var(--n);margin-top:6px;line-height:1}
+.card .sub{margin-top:18px;font-size:24px;font-weight:700;color:#5A6B7B;line-height:1.4}
+.card .sub b{color:var(--n)}
+.card .foot{border-top:2px solid #E1E8EE;padding:24px 50px;display:flex;align-items:center;justify-content:space-between;background:#F7F9FB}
+.card .foot .d b{display:block;font-size:26px;font-weight:900;line-height:1.1}
+.card .foot .d span{display:block;font-size:16px;font-weight:700;color:#5A6B7B;margin-top:4px;line-height:1.35}
+.card .foot .site{font-size:20px;font-weight:900;color:var(--g);text-align:right}
+.card .stripe{height:14px;background:linear-gradient(90deg,var(--g),var(--gl),var(--am))}
+.cta{position:relative;z-index:4;margin-top:auto;margin-bottom:64px;text-align:center}
+.cta .b{display:inline-block;background:linear-gradient(135deg,var(--g),var(--gl));color:#04301A;font-size:30px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;padding:20px 54px;border-radius:16px;box-shadow:0 14px 40px rgba(0,208,96,.4)}
+.cta .l{margin-top:16px;font-size:18px;font-weight:800;color:rgba(255,255,255,.55);letter-spacing:2px;text-transform:uppercase}
+</style></head><body>
+<div class="art" id="a" style="width:1080px;height:1350px;--lanh:330px;--cardtop:250px;--numsz:300px">
+  <div class="noise"></div><div class="vig"></div>
+  <img class="selo" src="data:image/png;base64,__SELO__" alt="Patrocínio Mútua"/>
+  <div class="lan"><div class="txt">ABEE-MT · ABEE-MT</div></div>
+  <div class="clip"></div>
+  <div class="card">
+    <div class="hole"></div>
+    <div class="top">
+      <div class="row"><span class="chip"><img src="data:image/png;base64,__ABEE__"/></span><div><b>ABEE-MT</b><span>Associação Brasileira de<br>Engenheiros Eletricistas · Seção MT</span></div></div>
+      <div class="ev">⚡ FMEES 2026</div>
+    </div>
+    <div class="tarja">__TARJA__</div>
+    <div class="mid">
+      <div class="lb">__LB__</div>
+      <div class="num">__NUM__</div>
+      <div class="dias">__DIAS__</div>
+      <div class="sub">__SUB__</div>
+    </div>
+    <div class="foot">
+      <div class="d"><b>__DATA__</b><span>__LOCAL__</span></div>
+      <div class="site">forumbess.abeemt.org.br</div>
+    </div>
+    <div class="stripe"></div>
+  </div>
+  <div class="cta"><div class="b">__CTA__</div><div class="l">Realização ABEE-MT · Apoio CREA-MT e Mútua</div></div>
+</div></body></html>
