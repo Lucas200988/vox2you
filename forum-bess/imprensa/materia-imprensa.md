@@ -89,7 +89,7 @@ Local: Casarão 154 — Rua Choffi, 50, Santa Rosa, Cuiabá (MT)
 
 **Rondonópolis**
 Data: 30 de setembro de 2026 (quarta-feira)
-Horário: a partir das 18h30
+Horário: das 18h30 às 21h30, com confraternização ao final
 Local: Espaço Gourmet Corpal — Rod. Eixo Viário Conrado Sáles, 26, Granville I, Rondonópolis (MT), CEP 78731-218
 
 Inscrições: forumbess.abeemt.org.br
