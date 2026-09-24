@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/>
+<style>
+/* 1 px = 1 mm → 2000 x 2000 = 2 x 2 m */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--g:#00B84E;--gl:#00D060;--am:#FFC107}
+html,body{background:#000;font-family:Montserrat,'Segoe UI',Arial,sans-serif;color:#fff}
+.pn{width:3000px;height:2000px;position:relative;overflow:hidden;display:flex;flex-direction:column;
+ background:radial-gradient(circle at 50% 12%,rgba(0,208,96,.30),transparent 46%),
+            radial-gradient(ellipse at 50% 110%,rgba(255,140,0,.34),transparent 52%),
+            linear-gradient(175deg,#1B5A8A,#10426B 40%,#0B2E4C 72%,#1A1A0A)}
+.grid{position:absolute;inset:0;opacity:.08;background-image:linear-gradient(rgba(255,255,255,.6) 2px,transparent 2px),linear-gradient(90deg,rgba(255,255,255,.6) 2px,transparent 2px);background-size:100px 100px}
+.ember{position:absolute;border-radius:50%;filter:blur(1.5px)}
+.tb{position:absolute;top:0;left:0;right:0;height:22px;background:linear-gradient(90deg,var(--g),var(--gl),var(--am))}
+.bb{position:absolute;bottom:0;left:0;right:0;height:22px;background:linear-gradient(90deg,var(--am),var(--gl),var(--g))}
+.wrap{position:relative;z-index:3;flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:80px 120px 70px}
+.top{width:100%;display:flex;align-items:center;justify-content:space-between}
+.abee{display:flex;align-items:center;gap:26px;background:#fff;border-radius:28px;padding:22px 34px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.abee img{height:120px;width:auto;object-fit:contain;display:block}
+.abee .tx{text-align:left;border-left:3px solid #DCE4EA;padding-left:26px}
+.abee .tx b{display:block;font-size:64px;font-weight:900;color:#082A43;line-height:1;letter-spacing:-1px}
+.abee .tx span{display:block;font-size:26px;font-weight:700;color:#5A6B7B;line-height:1.35;margin-top:8px}
+.selo{height:230px;width:auto;filter:drop-shadow(0 16px 40px rgba(0,0,0,.55))}
+.ev{margin-top:30px;font-size:40px;font-weight:800;letter-spacing:14px;text-transform:uppercase;color:var(--gl)}
+.h1{margin-top:16px;font-size:168px;font-weight:900;line-height:.98;letter-spacing:-6px;text-shadow:0 18px 60px rgba(0,0,0,.5);max-width:2700px}
+.h1 em{font-style:normal;color:var(--am)}
+.sub{margin-top:28px;font-size:44px;font-weight:700;color:rgba(255,255,255,.85);letter-spacing:2px}
+.sub b{color:#fff}
+.tag{margin-top:26px;display:inline-flex;align-items:center;gap:20px;background:rgba(0,0,0,.35);border:3px solid rgba(255,255,255,.35);border-radius:80px;padding:18px 54px;font-size:40px;font-weight:900;letter-spacing:3px}
+.tag i{font-style:normal;color:var(--gl)}
+/* espaço livre para as pessoas */
+.free{flex:1}
+.pats{width:100%}
+.pats .pl{font-size:26px;font-weight:900;letter-spacing:10px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:22px}
+.pats .band{background:#fff;border-radius:34px;padding:30px 44px;display:flex;flex-wrap:nowrap;justify-content:space-between;gap:18px;align-items:center;justify-items:center}
+.pats .band img{height:56px;max-width:150px;width:auto;object-fit:contain;display:block}
+.pats .band img.tall{height:84px}
+.pats .band .dk{background:#0b1a2e;border-radius:14px;padding:14px 20px;display:flex}
+.pats .band .dk img{height:50px}
+.org{margin-top:30px;display:flex;align-items:center;justify-content:center;gap:34px}
+.org .lb{font-size:22px;font-weight:900;letter-spacing:6px;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.org .chip{background:#fff;border-radius:16px;padding:12px 20px;display:flex}
+.org .chip img{height:66px;width:auto;object-fit:contain;display:block}
+</style></head><body>
+<div class="pn" id="a">
+  <div class="grid"></div><div class="tb"></div><div class="bb"></div>
+  <div class="wrap">
+    <div class="top">
+      <div class="abee"><img src="data:image/png;base64,__ABEE__"/><div class="tx"><b>ABEE-MT</b><span>Associação Brasileira de<br>Engenheiros Eletricistas · Seção MT</span></div></div>
+      <img class="selo" src="data:image/png;base64,__SELO__" alt="Patrocínio Mútua"/>
+    </div>
+    <div class="ev">⚡ FMEES 2026</div>
+    <div class="h1">O novo mercado da energia<br><em>está começando.</em></div>
+    <div class="sub">Fórum Mato-Grossense de Engenharia Elétrica e Energias Sustentáveis</div>
+    <div class="tag">📸 <i>#FMEES2026</i> · @abee_mt</div>
+    <div class="free"></div>
+    <div class="pats">
+      <div class="pl">Patrocinadores</div>
+      <div class="band">
+        <img src="data:image/png;base64,__WEG__"/><img src="data:image/png;base64,__SUNGROW__"/><img src="data:image/png;base64,__DCCO__"/>
+        <img src="data:image/png;base64,__BELENERGY__"/><img class="tall" src="data:image/png;base64,__E4__"/><img class="tall" src="data:image/png;base64,__SOLVAZ2__"/>
+        <img class="tall" src="data:image/png;base64,__MIESE__"/><img src="data:image/png;base64,__STANDART__"/><img src="data:image/png;base64,__VOGEL__"/>
+        <img class="tall" src="data:image/png;base64,__SONARE__"/><img class="tall" src="data:image/png;base64,__CABERLIN__"/><img class="tall" src="data:image/png;base64,__RUAH__"/>
+        <img class="tall" src="data:image/png;base64,__GDPRO__"/><img class="tall" src="data:image/png;base64,__CONDUTIVE__"/><img src="data:image/png;base64,__CANADIAN__"/>
+        <span class="dk"><img src="__CCRURI__"/></span><img class="tall" src="data:image/png;base64,__MUTUA__"/>
+      </div>
+      <div class="org">
+        <span class="lb">Apoio institucional</span>
+        <span class="chip"><img src="data:image/png;base64,__CREA__"/></span>
+        <span class="chip"><img src="data:image/png;base64,__MUTUA__"/></span>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const a=document.getElementById('a');let seed=9;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647;};
+for(let i=0;i<160;i++){const d=document.createElement('div');d.className='ember';const s=4+rnd()*12;
+ d.style.cssText=`width:${s}px;height:${s}px;left:${rnd()*100}%;top:${55+rnd()*45}%;background:${rnd()>.5?'#FFD36B':'#FF8A00'};opacity:${.18+rnd()*.5};z-index:2`;a.appendChild(d);}
+</script>
+</body></html>
