@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/>
+<style>
+/* A5 paisagem por placa: 210 x 148 mm */
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#fff;font-family:Montserrat,'Segoe UI',Arial,sans-serif}
+.pg{width:210mm;height:148mm;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;page-break-after:always;padding:12mm}
+.pg:last-child{page-break-after:auto}
+.pg.dk{background:radial-gradient(circle at 50% 0%,rgba(0,208,96,.28),transparent 50%),linear-gradient(170deg,#0B3252,#082A43);color:#fff}
+.pg.lt{background:#fff;color:#082A43;border:4mm solid #082A43}
+.pg.fire{background:radial-gradient(ellipse at 50% 110%,rgba(255,140,0,.55),transparent 55%),linear-gradient(170deg,#2A1806,#120A03);color:#fff}
+.pg.gold{background:linear-gradient(135deg,#C9962A,#F2DFA8 50%,#C9962A);color:#2A1E00}
+.in{display:flex;flex-direction:column;align-items:center;gap:5mm;width:100%}
+.k{font-size:6mm;font-weight:800;letter-spacing:2.5mm;text-transform:uppercase;opacity:.75}
+.t{font-size:22mm;font-weight:900;line-height:.95;letter-spacing:-1mm}
+.t.md{font-size:17mm}.t.sm{font-size:13mm}
+.t em{font-style:normal;color:#00D060}.pg.lt .t em{color:#00994A}.pg.fire .t em{color:#FFB300}
+.s{font-size:7mm;font-weight:700;opacity:.8}
+.logo{background:#fff;border-radius:5mm;padding:8mm 12mm;display:flex;align-items:center;justify-content:center;box-shadow:0 4mm 12mm rgba(0,0,0,.25)}
+.logo img{height:38mm;max-width:150mm;width:auto;object-fit:contain;display:block}
+.logo img.wide{height:26mm}
+.ft{position:absolute;bottom:7mm;left:0;right:0;font-size:4.2mm;font-weight:800;letter-spacing:1.5mm;text-transform:uppercase;opacity:.55}
+.hole{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:16mm;height:14mm;border-radius:8mm 8mm 0 0;border:.4mm dashed rgba(128,128,128,.6);border-bottom:0}
+</style></head><body>
+__PAGES__
+</body></html>

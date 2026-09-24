@@ -1,0 +1,11 @@
+const { chromium } = require('/opt/node22/lib/node_modules/playwright');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+let p=await b.newPage({viewport:{width:2000,height:2000},deviceScaleFactor:0.6});
+await p.goto('file://'+process.cwd()+'/painel.html',{waitUntil:'load'});await p.waitForTimeout(900);
+await (await p.$('#a')).screenshot({path:'preview.png'}); await p.close();
+p=await b.newPage({viewport:{width:2000,height:2000}});
+await p.goto('file://'+process.cwd()+'/painel.html',{waitUntil:'load'});await p.waitForTimeout(900);
+await p.emulateMedia({media:'screen'});
+await p.addStyleTag({content:'html,body{margin:0;padding:0;background:#10426B}.pn{zoom:3.77953}'});
+await p.pdf({path:'painel-foto-200x200cm.pdf',width:'200cm',height:'200cm',printBackground:true,margin:{top:0,right:0,bottom:0,left:0},pageRanges:'1'});
+console.log('ok'); await b.close();})();
