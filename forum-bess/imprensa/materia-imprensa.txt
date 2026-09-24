@@ -27,7 +27,7 @@ lacuna que a Associação Brasileira de Engenheiros Eletricistas, Seção Mato G
 e Energias Sustentáveis (FMEES 2026)**.
 
 O evento acontece em duas datas: **28 de setembro, em Cuiabá**, no Casarão 154, e
-**30 de setembro, em Rondonópolis**. A realização é da ABEE-MT, com apoio
+**30 de setembro, em Rondonópolis**, no Espaço Gourmet Corpal. A realização é da ABEE-MT, com apoio
 institucional do Conselho Regional de Engenharia e Agronomia de Mato Grosso
 (CREA-MT) e da Mútua — Caixa de Assistência dos Profissionais do CREA, que também
 patrocina o fórum.
@@ -89,7 +89,7 @@ Local: Casarão 154 — Rua Choffi, 50, Santa Rosa, Cuiabá (MT)
 
 **Rondonópolis**
 Data: 30 de setembro de 2026 (quarta-feira)
-Local: [a confirmar]
+Local: Espaço Gourmet Corpal — Rod. Eixo Viário Conrado Sáles, 26, Granville I, Rondonópolis (MT), CEP 78731-218
 
 Inscrições: forumbess.abeemt.org.br
 Informações: (65) 99281-2397 · amee.mt@gmail.com · @abee_mt
