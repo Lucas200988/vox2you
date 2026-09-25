@@ -9,7 +9,7 @@
 <text x="90.0" y="46" font-size="5.2" font-weight="900" letter-spacing="2.2">HOMENAGEM</text>
 <text x="90.0" y="66" font-size="15" font-weight="900" letter-spacing="-.3">CREA-MT</text>
 <text x="90.0" y="78" font-size="5.6" font-weight="700" fill="#8B99A6">Apoio institucional ao FMEES 2026</text>
-<text x="90.0" y="106" font-size="4.2" font-weight="800" letter-spacing="1" fill="#8B99A6">28 · 09 · 2026 · CUIABÁ — MT</text>
+<text x="90.0" y="108" font-size="4.2" font-weight="800" letter-spacing="1" fill="#8B99A6">28 · 09 · 2026 · CUIABÁ — MT</text>
 </g>
 <g id="L4_relevo_alto_z8-11" data-altura="3mm">
 <polygon fill="#FFC107" points="22,6 14,17 19,17 15,26 25,13 20,13 24,6"/>
@@ -22,8 +22,8 @@
 <rect x="109.67999999999999" y="118" width="62.32" height="4" rx="2" fill="#FFC107"/>
 </g>
 <g id="L5_alojamento_logo_40x40_z10" data-nota="rebaixo de 1 mm para colar a logo impressa separadamente">
-<rect x="70.0" y="86" width="40" height="18" rx="2" fill="none" stroke="#8B99A6" stroke-width=".4" stroke-dasharray="1.5 1"/>
-<text x="90.0" y="97" font-size="3" fill="#8B99A6" text-anchor="middle">LOGO CREA-MT · peça colada · 40 × 18 mm</text>
+<rect x="70.0" y="84" width="40" height="14" rx="2" fill="none" stroke="#8B99A6" stroke-width=".4" stroke-dasharray="1.5 1"/>
+<text x="90.0" y="92" font-size="2.6" fill="#8B99A6" text-anchor="middle">LOGO CREA-MT · peça colada · 40 × 18 mm</text>
 </g>
 <g id="COTAS_nao_imprimir" fill="none" stroke="#E03131" stroke-width=".3" font-size="3" font-family="Arial">
 <line x1="0" y1="-6" x2="180" y2="-6"/><text x="90.0" y="-8" fill="#E03131" text-anchor="middle" stroke="none">180 mm</text>
