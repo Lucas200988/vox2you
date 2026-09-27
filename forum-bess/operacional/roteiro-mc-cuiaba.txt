@@ -31,6 +31,15 @@ Autoridades presentes (para citar na abertura e no encerramento):
 
 Microfone testado · slide de abertura no telão · água na mesa · cronômetro na sua mão.
 
+PRESENTES E HOMENAGEM — confira que estão na mesa ao lado do palco, etiquetados:
+[ ] CREA-MT      [ ] Mútua       → entrega às 18h20, na abertura
+[ ] WEG          → 18h55, na saída do palestrante
+[ ] DCCO         → 19h10
+[ ] Sungrow      → 20h10
+[ ] CCR (homenagem) → 21h40
+Quem entrega: [nome] (presidente) · Quem leva até o palco: [nome]
+Quem recebe pela CCR: [nome, cargo]
+
 ════════════════════════════════════════════════════════════════════════
 ## 17h30 → 17h55 · CREDENCIAMENTO
 ════════════════════════════════════════════════════════════════════════
@@ -83,8 +92,16 @@ Convido ao palco, para a abertura oficial:
   patrocina e apoia este fórum, [nome, cargo]."
 
 → Cada um fala 3–4 minutos. Se alguém passar de 5, você se aproxima do palco.
-→ ENTREGA DAS PLACAS (se estiverem prontas): "Antes de encerrarmos a abertura, a
-   ABEE-MT quer registrar sua gratidão." Presidente entrega ao CREA e à Mútua. FOTO.
+→ ENTREGA DE PRESENTES ao CREA-MT e à Mútua (3 min). Texto:
+
+   "Antes de encerrarmos a abertura, a ABEE-MT quer registrar sua gratidão — não só em
+   palavras. Nenhum fórum acontece sem quem acredita nele antes de existir. O CREA-MT e
+   a Mútua acreditaram.
+
+   Convido o presidente da ABEE-MT, [nome], para entregar uma lembrança desta noite a
+   [nome, cargo] do CREA-MT... e a [nome, cargo] da Mútua."
+
+→ Presidente entrega. Você segura o microfone. FOTO com os três. Aplausos.
 → "Peço uma salva de palmas às nossas instituições. E agora, vamos ao conteúdo."
 
 ════════════════════════════════════════════════════════════════════════
@@ -99,7 +116,9 @@ Para falar sobre tecnologias e soluções para esse novo mercado, recebam
 [nome], [cargo] da WEG."
 
 → 18h50: placa "5 MIN". 18h55: placa "TEMPO".
-→ Saída: "Muito obrigado, [nome]. WEG, obrigado por estar com a gente."
+→ Saída + PRESENTE: "Muito obrigado, [nome]. Antes de descer, a ABEE-MT tem uma
+   lembrança para a WEG." → [quem entrega] sobe, entrega, FOTO. "WEG, obrigado por
+   estar com a gente."
 
 ════════════════════════════════════════════════════════════════════════
 ## 18h55 · DCCO (15 min)
@@ -112,6 +131,8 @@ nesta sala.
 Com a palavra, [nome], [cargo] da DCCO."
 
 → 19h05: "5 MIN". 19h10: "TEMPO".
+→ Saída + PRESENTE: "Obrigado, [nome]. Uma lembrança da ABEE-MT para a DCCO."
+   → entrega, FOTO.
 
 ════════════════════════════════════════════════════════════════════════
 ## 19h10 · CONDUTIVE (30 min)
@@ -135,6 +156,8 @@ engenheiro nesta sala: aplicações reais e viabilidade financeira dos sistemas 
 Com vocês, [nome], [cargo] da Sungrow."
 
 → 20h05: "5 MIN". 20h10: "TEMPO" — e aqui NÃO pode estourar: o jantar está na brasa.
+→ Saída + PRESENTE (rápido, 1 min): "Obrigado, [nome]. Uma lembrança da ABEE-MT para
+   a Sungrow." → entrega, FOTO — e já emenda na chamada do jantar.
 
 ════════════════════════════════════════════════════════════════════════
 ## 20h10 · JANTAR + NETWORKING (45 min)
@@ -179,10 +202,34 @@ da e4uatro."
 → 21h35: "5 MIN". 21h40: "TEMPO".
 
 ════════════════════════════════════════════════════════════════════════
-## 21h40 · ENCERRAMENTO OFICIAL (10 min)
+## 21h40 · HOMENAGEM À CCR (5 min)
 ════════════════════════════════════════════════════════════════════════
 
-"Obrigado, [nome]. E obrigado a todos vocês.
+"Obrigado, [nome]. Antes do encerramento, um momento que a ABEE-MT fez questão de
+reservar.
+
+Toda noite como esta tem empresas que patrocinam. E tem empresas que fazem mais do
+que isso: que estão do lado da engenharia elétrica de Mato Grosso o ano inteiro, não
+só no dia do evento. A CCR — montagens industriais, painéis elétricos, automação e
+controle — é uma dessas empresas.
+
+[Se houver um motivo específico, entra aqui — ex.: "foi a primeira a acreditar neste
+fórum", "está há X anos ao lado da ABEE-MT", "apoiou a associação em Y". Uma frase
+verdadeira vale mais que três genéricas.]
+
+Convido ao palco [nome, cargo] da CCR, para receber das mãos do presidente da ABEE-MT,
+[nome], a homenagem desta noite."
+
+→ Presidente entrega. Se o homenageado quiser falar: "Fique à vontade — um minuto é
+   seu." (Se passar de 2, aplauda e retome.)
+→ FOTO: homenageado + presidente + você. Aplausos.
+→ "CCR, muito obrigado. Mato Grosso agradece."
+
+════════════════════════════════════════════════════════════════════════
+## 21h45 · ENCERRAMENTO OFICIAL (8 min)
+════════════════════════════════════════════════════════════════════════
+
+"E obrigado a todos vocês.
 
 Há alguns meses este fórum era uma ideia. Hoje, [número] engenheiros, projetistas e
 empresas estiveram aqui por uma noite inteira falando de armazenamento de energia.
@@ -211,7 +258,7 @@ FOTO OFICIAL: chamo ao palco todos os patrocinadores, palestrantes e a diretoria
 segue até as 23h. O chope também. Boa noite, e obrigado!"
 
 ════════════════════════════════════════════════════════════════════════
-## 21h50 → 23h00 · CONFRATERNIZAÇÃO
+## 21h55 → 23h00 · CONFRATERNIZAÇÃO
 ════════════════════════════════════════════════════════════════════════
 
 Sem microfone. 22h50: um aviso amigável de dez minutos, pelas mesas.
