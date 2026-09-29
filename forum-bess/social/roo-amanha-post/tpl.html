@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--n:#071B2C;--g:#00B84E;--gl:#00D060;--am:#FFC107;--red:#E0242C}
+body{background:#000;font-family:Montserrat,'Segoe UI',Arial,sans-serif;color:#fff}
+.art{position:relative;overflow:hidden;display:flex;flex-direction:column;background:#071B2C;
+ background-image:radial-gradient(circle at 50% 30%,rgba(224,36,44,.30),transparent 46%),radial-gradient(circle at 12% 92%,rgba(0,208,96,.26),transparent 44%),radial-gradient(circle at 92% 10%,rgba(255,193,7,.22),transparent 40%),linear-gradient(170deg,#0B2E4C,#071B2C 55%,#03111D)}
+.grid{position:absolute;inset:0;opacity:.07;background-image:linear-gradient(rgba(255,255,255,.6) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px);background-size:60px 60px}
+.ring{position:absolute;left:50%;top:44%;width:1500px;height:1500px;border-radius:50%;transform:translate(-50%,-50%);border:2px solid rgba(255,255,255,.06)}
+.ring2{position:absolute;left:50%;top:44%;width:1100px;height:1100px;border-radius:50%;transform:translate(-50%,-50%);border:2px solid rgba(255,193,7,.12)}
+.tb{position:absolute;top:0;left:0;right:0;height:12px;background:linear-gradient(90deg,var(--red),var(--am),var(--gl))}
+.selo{position:absolute;top:34px;right:42px;width:122px;z-index:8;filter:drop-shadow(0 8px 20px rgba(0,0,0,.6))}
+.wrap{position:relative;z-index:5;flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:60px 60px 46px}
+.org{align-self:flex-start;display:flex;gap:9px}
+.chip{background:#fff;border-radius:9px;padding:6px 10px;display:flex}.chip img{height:30px;width:auto;object-fit:contain;display:block}
+.city{margin-top:34px;font-size:30px;font-weight:900;letter-spacing:10px;text-transform:uppercase;color:var(--am)}
+.big{margin-top:2px;font-size:236px;font-weight:900;line-height:.86;letter-spacing:-12px;text-shadow:0 18px 60px rgba(0,0,0,.6)}
+.big em{font-style:normal;color:#fff}
+.big .r{display:block;color:var(--red);font-size:120px;letter-spacing:-4px;line-height:.95;margin-top:6px;text-shadow:0 0 50px rgba(224,36,44,.55)}
+.sub{margin-top:30px;font-size:34px;font-weight:700;line-height:1.35;max-width:900px;color:rgba(255,255,255,.92)}
+.sub b{color:var(--gl)}
+.proof{margin-top:30px;background:rgba(0,0,0,.35);border:2px solid rgba(255,193,7,.55);border-radius:60px;padding:16px 34px;font-size:24px;font-weight:800;color:var(--am)}
+.proof b{color:#fff}
+.when{margin-top:auto;width:100%;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.24);border-radius:22px;padding:24px 28px;display:flex;align-items:center;gap:26px;text-align:left}
+.when .d{font-size:74px;font-weight:900;line-height:.85;color:var(--am);letter-spacing:-3px;text-align:center}
+.when .d small{display:block;font-size:19px;font-weight:900;letter-spacing:4px;color:rgba(255,255,255,.75);margin-top:7px}
+.when .t{font-size:30px;font-weight:900;line-height:1.2}.when .t span{display:block;font-size:20px;font-weight:700;color:rgba(255,255,255,.66);margin-top:6px;line-height:1.4}
+.cta{margin-top:22px;width:100%;background:linear-gradient(135deg,var(--g),var(--gl));color:#04301A;font-size:38px;font-weight:900;letter-spacing:1px;text-transform:uppercase;padding:24px;border-radius:18px;box-shadow:0 14px 42px rgba(0,208,96,.45)}
+.site{margin-top:14px;font-size:22px;font-weight:800;color:rgba(255,255,255,.78)}
+</style></head><body>
+<div class="art" id="a" style="width:1080px;height:1350px">
+  <div class="grid"></div><div class="ring"></div><div class="ring2"></div><div class="tb"></div>
+  <img class="selo" src="__SELO__"/>
+  <div class="wrap">
+    <div class="org"><span class="chip"><img src="__ABEE__"/></span><span class="chip"><img src="__CREA__"/></span><span class="chip"><img src="__MUTUA__"/></span></div>
+    <div class="city">Rondonópolis</div>
+    <div class="big"><em>É</em><span class="r">AMANHÃ.</span></div>
+    <div class="sub">O fórum sobre <b>armazenamento de energia</b> chega ao maior polo do agro de Mato Grosso.</div>
+    <div class="proof">⚡ Cuiabá foi ontem. <b>Amanhã é a sua vez.</b></div>
+    <div class="when">
+      <div class="d">30<small>SET</small></div>
+      <div class="t">Espaço Gourmet Corpal<span>Rod. Eixo Viário Conrado Sáles, 26 · Granville I<br>18h30 às 21h30 · confraternização ao final</span></div>
+    </div>
+    <div class="cta">Garantir minha vaga</div>
+    <div class="site">forumbess.abeemt.org.br</div>
+  </div>
+</div></body></html>
