@@ -9,14 +9,12 @@ LOGOS={'weg':'weg','dcco':'dcco','condutive':'condutive','sungrow':'sungrow','be
 # ---- GRADE (hora_inicio, hora_fim, logo|emoji, titulo, descricao, destaque)
 #      logo: chave de LOGOS para logo real; ou um emoji; ou '' para nada
 GRADE=[
- ('18h30','19h00','👥','Credenciamento e networking','Recepção dos participantes e início da integração',''),
- ('19h00','19h10','🎁','Sorteio especial — Presença Premiada','Sorteio apenas para quem estiver presente no salão','hl'),
- ('19h10','19h25','🎙️','Abertura Institucional · 15 min','ABEE-MT + CREA-MT + Mútua-MT',''),
- ('19h25','19h55','','[EMPRESA 1] · 30 min','[tema da palestra]',''),
- ('19h55','20h25','','[EMPRESA 2] · 30 min','[tema da palestra]',''),
- ('20h25','20h55','','[EMPRESA 3] · 30 min · Palestra de encerramento','[tema da palestra]','fin'),
- ('20h55','21h05','🏁','Encerramento Oficial · 10 min','Agradecimentos e considerações finais',''),
- ('21h05','21h30','🥂','Confraternização + Networking','Comes e bebes · continuidade do encontro em formato livre','hl'),
+ ('18h30','19h15','👥','Credenciamento e networking','Recepção dos participantes e início da integração',''),
+ ('19h15','19h25','🎁','Sorteio especial — Presença Premiada','Sorteio apenas para quem estiver presente no salão','hl'),
+ ('19h25','19h45','🎙️','Abertura Institucional · 20 min','ABEE-MT + CREA-MT + Mútua-MT',''),
+ ('19h45','20h45','condutive','Condutive · 60 min · Palestra de encerramento','Soluções e tecnologias para o setor de energia · armazenamento (BESS) e o novo mercado','fin'),
+ ('20h45','21h00','🏁','Encerramento Oficial · 15 min','Agradecimentos e considerações finais',''),
+ ('21h00','21h30','🥂','Confraternização + Networking','Comes e bebes · continuidade do encontro em formato livre','hl'),
 ]
 
 rows=''
@@ -34,7 +32,7 @@ html=f'''<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><style>
 *{{margin:0;padding:0;box-sizing:border-box}}
 :root{{--n:#082A43;--g:#00B84E;--gl:#00D060;--gt:#00994A;--line:#DCE4EA;--mut:#5A6B7B}}
 body{{background:#000;font-family:Montserrat,'Segoe UI',Arial,sans-serif}}
-.art{{width:1080px;height:1350px;position:relative;overflow:hidden;background:#F2F5F8;display:flex;flex-direction:column}}
+.art{{width:1080px;height:1240px;position:relative;overflow:hidden;background:#F2F5F8;display:flex;flex-direction:column}}
 .hd{{background:linear-gradient(135deg,#0A3252,#082A43 55%,#05192A);padding:30px 40px 26px;position:relative;overflow:hidden}}
 .hd::after{{content:'';position:absolute;right:-60px;top:-70px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(255,179,0,.22),transparent 70%)}}
 .hd .top{{position:relative;z-index:2;display:flex;align-items:center;gap:18px}}
@@ -50,20 +48,20 @@ body{{background:#000;font-family:Montserrat,'Segoe UI',Arial,sans-serif}}
 .when span{{display:block;font-size:12px;white-space:nowrap;font-weight:700;color:rgba(255,255,255,.65);letter-spacing:1px}}
 .tbl{{flex:1;padding:0 26px;margin-top:-2px}}
 .thead{{display:grid;grid-template-columns:190px 132px 1fr;background:#0E3A5C;color:#fff;font-size:15px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:13px 18px;border-radius:10px 10px 0 0}}
-.row{{display:grid;grid-template-columns:190px 132px 1fr;align-items:center;background:#fff;border-bottom:1px solid var(--line);padding:17px 18px}}
+.row{{display:grid;grid-template-columns:190px 132px 1fr;align-items:center;background:#fff;border-bottom:1px solid var(--line);padding:26px 18px}}
 .row:nth-child(even){{background:#EAF1F6}}
 .row.hl{{background:linear-gradient(90deg,rgba(0,184,78,.12),rgba(0,184,78,.04))}}
 .row.fin{{background:linear-gradient(90deg,rgba(255,179,0,.16),rgba(255,179,0,.04))}}
 .row.fin .ttl em{{font-style:normal;color:#B07A00;font-weight:800;font-size:17px}}
 .row:last-child{{border-radius:0 0 10px 10px;border-bottom:none}}
-.hr{{font-size:20px;font-weight:900;color:var(--n)}}
+.hr{{font-size:22px;font-weight:900;color:var(--n)}}
 .mid{{display:flex;align-items:center;justify-content:center;padding:0 16px}}
-.mid img{{max-height:40px;max-width:112px;object-fit:contain;display:block}}
+.mid img{{max-height:48px;max-width:118px;object-fit:contain;display:block}}
 .mid .em{{font-size:30px}}
 .mid .wm{{width:44px;height:44px;border-radius:50%;border:2px dashed #B8C4CE;color:#B8C4CE;font-size:22px;font-weight:900;display:flex;align-items:center;justify-content:center}}
-.ttl{{font-size:20px;font-weight:900;color:var(--n);line-height:1.2}}
-.dsc{{font-size:15px;color:var(--mut);font-weight:600;line-height:1.35;margin-top:3px}}
-.pil{{margin-top:10px;margin-bottom:22px;background:#0E3A5C;color:#fff;display:flex;justify-content:space-around;padding:13px 20px;border-radius:10px}}
+.ttl{{font-size:22px;font-weight:900;color:var(--n);line-height:1.2}}
+.dsc{{font-size:16px;color:var(--mut);font-weight:600;line-height:1.35;margin-top:3px}}
+.pil{{margin-top:14px;margin-bottom:10px;background:#0E3A5C;color:#fff;display:flex;justify-content:space-around;padding:13px 20px;border-radius:10px}}
 .pil span{{font-size:14px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.9)}}
 .pband{{margin-top:12px;padding:0 26px}}
 .pband .pl{{font-size:11px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:#7C8B99;text-align:center;margin-bottom:9px}}
