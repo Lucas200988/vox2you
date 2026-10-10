@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--au:#D8B25A;--au2:#F2DFA8;--n:#071423}
+body{background:#000;font-family:Montserrat,'Segoe UI',Arial,sans-serif;color:#fff}
+.art{width:1080px;height:1350px;position:relative;overflow:hidden;display:flex;flex-direction:column;
+ background:radial-gradient(ellipse at 78% 18%,rgba(216,178,90,.28),transparent 46%),radial-gradient(ellipse at 20% 100%,rgba(40,70,120,.45),transparent 50%),linear-gradient(170deg,#0D1F38,#071423 55%,#03080F)}
+.stage{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 42%,rgba(255,220,150,.10),transparent 55%)}
+.beam{position:absolute;top:-10%;width:3px;height:70%;background:linear-gradient(180deg,rgba(242,223,168,.55),transparent);filter:blur(2px);transform-origin:top}
+.b1{left:62%;transform:rotate(-18deg)}.b2{left:78%;transform:rotate(-8deg)}.b3{left:88%;transform:rotate(4deg)}
+.crowd{position:absolute;left:0;right:0;bottom:0;height:46%;background:repeating-radial-gradient(circle at 50% 110%,rgba(255,255,255,.05) 0 2px,transparent 2px 9px),linear-gradient(180deg,transparent,rgba(3,8,15,.9) 70%)}
+.heads{position:absolute;left:0;right:0;bottom:34%;height:120px;display:flex;justify-content:space-around;align-items:flex-end;padding:0 20px;opacity:.55}
+.heads i{display:block;width:46px;height:62px;border-radius:50% 50% 40% 40%;background:#101c2e;box-shadow:0 -4px 14px rgba(0,0,0,.6)}
+.diag{position:absolute;left:-10%;right:-10%;height:5px;background:linear-gradient(90deg,transparent,var(--au),transparent);transform:rotate(-7deg);opacity:.85}
+.d1{top:57%}
+.wrap{position:relative;z-index:5;flex:1;display:flex;flex-direction:column;padding:70px 72px 56px}
+.h1{font-size:72px;font-weight:900;line-height:1.02;letter-spacing:-2px;text-transform:uppercase;text-shadow:0 14px 40px rgba(0,0,0,.7)}
+.h1 em{font-style:normal;background:linear-gradient(180deg,#FFF1C7,var(--au) 60%,#B8902E);-webkit-background-clip:text;background-clip:text;color:transparent}
+.rule{width:92px;height:3px;background:var(--au);margin:28px 0 24px}
+.sub{font-size:31px;font-weight:500;line-height:1.4;color:rgba(255,255,255,.9);max-width:640px}
+.sub b{font-weight:800;color:#fff}
+.low{margin-top:auto;position:relative;z-index:6}
+.lab{font-size:15px;font-weight:800;letter-spacing:6px;text-transform:uppercase;color:var(--au2);text-align:center}
+.brand{margin-top:22px;display:flex;align-items:center;justify-content:center;gap:28px}
+.brand .lg{background:#fff;border-radius:18px;padding:16px 22px;display:flex}
+.brand .lg img{height:118px;width:auto;object-fit:contain;display:block}
+.brand .tx{border-left:2px solid rgba(216,178,90,.6);padding-left:28px}
+.brand .tx b{display:block;font-size:66px;font-weight:900;line-height:.95;letter-spacing:-1.5px}
+.brand .tx span{display:block;font-size:17px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.78);margin-top:10px;line-height:1.45}
+.pil{margin-top:36px;display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.pil div{text-align:center;padding:4px 8px;border-left:1px solid rgba(216,178,90,.35)}
+.pil div:first-child{border-left:0}
+.pil i{display:block;font-style:normal;font-size:34px;margin-bottom:10px}
+.pil b{display:block;font-size:12px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:#fff;line-height:1.5}
+.pil b small{display:block;font-size:12px;color:var(--au2)}
+.foot{margin-top:34px;text-align:center;font-size:18px;font-weight:600;letter-spacing:2px;color:rgba(255,255,255,.8);position:relative;padding:0 120px}
+.foot::before,.foot::after{content:'';position:absolute;top:50%;width:90px;height:2px;background:linear-gradient(90deg,transparent,var(--au))}
+.foot::before{left:10px}.foot::after{right:10px;transform:scaleX(-1)}
+.ev{margin-top:26px;text-align:center;font-size:15px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.55)}
+</style></head><body>
+<div class="art" id="a">
+  <div class="stage"></div><div class="beam b1"></div><div class="beam b2"></div><div class="beam b3"></div>
+  <div class="crowd"></div>
+  <div class="heads"><i></i><i style="height:52px"></i><i></i><i style="height:70px"></i><i></i><i style="height:56px"></i><i></i><i style="height:66px"></i><i></i><i style="height:50px"></i><i></i><i style="height:60px"></i><i></i></div>
+  <div class="diag d1"></div>
+  <div class="wrap">
+    <div class="h1">Enquanto muitos apenas discursam, <em>há quem invista para o evento acontecer.</em></div>
+    <div class="rule"></div>
+    <div class="sub">Este evento conta com o apoio de quem <b>empreende, gera valor e faz acontecer.</b></div>
+    <div class="low">
+      <div class="lab">Patrocínio</div>
+      <div class="brand">
+        <span class="lg"><img src="__ABEE__" alt="ABEE-MT"/></span>
+        <div class="tx"><b>ABEE-MT</b><span>Associação Brasileira de<br>Engenheiros Eletricistas · Seção MT</span></div>
+      </div>
+      <div class="pil">
+        <div><i>📈</i><b>Mais<small>desenvolvimento</small></b></div>
+        <div><i>🎓</i><b>Mais<small>conhecimento</small></b></div>
+        <div><i>🤝</i><b>Mais<small>oportunidades</small></b></div>
+        <div><i>💡</i><b>Mais<small>livre iniciativa</small></b></div>
+      </div>
+      <div class="foot">Compromisso com o desenvolvimento, o conhecimento e a livre iniciativa.</div>
+      <div class="ev">[NOME DO EVENTO] · [DATA] · UFMT · [LOCAL]</div>
+    </div>
+  </div>
+</div></body></html>
