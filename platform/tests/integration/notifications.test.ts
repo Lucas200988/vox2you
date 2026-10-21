@@ -69,7 +69,9 @@ describe.skipIf(!RUN)('Seller notifications', () => {
       aggregateId: event!.aggregateId,
       payload,
     })
-    expect(input).toMatchObject({ kind: 'handoff', userIds: [sellerId] })
+    expect(input).toMatchObject({ kind: 'handoff' })
+    expect(input!.userIds).toContain(sellerId)
+    expect(input!.userIds).toContain(env.seed.adminUserId)
     expect(input!.title).toContain('Marina')
     expect(input!.link).toBe(`/inbox?conversation=${res.conversationId}`)
 
@@ -99,7 +101,9 @@ describe.skipIf(!RUN)('Seller notifications', () => {
       aggregateId: res.leadId!,
       payload: { stage: 'discovery', hoursInStage: 30, limit: 24 },
     })
-    expect(sla).toMatchObject({ kind: 'sla', userIds: [sellerId], link: `/leads/${res.leadId}` })
+    expect(sla).toMatchObject({ kind: 'sla', link: `/leads/${res.leadId}` })
+    expect(sla!.userIds).toContain(sellerId)
+    expect(sla!.userIds).toContain(env.seed.adminUserId)
     expect(sla!.title).toContain('Paulo')
 
     const before = email.sent.length

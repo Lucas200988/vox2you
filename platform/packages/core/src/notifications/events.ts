@@ -12,8 +12,8 @@ export interface NotifiableEvent {
 
 /**
  * Maps domain events to seller notifications. Kept out of the worker so the mapping is testable:
- * handoff → assignee (or unit managers); SLA breach → owner (or managers); visit without outcome →
- * owner; task created by the agent/automations → assignee.
+ * handoff → assignee + unit managers; SLA breach → owner + managers; visit without outcome →
+ * owner + managers; task created by the agent/automations → assignee only.
  */
 export async function notificationForEvent(
   db: Db,
@@ -29,9 +29,8 @@ export async function notificationForEvent(
         event.aggregateType === 'conversation' ? event.aggregateId : str('conversationId')
       const contact = await contactName(db, str('contactId'))
       const assignee = str('assigneeId')
-      const userIds = assignee
-        ? [assignee]
-        : await service.unitManagers(event.tenantId, event.unitId)
+      const managers = await service.unitManagers(event.tenantId, event.unitId)
+      const userIds = [...new Set([...(assignee ? [assignee] : []), ...managers])]
       return {
         tenantId: event.tenantId,
         unitId: event.unitId,
@@ -49,9 +48,8 @@ export async function notificationForEvent(
         select: { ownerId: true, contact: { select: { name: true, phone: true } } },
       })
       if (!lead) return null
-      const userIds = lead.ownerId
-        ? [lead.ownerId]
-        : await service.unitManagers(event.tenantId, event.unitId)
+      const managers = await service.unitManagers(event.tenantId, event.unitId)
+      const userIds = [...new Set([...(lead.ownerId ? [lead.ownerId] : []), ...managers])]
       const hours = typeof p['hoursInStage'] === 'number' ? (p['hoursInStage'] as number) : null
       return {
         tenantId: event.tenantId,
@@ -78,9 +76,10 @@ export async function notificationForEvent(
         },
       })
       if (!appt) return null
-      const userIds = appt.lead?.ownerId
-        ? [appt.lead.ownerId]
-        : await service.unitManagers(event.tenantId, event.unitId)
+      const managers = await service.unitManagers(event.tenantId, event.unitId)
+      const userIds = [
+        ...new Set([...(appt.lead?.ownerId ? [appt.lead.ownerId] : []), ...managers]),
+      ]
       return {
         tenantId: event.tenantId,
         unitId: event.unitId,
