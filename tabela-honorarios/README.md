@@ -2,11 +2,11 @@
 
 Página de divulgação e captação de patrocínio do **Lançamento da Tabela de
 Honorários Profissionais da Engenharia Elétrica — AMEE 2026**, realizado pela
-AMEE com apoio do CREA-MT (Edital de Parceria nº 001/2026) e da Mútua.
+AMEE com apoio do CREA-MT (Edital de Parceria nº 001/2026).
 
 Segue as mesmas diretrizes do site do Fórum BESS (`../forum-bess`): HTML único,
-sem build, mesma identidade visual (Montserrat, azul-marinho + verde), nav fixa
-com logos institucionais, cotas de patrocínio, contato e botão de WhatsApp.
+sem build, mesma estrutura, mas com identidade própria (Montserrat, grafite + ciano), nav fixa
+com logos AMEE e CREA-MT, cotas de patrocínio, contato e botão de WhatsApp.
 
 ## Dados do evento (do Plano de Trabalho)
 
@@ -22,7 +22,6 @@ com logos institucionais, cotas de patrocínio, contato e botão de WhatsApp.
 - `index.html` — a página completa
 - `logo-abee-mt.png` — logo da AMEE/ABEE-MT
 - `logo-crea-mt.png` — logo do CREA-MT
-- `logo-mutua.png` — logo da Mútua
 
 > Se algum PNG for removido, a página mostra a sigla no lugar do logo
 > (fallback automático) — não fica quebrada.
@@ -36,8 +35,9 @@ com logos institucionais, cotas de patrocínio, contato e botão de WhatsApp.
   atividades, mas não os horários).
 - **Prazo de máxima visibilidade** (23/10/2026) foi fixado em 30 dias antes
   do evento, alinhado ao banner eletrônico no portal do CREA-MT.
-- **Parceiros:** Mútua e Solvaz Engenharia aparecem como "Em negociação",
-  conforme o Plano de Trabalho. Troque para "Confirmado" quando fechar.
+- **Parceiros:** Solvaz Engenharia aparece como "Em negociação", conforme o
+  Plano de Trabalho. Troque para "Confirmado" quando fechar. A Mútua foi
+  retirada do site a pedido da organização.
 
 ## Como publicar na Vercel (projeto separado)
 
