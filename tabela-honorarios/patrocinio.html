@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Patrocínio — Tabela de Honorários da Engenharia Elétrica 2026 · AMEE</title>
+<meta name="description" content="Lançamento da Tabela de Honorários Profissionais da Engenharia Elétrica — AMEE 2026. 23 de novembro, Cuiabá, Sorriso e Rondonópolis, com transmissão híbrida. Evento com apoio do CREA-MT."/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--g:#1FC8DB;--gl:#5EEAD4;--p:#1C2733;--n:#131A22;--gr:#F1F5F7;--w:#fff;--gold:#FFD700;--dia:#B9F2FF;--ouro:#FFA726;--prata:#CFD8DC;--bronze:#FF8A65}
+html{scroll-behavior:smooth}
+body{font-family:'Montserrat',system-ui,sans-serif;background:var(--n);color:var(--w);overflow-x:hidden;-webkit-font-smoothing:antialiased;padding-top:60px}
+img{display:block;max-width:100%}
+a{color:inherit}
+section{position:relative}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:999;background:rgba(19,26,34,0.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(31,200,219,0.25);height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;gap:16px}
+#nav .logos{display:flex;align-items:center;gap:20px}
+#nav .logo-pill{display:flex;align-items:center;gap:8px;text-decoration:none}
+#nav .logo-chip{background:#fff;border-radius:7px;padding:4px 8px;display:flex;align-items:center;justify-content:center}
+#nav .logo-img{height:26px;width:auto;object-fit:contain;display:block}
+#nav .logo-img.abee{height:30px}
+#nav .pname{font-size:11px;font-weight:700;color:rgba(255,255,255,.8)}
+.logo-chip{background:#fff;border-radius:8px;padding:8px 12px;display:inline-flex;align-items:center;justify-content:center}
+#nav .sep{width:1px;height:24px;background:rgba(255,255,255,.1)}
+#nav .nav-links{display:flex;gap:22px;align-items:center}
+#nav .nav-links a{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.6);text-decoration:none}
+#nav .nav-links a:hover{color:var(--g)}
+#nav .nav-cta{background:linear-gradient(135deg,var(--g),var(--gl));color:var(--n);font-weight:800;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 24px;border-radius:4px;text-decoration:none;white-space:nowrap;box-shadow:0 4px 16px rgba(31,200,219,.3);border:none;cursor:pointer;font-family:inherit}
+@media(max-width:1024px){#nav .nav-links{display:none}}
+@media(max-width:768px){#nav{padding:0 20px}#nav .pname,#nav .sep{display:none}#nav .logos{gap:10px}}
+
+/* HEROES */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+.hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.35) saturate(.7)}
+.hero-ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(19,26,34,.2) 0%,rgba(28,39,51,.5) 40%,rgba(19,26,34,.97) 100%)}
+.hero-top{position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--g),var(--gl),var(--g))}
+.hero-content{position:relative;z-index:10;padding:80px 64px 100px;max-width:1040px}
+.tag{display:inline-block;background:rgba(31,200,219,.1);border:1px solid rgba(31,200,219,.4);border-radius:2px;padding:6px 16px;font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--g)}
+.gline{width:48px;height:4px;background:linear-gradient(90deg,var(--g),var(--gl));border-radius:2px;margin-bottom:32px}
+.sl{font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:48px}
+.sl.d{color:rgba(28,39,51,.3)}
+
+/* BOTÕES */
+.btn-green{background:linear-gradient(135deg,var(--g),var(--gl));color:var(--n);font-weight:800;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:16px 40px;border-radius:4px;text-decoration:none;display:inline-block;box-shadow:0 8px 32px rgba(31,200,219,.3);border:none;cursor:pointer;font-family:inherit}
+.btn-outline{border:2px solid var(--g);color:var(--g);font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:14px 32px;border-radius:4px;text-decoration:none;display:inline-block;background:transparent}
+
+/* DATE CHIPS */
+.dates{display:flex;gap:20px;flex-wrap:wrap;margin-top:40px}
+.dchip{background:rgba(255,255,255,.06);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:20px 28px}
+.dchip .day{font-size:38px;font-weight:900;line-height:1}
+.dchip .mo{font-size:12px;font-weight:700;color:var(--g);letter-spacing:2px}
+.dchip .yr{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:1px}
+.dchip .city{font-size:13px;color:rgba(255,255,255,.6);margin-top:6px;font-weight:500}
+.dchip .venue{font-size:11px;color:rgba(255,255,255,.4);margin-top:3px}
+
+/* GRID HELPERS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+
+/* SECTIONS PADS */
+.sec{padding:100px 80px}
+.sec-inner{max-width:1200px;margin:0 auto}
+.sec-head{text-align:center;margin-bottom:72px}
+.sec-head h2{font-size:clamp(26px,3.5vw,48px);font-weight:900;margin-bottom:16px}
+.sec-head h2 span{color:var(--g)}
+.sec-head p{font-size:15px;color:rgba(255,255,255,.55);max-width:580px;margin:0 auto;line-height:1.8}
+.sec-head .gline{margin:16px auto 0}
+
+/* CTA FLUTUANTE */
+.cta-strip{background:linear-gradient(90deg,var(--g),var(--gl));padding:24px 80px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.cta-strip p{font-size:clamp(13px,2vw,17px);font-weight:800;color:var(--n)}
+.cta-strip small{font-size:12px;font-weight:600;color:rgba(19,26,34,.65);display:block;margin-top:4px}
+.cta-strip a{background:var(--n);color:var(--w);font-weight:800;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:14px 32px;border-radius:4px;text-decoration:none;white-space:nowrap;flex-shrink:0}
+
+/* CARDS */
+.card-dark{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:36px 28px}
+.card-light{background:var(--w);border-radius:12px;padding:36px 28px;box-shadow:0 4px 24px rgba(28,39,51,.08)}
+.card-light .metric{font-size:11px;font-weight:700;color:var(--g);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.card-light .ctitle{font-size:17px;font-weight:700;color:var(--p);margin-bottom:10px}
+.card-light .cdesc{font-size:14px;color:#718096;line-height:1.7}
+.card-light .cicon{font-size:30px;margin-bottom:16px}
+.card-light{border-bottom:4px solid var(--g)}
+
+/* STAT BOX */
+.sbox{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:24px}
+.sbox .v{font-size:30px;font-weight:900;color:var(--g);line-height:1}
+.sbox .u{font-size:11px;color:rgba(255,255,255,.4);margin-top:3px}
+.sbox .l{font-size:12px;color:rgba(255,255,255,.6);margin-top:8px;line-height:1.5}
+
+/* BARS */
+.brow{margin-bottom:20px}
+.brow .bh{display:flex;justify-content:space-between;margin-bottom:7px}
+.brow .bn{font-size:13px;color:rgba(255,255,255,.8);font-weight:500}
+.brow .bp{font-size:13px;color:var(--g);font-weight:700}
+.brow .bt{background:rgba(255,255,255,.06);border-radius:4px;height:7px}
+.brow .bf{height:100%;background:linear-gradient(90deg,var(--g),var(--gl));border-radius:4px}
+
+/* FLOW */
+.flow{display:flex;flex-direction:column;align-items:center}
+.fnode{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:13px 26px;min-width:300px}
+.fnode.hl{background:rgba(31,200,219,.1);border-color:rgba(31,200,219,.45);box-shadow:0 0 40px rgba(31,200,219,.15)}
+.fnode .fi{font-size:20px}
+.fnode .fl{font-size:13px;font-weight:500;color:rgba(255,255,255,.8)}
+.fnode.hl .fl{color:var(--g);font-weight:700}
+.farr{width:2px;height:18px;background:rgba(255,255,255,.12);border-radius:1px}
+
+/* TIMELINE */
+.tl-item{display:grid;grid-template-columns:110px 1fr;gap:28px}
+.tl-meta{text-align:right;padding-top:4px}
+.tl-phase{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--g);text-transform:uppercase}
+.tl-date{font-size:12px;color:#718096;margin-top:4px}
+.tl-body{border-left:2px solid #E2E8F0;padding-left:28px;padding-bottom:36px;position:relative}
+.tl-body.act{border-left-color:var(--g)}
+.tl-body::before{content:'';position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:#CBD5E0;border:2px solid #CBD5E0}
+.tl-body.act::before{background:var(--g);border-color:var(--g)}
+.tl-title{font-size:15px;font-weight:700;color:var(--p);margin-bottom:6px}
+.tl-desc{font-size:13px;color:#718096;line-height:1.7}
+
+/* AGENDA */
+.agenda-item{display:flex;gap:24px;align-items:flex-start;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.agenda-item:last-child{border-bottom:none}
+.a-time{font-size:13px;font-weight:700;color:var(--g);min-width:80px;padding-top:2px}
+.a-type{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border-radius:3px;white-space:nowrap}
+.a-type.key{background:rgba(31,200,219,.15);color:var(--g)}
+.a-type.pan{background:rgba(130,177,255,.12);color:#82B1FF}
+.a-type.net{background:rgba(255,193,7,.1);color:#FFC107}
+.a-type.wkp{background:rgba(255,138,101,.1);color:#FF8A65}
+.a-body{flex:1}
+.a-title{font-size:15px;font-weight:700;margin-bottom:4px}
+.a-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6}
+
+/* COMPARATIVO COTAS */
+.cmp-table{width:100%;border-collapse:collapse;font-size:13px}
+.cmp-table th{padding:16px 20px;text-align:center;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;border-bottom:2px solid rgba(255,255,255,.08)}
+.cmp-table td{padding:14px 20px;text-align:center;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;color:rgba(255,255,255,.7)}
+.cmp-table tr:last-child td{border-bottom:none}
+.cmp-table td:first-child{text-align:left;font-weight:600;color:rgba(255,255,255,.85)}
+.cmp-table .yes{color:var(--g);font-size:16px}
+.cmp-table .no{color:rgba(255,255,255,.2);font-size:16px}
+.cmp-table .col-master{background:rgba(255,215,0,.05)}
+.cmp-table .col-dia{background:rgba(185,242,255,.03)}
+.cmp-price{font-size:16px;font-weight:900}
+
+/* QUOTA CARDS */
+.qsec{padding:72px 80px;border-top:1px solid rgba(255,255,255,.04)}
+.qcard{max-width:1000px;margin:0 auto;border-radius:16px;padding:56px 60px;position:relative;overflow:hidden}
+.qcard .qtop{position:absolute;top:0;left:0;right:0;height:3px}
+.qcard .qh{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:start;margin-bottom:40px}
+.qcard .qlabel{font-size:10px;font-weight:700;letter-spacing:6px;text-transform:uppercase;margin-bottom:10px}
+.qcard .qlevel{font-size:clamp(40px,5vw,68px);font-weight:900;line-height:.95;letter-spacing:-2px}
+.qcard .qi-label{font-size:10px;color:rgba(255,255,255,.35);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;text-align:right}
+.qcard .qi-price{font-size:clamp(26px,3.5vw,44px);font-weight:900;text-align:right}
+.qcard .vbadge{display:inline-block;border-radius:4px;padding:4px 12px;font-size:11px;font-weight:700;margin-top:8px}
+.qcard .qdiv{height:1px;margin-bottom:36px}
+.qcard .qb{display:grid;gap:12px 36px}
+.qcard .qitem{display:flex;align-items:flex-start;gap:12px}
+.qcard .qdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:7px}
+.qcard .qitem span{font-size:14px;color:rgba(255,255,255,.75);line-height:1.6}
+.qitem{display:flex;align-items:flex-start;gap:12px}
+.qdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:7px}
+.qitem span{font-size:14px;color:rgba(255,255,255,.75);line-height:1.6}
+
+/* CONTATO */
+.contact-item{display:flex;align-items:center;gap:18px;margin-bottom:20px}
+.contact-icon{width:44px;height:44px;flex-shrink:0;background:rgba(31,200,219,.08);border:1px solid rgba(31,200,219,.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.clabel{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:2px;text-transform:uppercase;margin-bottom:2px}
+.cval{font-size:15px;font-weight:600}
+
+/* URGÊNCIA */
+.urgencia{background:linear-gradient(90deg,var(--g),var(--gl));padding:22px 80px;text-align:center}
+.urgencia p{font-size:clamp(13px,1.8vw,17px);font-weight:800;color:var(--n);margin-bottom:4px}
+.urgencia small{font-size:12px;color:rgba(19,26,34,.65);font-weight:600}
+
+/* INSIGHT BOX */
+.insight{background:rgba(31,200,219,.07);border:1px solid rgba(31,200,219,.22);border-radius:10px;padding:24px 28px;margin-top:32px}
+.insight .itag{font-size:11px;font-weight:700;color:var(--g);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.insight p{font-size:14px;color:rgba(255,255,255,.8);line-height:1.7}
+
+/* ROI BOX */
+.roi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.06);border-radius:12px;overflow:hidden;margin-top:40px}
+.roi-item{background:var(--p);padding:32px 24px;text-align:center}
+.roi-item .rv{font-size:clamp(28px,3vw,40px);font-weight:900;color:var(--g);line-height:1}
+.roi-item .rl{font-size:12px;color:rgba(255,255,255,.55);margin-top:10px;line-height:1.5}
+
+/* MT STATS */
+.mt-stats{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.mt-stat{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:22px 18px}
+.mt-stat .v{font-size:24px;font-weight:900;color:var(--g);line-height:1}
+.mt-stat .u{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px}
+.mt-stat .l{font-size:12px;color:rgba(255,255,255,.6);margin-top:7px}
+
+/* CITY CARDS */
+.cities{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.city-card{background:var(--w);border-radius:10px;padding:20px;box-shadow:0 2px 12px rgba(28,39,51,.07);border-left:4px solid var(--g)}
+.city-card .cc-name{font-size:11px;font-weight:700;color:var(--g);letter-spacing:2px;margin-bottom:6px}
+.city-card .cc-date{font-size:15px;font-weight:700;color:var(--p)}
+.city-card .cc-desc{font-size:13px;color:#718096;margin-top:4px;line-height:1.5}
+
+/* TOPICS */
+.topics{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.topic{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:24px 16px;text-align:center}
+.topic .ti{font-size:26px;margin-bottom:10px}
+.topic .tn{font-size:12px;font-weight:700;margin-bottom:6px}
+.topic .td{font-size:11px;color:rgba(255,255,255,.4);line-height:1.5}
+
+/* COMPANIES / PARCEIROS */
+.companies{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:640px;margin:0 auto}
+.company{padding:28px 18px;text-align:center;background:rgba(255,255,255,.04);border:1px solid rgba(31,200,219,.12);border-radius:12px;position:relative;overflow:hidden;transition:.2s}
+.company::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--g),var(--gl));opacity:.65}
+.company:hover{background:rgba(31,200,219,.06);border-color:rgba(31,200,219,.35);transform:translateY(-3px)}
+.company-icon{width:56px;height:56px;background:rgba(31,200,219,.1);border:1px solid rgba(31,200,219,.28);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--g);margin:0 auto 14px;padding:0 6px}
+.company .cn{font-size:13px;font-weight:800;margin-bottom:4px}
+.company .cc{font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.5px}
+.company .status{display:inline-block;margin-top:10px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border-radius:3px}
+.company .status.ok{background:rgba(31,200,219,.15);color:var(--g)}
+.company .status.wait{background:rgba(255,193,7,.1);color:#FFC107}
+
+/* NUM GRID */
+.numgrid{display:grid;grid-template-columns:repeat(4,1fr)}
+.numitem{padding:56px 36px;text-align:center;border-right:1px solid rgba(255,255,255,.07)}
+.numitem:last-child{border-right:none}
+.numitem .big{font-size:clamp(46px,5vw,68px);font-weight:900;color:var(--g);line-height:1}
+.numitem .nm{font-size:17px;font-weight:700;margin-top:14px;margin-bottom:6px}
+.numitem .ns{font-size:13px;color:rgba(255,255,255,.4)}
+
+/* FOOTER */
+footer{background:#0C1118;padding:44px 80px;border-top:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
+.footer-brand{display:flex;align-items:center;gap:16px}
+.footer-name{font-size:13px;font-weight:700;color:rgba(255,255,255,.8)}
+.footer-sub{font-size:11px;color:rgba(255,255,255,.35);margin-top:2px}
+.footer-right{text-align:right}
+.footer-tag{font-size:11px;color:var(--g);letter-spacing:2px;text-transform:uppercase;font-weight:700}
+.footer-conf{font-size:11px;color:rgba(255,255,255,.25);margin-top:4px}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .g2,.g3,.g4,.g2.flip{grid-template-columns:1fr!important}
+  .sec{padding:72px 28px}
+  .hero-content{padding:60px 28px 80px}
+  .numgrid{grid-template-columns:1fr 1fr}
+  .numitem{border-right:none;border-bottom:1px solid rgba(255,255,255,.07)}
+  .topics{grid-template-columns:repeat(2,1fr)}
+  .companies{grid-template-columns:1fr}
+  .cities{grid-template-columns:1fr}
+  .cta-strip{padding:20px 28px}
+  .urgencia{padding:20px 28px}
+  .qcard{padding:36px 24px}
+  .qsec{padding:48px 28px}
+  footer{padding:36px 28px;flex-direction:column;text-align:center}
+  .footer-right{text-align:center}
+  .cmp-table{font-size:11px}
+  .cmp-table th,.cmp-table td{padding:10px 10px}
+  .roi-grid{grid-template-columns:1fr 1fr}
+  .g2>*,.g3>*,.g4>*,.sec-inner,.hero-content{min-width:0;max-width:100%}
+  .fnode{min-width:0;width:100%}
+  .sbox .v{font-size:22px}
+  .sbox,.mt-stat{min-width:0;padding:18px 14px}
+  .mt-stat .v{font-size:20px}
+  .sbox>*,.mt-stat>*{overflow-wrap:anywhere}
+  .dchip{flex:1 1 140px}
+  section>div[style*="padding:100px 80px"]{padding:72px 28px!important}
+  h1,h2{overflow-wrap:anywhere}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV FIXA -->
+<nav id="nav">
+  <div class="logos">
+    <a href="https://www.abeemt.org.br" target="_blank" rel="noopener" class="logo-pill">
+      <span class="logo-chip"><img class="logo-img abee" src="logo-abee-mt.png" alt="AMEE"/></span>
+    </a>
+    <div class="sep"></div>
+    <span class="logo-pill">
+      <span class="logo-chip"><img class="logo-img crea" src="logo-crea-mt.png" alt="CREA-MT"/></span>
+    </span>
+  </div>
+  <div class="nav-links">
+    <a href="index.html">← Inscrições</a>
+    <a href="#sobre">O Evento</a>
+    <a href="#programacao">Programação</a>
+    <a href="#cotas">Cotas</a>
+    <a href="#contato">Contato</a>
+  </div>
+  <a href="https://wa.me/5565984633872?text=Ol%C3%A1!%20Tenho%20interesse%20em%20patrocinar%20o%20Lan%C3%A7amento%20da%20Tabela%20de%20Honor%C3%A1rios%20AMEE%202026" target="_blank" rel="noopener" class="nav-cta">⚡ Quero Patrocinar</a>
+</nav>
+
+<!-- ═══ HERO CAPA ═══ -->
+<section class="hero">
+  <img class="hero-bg" src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1920&q=85&fit=crop" alt="Engenharia Elétrica"/>
+  <div class="hero-ov"></div>
+  <div class="hero-top"></div>
+  <div class="hero-content">
+    <div class="tag" style="margin-bottom:20px">Proposta de Patrocínio · Edital CREA-MT nº 001/2026</div>
+    <h1 style="font-size:clamp(32px,5.2vw,68px);font-weight:900;line-height:1.05;letter-spacing:-1px;margin-bottom:12px">
+      LANÇAMENTO DA<br>
+      <span style="color:var(--g)">TABELA DE HONORÁRIOS</span><br>
+      DA ENGENHARIA ELÉTRICA
+    </h1>
+    <p style="font-size:clamp(14px,2vw,24px);font-weight:300;color:rgba(255,255,255,.65);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px">AMEE 2026 — Mato Grosso</p>
+    <p style="font-size:15px;color:rgba(255,255,255,.5);margin-bottom:40px;max-width:640px;line-height:1.8">
+      O evento que define a referência de precificação dos serviços de engenharia elétrica em Mato Grosso. <strong style="color:var(--g)">200 profissionais, presencial e híbrido, em 3 cidades no mesmo dia.</strong> Engenheiros, empresas, concessionárias, órgãos públicos e academia reunidos para valorizar a profissão.
+    </p>
+    <div class="dates">
+      <div class="dchip">
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px"><span class="day">23</span><div><div class="mo">NOV</div><div class="yr">2026</div></div></div>
+        <div class="city">📍 Cuiabá, MT</div>
+        <div class="venue">Auditório CREA-MT · Sede</div>
+      </div>
+      <div class="dchip">
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px"><span class="day">23</span><div><div class="mo">NOV</div><div class="yr">2026</div></div></div>
+        <div class="city">📍 Sorriso, MT</div>
+        <div class="venue">Auditório CREA-MT · Inspetoria</div>
+      </div>
+      <div class="dchip">
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px"><span class="day">23</span><div><div class="mo">NOV</div><div class="yr">2026</div></div></div>
+        <div class="city">📍 Rondonópolis, MT</div>
+        <div class="venue">Auditório CREA-MT · Inspetoria</div>
+      </div>
+      <div class="dchip" style="border-color:rgba(31,200,219,.4);background:rgba(31,200,219,.08)">
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px"><span class="day" style="font-size:30px">🌐</span><div><div class="mo">HÍBRIDO</div><div class="yr">AO VIVO</div></div></div>
+        <div class="city">Transmissão online</div>
+        <div class="venue">Para todo o estado</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:16px;margin-top:40px;flex-wrap:wrap">
+      <a href="mailto:amee.mt@gmail.com?subject=Patrocínio — Lançamento Tabela de Honorários AMEE 2026" class="btn-green">Garantir Minha Cota Agora</a>
+      <a href="#cotas" class="btn-outline">Ver Planos de Patrocínio</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ URGÊNCIA BAR ═══ -->
+<div class="urgencia">
+  <p>⚡ VAGAS LIMITADAS — Cota Master: apenas 1 · Ouro: apenas 2 · Prata: apenas 3</p>
+  <small>Patrocinadores que fecharem até 23/10/2026 entram no banner eletrônico do CREA-MT, nos 500 convites eletrônicos e em todo o material impresso</small>
+</div>
+
+<!-- ═══ PROPOSTA DE VALOR ═══ -->
+<section class="sec" style="background:var(--p)">
+  <div class="sec-inner">
+    <div class="sl">Por que este evento</div>
+    <div class="g2">
+      <div>
+        <h2 style="font-size:clamp(26px,3.5vw,46px);font-weight:900;line-height:1.1;margin-bottom:16px">
+          Sua marca ao lado de<br><span style="color:var(--g)">quem precifica a<br>engenharia elétrica de MT.</span>
+        </h2>
+        <div class="gline"></div>
+        <p style="font-size:15px;color:rgba(255,255,255,.7);line-height:1.9;margin-bottom:24px">
+          A Tabela de Honorários é o documento que cada engenheiro eletricista do estado vai consultar ao orçar um projeto, um laudo ou uma consultoria. O lançamento reúne <strong style="color:var(--w)">200 profissionais em 3 cidades, no mesmo dia, com transmissão híbrida</strong> — e chega a toda a base do CREA-MT.
+        </p>
+        <p style="font-size:15px;color:rgba(255,255,255,.7);line-height:1.9">
+          Evento oficial, realizado pela AMEE com apoio institucional do CREA-MT (Edital de Parceria nº 001/2026). Credibilidade institucional máxima para quem quer se posicionar junto à categoria.
+        </p>
+        <div class="insight">
+          <div class="itag">Diferencial exclusivo</div>
+          <p>Não é um evento comercial. É o lançamento de um instrumento oficial de referência da categoria — sua marca fica associada à valorização profissional e permanece na tabela impressa e digital distribuída após o evento.</p>
+        </div>
+      </div>
+      <div>
+        <div class="roi-grid">
+          <div class="roi-item">
+            <div class="rv">200</div>
+            <div class="rl">Participantes presenciais + híbrido</div>
+          </div>
+          <div class="roi-item">
+            <div class="rv">3</div>
+            <div class="rl">Cidades no mesmo dia: Cuiabá, Sorriso e Rondonópolis</div>
+          </div>
+          <div class="roi-item">
+            <div class="rv">1</div>
+            <div class="rl">Documento de referência para toda a categoria</div>
+          </div>
+          <div class="roi-item">
+            <div class="rv">500</div>
+            <div class="rl">Convites eletrônicos e e-mails marketing</div>
+          </div>
+          <div class="roi-item">
+            <div class="rv">250</div>
+            <div class="rl">Folders impressos com os patrocinadores</div>
+          </div>
+          <div class="roi-item">
+            <div class="rv">30d</div>
+            <div class="rl">Banner eletrônico no portal do CREA-MT</div>
+          </div>
+        </div>
+        <div style="margin-top:24px;background:rgba(31,200,219,.08);border:1px solid rgba(31,200,219,.25);border-radius:10px;padding:20px 24px;text-align:center">
+          <div style="font-size:12px;color:var(--g);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:8px">Realização & Apoio Institucional</div>
+          <div style="display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap">
+            <div style="text-align:center"><span class="logo-chip"><img src="logo-abee-mt.png" alt="AMEE" style="height:34px;width:auto;object-fit:contain"/></span><div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:6px">Realização</div></div>
+            <div style="text-align:center"><span class="logo-chip"><img src="logo-crea-mt.png" alt="CREA-MT" style="height:32px;width:auto;object-fit:contain"/></span><div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:6px">Apoio</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SOBRE O EVENTO ═══ -->
+<section id="sobre" class="sec" style="background:var(--gr);color:var(--n)">
+  <div class="sec-inner">
+    <div class="sl d">Sobre o Evento</div>
+    <div class="g2">
+      <div>
+        <h2 style="font-size:clamp(26px,3.5vw,46px);font-weight:900;color:var(--p);line-height:1.1;margin-bottom:16px">
+          A referência que a<br><span style="color:var(--g)">categoria esperava</span>
+        </h2>
+        <div class="gline"></div>
+        <p style="font-size:15px;color:#4A5568;line-height:1.9;margin-bottom:20px">
+          O lançamento da Tabela de Honorários Profissionais da Engenharia Elétrica — AMEE 2026 apresenta à comunidade técnica as <strong>diretrizes atualizadas para precificação dos serviços profissionais</strong> da engenharia elétrica, consolidando parâmetros técnicos e econômicos alinhados à realidade de Mato Grosso.
+        </p>
+        <p style="font-size:15px;color:#4A5568;line-height:1.9;margin-bottom:32px">
+          A iniciativa promove a padronização dos valores praticados no mercado, contribui para a valorização profissional e fortalece as boas práticas na prestação de serviços técnicos — evitando preços incompatíveis com a responsabilidade técnica envolvida e incentivando a concorrência pela qualidade.
+        </p>
+        <div class="cities">
+          <div class="city-card">
+            <div class="cc-name">CUIABÁ</div>
+            <div class="cc-date">23 de Novembro</div>
+            <div class="cc-desc">Auditório CREA-MT · Sede · Capital e polo institucional</div>
+          </div>
+          <div class="city-card">
+            <div class="cc-name">SORRISO</div>
+            <div class="cc-date">23 de Novembro</div>
+            <div class="cc-desc">Auditório CREA-MT · Médio-norte e capital nacional do agronegócio</div>
+          </div>
+          <div class="city-card">
+            <div class="cc-name">RONDONÓPOLIS</div>
+            <div class="cc-date">23 de Novembro</div>
+            <div class="cc-desc">Auditório CREA-MT · 2º polo econômico e hub agroindustrial</div>
+          </div>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-meta"><div class="tl-phase">Fase 01</div><div class="tl-date">Set–Out 2026</div></div>
+          <div class="tl-body act"><div class="tl-title">Captação de Patrocínio</div><div class="tl-desc">Abertura do processo comercial. Patrocinadores que fecharem nesta fase entram em todas as peças de divulgação desde o início.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-meta"><div class="tl-phase">Fase 02</div><div class="tl-date">Out 2026</div></div>
+          <div class="tl-body"><div class="tl-title">Divulgação & Inscrições</div><div class="tl-desc">Banner eletrônico no portal do CREA-MT por 30 dias, 500 convites eletrônicos, e-mail marketing, newsletter, Instagram @abee_mt e portal Potência MT.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-meta"><div class="tl-phase">Fase 03</div><div class="tl-date">Nov 2026</div></div>
+          <div class="tl-body"><div class="tl-title">Pré-evento</div><div class="tl-desc">Confirmação de palestrantes e painelistas, produção dos 250 folders e do material impresso da tabela com as marcas dos patrocinadores.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-meta"><div class="tl-phase">Fase 04</div><div class="tl-date">23 Nov</div></div>
+          <div class="tl-body"><div class="tl-title">Lançamento — 3 cidades + híbrido</div><div class="tl-desc">Abertura institucional, palestra principal, painel técnico, perguntas e respostas e networking em Cuiabá, Sorriso e Rondonópolis, com transmissão ao vivo.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-meta"><div class="tl-phase">Fase 05</div><div class="tl-date">Pós-evento</div></div>
+          <div class="tl-body" style="padding-bottom:0"><div class="tl-title">Disponibilização da Tabela</div><div class="tl-desc">Publicação da tabela em formato digital e impresso, vídeo do evento e prestação de contas das contrapartidas ao CREA-MT.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROGRAMAÇÃO ═══ -->
+<section id="programacao" class="sec" style="background:var(--n)">
+  <div class="sec-inner">
+    <div class="sl">Programação</div>
+    <div class="g2" style="gap:60px">
+      <div>
+        <h2 style="font-size:clamp(24px,3vw,42px);font-weight:900;line-height:1.1;margin-bottom:16px">
+          Uma noite para<br><span style="color:var(--g)">valorizar a profissão</span>
+        </h2>
+        <div class="gline"></div>
+        <p style="font-size:15px;color:rgba(255,255,255,.65);line-height:1.9;margin-bottom:32px">
+          Encontro técnico focado e direto ao ponto, no fim da tarde/noite — pensado para reunir os profissionais em atividade. Da abertura institucional à entrega da tabela em formato digital e impresso.
+        </p>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">🎤</span> Abertura institucional com CREA-MT e Presidência da AMEE</div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">📊</span> Palestra principal: aplicação da Tabela de Honorários 2026</div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">🗣️</span> Painel técnico com especialistas do setor elétrico</div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">❓</span> Sessão de perguntas e respostas com o público</div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">🤝</span> Networking entre profissionais, empresas e instituições</div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">📘</span> Entrega da tabela em formato digital e impresso</div>
+        </div>
+        <div class="insight" style="margin-top:28px">
+          <div class="itag">Mesma programação nas 3 cidades + online</div>
+          <p>O evento acontece simultaneamente em <strong style="color:var(--w)">Cuiabá, Sorriso e Rondonópolis</strong>, nos auditórios do CREA-MT, com <strong style="color:var(--w)">transmissão híbrida</strong> — sua marca chega ao estado inteiro em uma única noite.</p>
+        </div>
+      </div>
+      <div>
+        <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden">
+          <div style="background:rgba(31,200,219,.08);border-bottom:1px solid rgba(31,200,219,.15);padding:16px 24px;display:flex;align-items:center;gap:12px">
+            <span style="font-size:14px">📅</span>
+            <span style="font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--g)">Programação provisória — 23/11/2026</span>
+          </div>
+          <div style="padding:8px 24px">
+            <div class="agenda-item">
+              <div class="a-time">18h00<div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:500;margin-top:2px">30 min</div></div>
+              <div class="a-body">
+                <div style="margin-bottom:6px"><span class="a-type key">Abertura</span></div>
+                <div class="a-title">Credenciamento</div>
+                <div class="a-desc">Recepção dos participantes, entrega do folder e exposição dos patrocinadores</div>
+              </div>
+            </div>
+            <div class="agenda-item">
+              <div class="a-time">18h30<div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:500;margin-top:2px">30 min</div></div>
+              <div class="a-body">
+                <div style="margin-bottom:6px"><span class="a-type key">Institucional</span></div>
+                <div class="a-title">Abertura institucional</div>
+                <div class="a-desc">Representante do CREA-MT · Presidente da AMEE</div>
+              </div>
+            </div>
+            <div class="agenda-item">
+              <div class="a-time">19h00<div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:500;margin-top:2px">1h</div></div>
+              <div class="a-body">
+                <div style="margin-bottom:6px"><span class="a-type pan">Palestra</span></div>
+                <div class="a-title">Aplicação da Tabela de Honorários da Engenharia Elétrica 2026</div>
+                <div class="a-desc">Critérios técnicos utilizados na elaboração da tabela e seus impactos na atuação profissional</div>
+              </div>
+            </div>
+            <div class="agenda-item">
+              <div class="a-time">20h00<div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:500;margin-top:2px">45 min</div></div>
+              <div class="a-body">
+                <div style="margin-bottom:6px"><span class="a-type wkp">Painel</span></div>
+                <div class="a-title">Painel técnico — aplicação prática da tabela</div>
+                <div class="a-desc">Discussão com especialistas do setor elétrico: projetos, laudos, GD, subestações e consultoria</div>
+              </div>
+            </div>
+            <div class="agenda-item">
+              <div class="a-time">20h45<div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:500;margin-top:2px">30 min</div></div>
+              <div class="a-body">
+                <div style="margin-bottom:6px"><span class="a-type pan">Interação</span></div>
+                <div class="a-title">Perguntas e respostas</div>
+                <div class="a-desc">Momento destinado à interação com o público presencial e online</div>
+              </div>
+            </div>
+            <div class="agenda-item">
+              <div class="a-time">21h15<div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:500;margin-top:2px">45 min</div></div>
+              <div class="a-body">
+                <div style="margin-bottom:6px"><span class="a-type net">Networking</span></div>
+                <div class="a-title">Encerramento e networking</div>
+                <div class="a-desc">Apresentação dos resultados, disponibilização da tabela digital e impressa e integração entre profissionais, empresas e instituições</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ POR QUE A TABELA ═══ -->
+<section id="tabela" class="sec" style="background:var(--p)">
+  <div class="sec-inner">
+    <div class="sl">Por que a Tabela</div>
+    <div class="g2">
+      <div>
+        <h2 style="font-size:clamp(24px,3vw,44px);font-weight:900;line-height:1.1;margin-bottom:16px">
+          Honorário justo é<br><span style="color:var(--g)">responsabilidade técnica</span><br>reconhecida.
+        </h2>
+        <div class="gline"></div>
+        <p style="font-size:15px;color:rgba(255,255,255,.65);line-height:1.9;margin-bottom:32px">
+          A tabela estabelece critérios técnicos e econômicos que orientam a remuneração adequada dos serviços de engenharia elétrica. Mais equilíbrio nas relações contratuais, fim dos preços incompatíveis com a responsabilidade assumida e concorrência baseada na qualidade — com mais segurança técnica para a sociedade.
+        </p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div class="sbox"><div class="v">Orientativa</div><div class="u">instrumento de referência</div><div class="l">Parâmetros alinhados à realidade de MT</div></div>
+          <div class="sbox"><div class="v">Ética</div><div class="u">exercício profissional</div><div class="l">Fortalece a conduta e a segurança técnica</div></div>
+          <div class="sbox"><div class="v">Equilíbrio</div><div class="u">relações contratuais</div><div class="l">Preço compatível com a responsabilidade</div></div>
+          <div class="sbox"><div class="v">Qualidade</div><div class="u">critério de concorrência</div><div class="l">Melhores resultados para a sociedade</div></div>
+        </div>
+      </div>
+      <div class="flow">
+        <div class="fnode"><span class="fi">📐</span><span class="fl">Serviço técnico contratado</span></div>
+        <div class="farr"></div>
+        <div class="fnode"><span class="fi">⚖️</span><span class="fl">Responsabilidade técnica (ART)</span></div>
+        <div class="farr"></div>
+        <div class="fnode"><span class="fi">🧾</span><span class="fl">Custos reais de execução</span></div>
+        <div class="farr"></div>
+        <div class="fnode hl"><span class="fi">📊</span><span class="fl">Tabela de Honorários AMEE 2026</span></div>
+        <div class="farr"></div>
+        <div class="fnode"><span class="fi">🤝</span><span class="fl">Contrato equilibrado</span></div>
+        <div class="farr"></div>
+        <div class="fnode"><span class="fi">🛡️</span><span class="fl">Segurança e conformidade normativa</span></div>
+        <div class="farr"></div>
+        <div class="fnode"><span class="fi">🏙️</span><span class="fl">Sociedade bem atendida</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ POR QUE MT ═══ -->
+<section style="position:relative;min-height:70vh;display:flex;align-items:center;overflow:hidden">
+  <img style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.28) saturate(.65)" src="https://images.unsplash.com/photo-1574873252157-bc45eba4dc42?w=1600&q=80&fit=crop" alt="MT"/>
+  <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(28,39,51,.94) 0%,rgba(19,26,34,.7) 100%)"></div>
+  <div style="position:relative;z-index:10;padding:100px 80px;width:100%;max-width:1200px;margin:0 auto">
+    <div class="sl">Por que Mato Grosso</div>
+    <div class="g2">
+      <div>
+        <h2 style="font-size:clamp(24px,3.5vw,46px);font-weight:900;line-height:1.1;margin-bottom:16px">
+          Um mercado que cresce<br><span style="color:var(--g)">mais rápido do que</span><br>se organiza.
+        </h2>
+        <div class="gline"></div>
+        <p style="font-size:15px;color:rgba(255,255,255,.7);line-height:1.9;margin-bottom:32px">
+          Mato Grosso apresenta crescimento significativo em geração distribuída, redes de distribuição, subestações, automação e eficiência energética. Com a demanda por serviços técnicos especializados em alta, é essencial estabelecer parâmetros que orientem a atuação profissional e valorizem a categoria.
+        </p>
+        <a href="mailto:amee.mt@gmail.com?subject=Patrocínio — Lançamento Tabela de Honorários AMEE 2026" class="btn-green">Quero posicionar minha marca aqui</a>
+      </div>
+      <div class="mt-stats">
+        <div class="mt-stat"><div class="v">☀️ GD</div><div class="u">geração distribuída</div><div class="l">Projetos, homologação e comissionamento em alta</div></div>
+        <div class="mt-stat"><div class="v">🔌 Redes</div><div class="u">distribuição</div><div class="l">Expansão urbana e rural da rede elétrica</div></div>
+        <div class="mt-stat"><div class="v">🏭 SE</div><div class="u">subestações</div><div class="l">Agroindústria e mercado livre de energia</div></div>
+        <div class="mt-stat"><div class="v">🤖 Automação</div><div class="u">industrial e predial</div><div class="l">Demanda por projetos e integração</div></div>
+        <div class="mt-stat"><div class="v">💡 Eficiência</div><div class="u">energética</div><div class="l">Diagnósticos, laudos e retrofit</div></div>
+        <div class="mt-stat"><div class="v">3</div><div class="u">regiões</div><div class="l">Cuiabá + Sorriso + Rondonópolis = MT inteiro</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PÚBLICO ═══ -->
+<section class="sec" style="background:var(--n)">
+  <div class="sec-inner">
+    <div class="sl">Público do Evento</div>
+    <div class="g2">
+      <div>
+        <h2 style="font-size:clamp(24px,3.5vw,44px);font-weight:900;line-height:1.1;margin-bottom:16px">
+          200 profissionais que<br><span style="color:var(--g)">orçam, contratam</span><br>e fiscalizam.
+        </h2>
+        <div class="gline"></div>
+        <p style="font-size:15px;color:rgba(255,255,255,.65);line-height:1.9;margin-bottom:24px">
+          O projeto é direcionado a profissionais da engenharia elétrica, empresas prestadoras de serviços técnicos, concessionárias de energia, órgãos públicos, estudantes e demais agentes envolvidos direta ou indiretamente com o setor elétrico de Mato Grosso.
+        </p>
+        <div class="insight">
+          <div class="itag">⚡ Dado estratégico para patrocinadores</div>
+          <p>Quem participa do lançamento é quem vai usar a tabela no dia a dia: engenheiros que orçam serviços, empresas que contratam e órgãos que fiscalizam. Sua marca entra na conversa sobre valor — não sobre preço.</p>
+        </div>
+        <div style="margin-top:32px;display:flex;gap:16px;flex-wrap:wrap">
+          <div style="background:rgba(31,200,219,.08);border:1px solid rgba(31,200,219,.2);border-radius:8px;padding:16px 20px;text-align:center;flex:1;min-width:120px">
+            <div style="font-size:28px;font-weight:900;color:var(--g)">200</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.55);margin-top:4px">Participantes<br>presencial + híbrido</div>
+          </div>
+          <div style="background:rgba(31,200,219,.08);border:1px solid rgba(31,200,219,.2);border-radius:8px;padding:16px 20px;text-align:center;flex:1;min-width:120px">
+            <div style="font-size:28px;font-weight:900;color:var(--g)">3</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.55);margin-top:4px">Cidades<br>no mesmo dia</div>
+          </div>
+          <div style="background:rgba(31,200,219,.08);border:1px solid rgba(31,200,219,.2);border-radius:8px;padding:16px 20px;text-align:center;flex:1;min-width:120px">
+            <div style="font-size:28px;font-weight:900;color:var(--g)">500</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.55);margin-top:4px">Convites<br>eletrônicos</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="brow"><div class="bh"><span class="bn">Engenheiros Eletricistas</span><span class="bp">40%</span></div><div class="bt"><div class="bf" style="width:40%"></div></div></div>
+        <div class="brow"><div class="bh"><span class="bn">Empresas de Serviços Técnicos e Projetos</span><span class="bp">18%</span></div><div class="bt"><div class="bf" style="width:18%"></div></div></div>
+        <div class="brow"><div class="bh"><span class="bn">Concessionárias e Distribuidoras</span><span class="bp">10%</span></div><div class="bt"><div class="bf" style="width:10%"></div></div></div>
+        <div class="brow"><div class="bh"><span class="bn">Órgãos Públicos e Fiscalização</span><span class="bp">10%</span></div><div class="bt"><div class="bf" style="width:10%"></div></div></div>
+        <div class="brow"><div class="bh"><span class="bn">Representantes Institucionais (CREA-MT)</span><span class="bp">8%</span></div><div class="bt"><div class="bf" style="width:8%"></div></div></div>
+        <div class="brow"><div class="bh"><span class="bn">Docentes e Pesquisadores</span><span class="bp">6%</span></div><div class="bt"><div class="bf" style="width:6%"></div></div></div>
+        <div class="brow"><div class="bh"><span class="bn">Estudantes de Engenharia</span><span class="bp">8%</span></div><div class="bt"><div class="bf" style="width:8%"></div></div></div>
+        <div style="margin-top:32px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:24px">
+          <div style="font-size:11px;color:var(--g);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px">Canais de divulgação</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div style="font-size:12px;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:center"><span>🏛️</span>Banner no portal CREA-MT (30 dias)</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:center"><span>📧</span>500 convites + e-mail marketing</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:center"><span>📱</span>Instagram @abee_mt (5 posts)</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:center"><span>🌐</span>abeemt.org.br + Potência MT</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:center"><span>📰</span>Newsletter para a base AMEE</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:center"><span>🎥</span>Vídeo oficial do evento</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TEMAS ═══ -->
+<section class="sec" style="background:var(--p)">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div class="sl" style="text-align:center">Conteúdo Técnico</div>
+      <h2>O que a Tabela <span>vai orientar</span></h2>
+      <div class="gline" style="margin:16px auto 16px"></div>
+      <p>Serviços típicos da engenharia elétrica em Mato Grosso, com parâmetros técnicos e econômicos de referência</p>
+    </div>
+    <div class="topics">
+      <div class="topic"><div class="ti">📐</div><div class="tn">Projetos Elétricos</div><div class="td">Residencial, comercial e industrial</div></div>
+      <div class="topic"><div class="ti">☀️</div><div class="tn">Geração Distribuída</div><div class="td">Projetos fotovoltaicos e homologação</div></div>
+      <div class="topic"><div class="ti">🏭</div><div class="tn">Subestações</div><div class="td">Projeto, adequação e comissionamento</div></div>
+      <div class="topic"><div class="ti">⚡</div><div class="tn">SPDA & Aterramento</div><div class="td">Projetos, laudos e inspeções</div></div>
+      <div class="topic"><div class="ti">📋</div><div class="tn">Laudos & Perícias</div><div class="td">Inspeções, vistorias e pareceres</div></div>
+      <div class="topic"><div class="ti">🤖</div><div class="tn">Automação</div><div class="td">Industrial, predial e controle</div></div>
+      <div class="topic"><div class="ti">💡</div><div class="tn">Eficiência Energética</div><div class="td">Diagnóstico e gestão de energia</div></div>
+      <div class="topic"><div class="ti">🔧</div><div class="tn">Manutenção</div><div class="td">Preventiva, preditiva e corretiva</div></div>
+      <div class="topic"><div class="ti">🧾</div><div class="tn">Consultoria & ART</div><div class="td">Responsabilidade técnica e assessoria</div></div>
+      <div class="topic"><div class="ti">🛡️</div><div class="tn">NR-10 & Segurança</div><div class="td">Prontuário e adequação normativa</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ NÚMEROS ═══ -->
+<section style="position:relative;overflow:hidden">
+  <img style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.18) saturate(.5)" src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&q=80&fit=crop" alt="Event"/>
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(28,39,51,.6) 0%,rgba(19,26,34,.95) 100%)"></div>
+  <div style="position:relative;z-index:10;padding:100px 80px;max-width:1200px;margin:0 auto">
+    <div class="sec-head">
+      <div class="sl" style="text-align:center">Números do Evento</div>
+      <h2>O que esperar<br><span>em 23 de novembro</span></h2>
+      <div class="gline" style="margin:16px auto 0"></div>
+    </div>
+    <div class="numgrid">
+      <div class="numitem"><div class="big">200</div><div class="nm">Participantes</div><div class="ns">Presencial + híbrido</div></div>
+      <div class="numitem"><div class="big">03</div><div class="nm">Cidades</div><div class="ns">Cuiabá, Sorriso & Rondonópolis</div></div>
+      <div class="numitem"><div class="big">250</div><div class="nm">Contrapartidas</div><div class="ns">Peças com as marcas apoiadoras</div></div>
+      <div class="numitem"><div class="big">01</div><div class="nm">Tabela Oficial</div><div class="ns">Digital e impressa</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ POR QUE PATROCINAR ═══ -->
+<section class="sec" style="background:var(--p);position:relative;overflow:hidden">
+  <div style="position:absolute;right:-150px;top:50%;transform:translateY(-50%);width:500px;height:500px;border-radius:50%;border:1px solid rgba(31,200,219,.07);pointer-events:none"></div>
+  <div class="sec-inner" style="position:relative">
+    <div class="sec-head">
+      <div class="sl" style="text-align:center">Por que patrocinar</div>
+      <h2>6 Razões que tornam<br><span>este investimento irrecusável</span></h2>
+      <div class="gline" style="margin:16px auto 16px"></div>
+      <p>200 profissionais em 3 cidades, um documento de referência permanente e o apoio institucional do CREA-MT. Não existe posicionamento mais direto junto à engenharia elétrica de MT.</p>
+    </div>
+    <div class="g3">
+      <div class="card-dark"><div style="font-size:10px;font-weight:700;color:var(--g);letter-spacing:4px;margin-bottom:14px">01</div><div style="width:32px;height:2px;background:var(--g);border-radius:1px;margin-bottom:18px"></div><div style="font-size:17px;font-weight:700;margin-bottom:10px;line-height:1.3">Associação a um Documento Oficial</div><div style="font-size:14px;color:rgba(255,255,255,.55);line-height:1.8">Sua marca na tabela impressa e digital que os engenheiros vão consultar o ano inteiro — visibilidade que não termina no evento.</div></div>
+      <div class="card-dark"><div style="font-size:10px;font-weight:700;color:var(--g);letter-spacing:4px;margin-bottom:14px">02</div><div style="width:32px;height:2px;background:var(--g);border-radius:1px;margin-bottom:18px"></div><div style="font-size:17px;font-weight:700;margin-bottom:10px;line-height:1.3">Credibilidade Institucional</div><div style="font-size:14px;color:rgba(255,255,255,.55);line-height:1.8">Evento realizado pela AMEE com apoio do CREA-MT (Edital 001/2026) — a entidade que regula e representa a engenharia em MT.</div></div>
+      <div class="card-dark"><div style="font-size:10px;font-weight:700;color:var(--g);letter-spacing:4px;margin-bottom:14px">03</div><div style="width:32px;height:2px;background:var(--g);border-radius:1px;margin-bottom:18px"></div><div style="font-size:17px;font-weight:700;margin-bottom:10px;line-height:1.3">Acesso ao Especificador</div><div style="font-size:14px;color:rgba(255,255,255,.55);line-height:1.8">Engenheiros que projetam, orçam e assinam ART. Você fala com quem decide qual produto e qual serviço entram no projeto.</div></div>
+      <div class="card-dark"><div style="font-size:10px;font-weight:700;color:var(--g);letter-spacing:4px;margin-bottom:14px">04</div><div style="width:32px;height:2px;background:var(--g);border-radius:1px;margin-bottom:18px"></div><div style="font-size:17px;font-weight:700;margin-bottom:10px;line-height:1.3">Alcance Estadual em 1 Noite</div><div style="font-size:14px;color:rgba(255,255,255,.55);line-height:1.8">Três auditórios do CREA-MT simultâneos e transmissão híbrida. Um único investimento, presença em todo o estado.</div></div>
+      <div class="card-dark"><div style="font-size:10px;font-weight:700;color:var(--g);letter-spacing:4px;margin-bottom:14px">05</div><div style="width:32px;height:2px;background:var(--g);border-radius:1px;margin-bottom:18px"></div><div style="font-size:17px;font-weight:700;margin-bottom:10px;line-height:1.3">Mídia Institucional Garantida</div><div style="font-size:14px;color:rgba(255,255,255,.55);line-height:1.8">Banner no portal do CREA-MT por 30 dias, 500 convites eletrônicos, newsletter, Instagram e vídeo oficial — tudo com os patrocinadores.</div></div>
+      <div class="card-dark"><div style="font-size:10px;font-weight:700;color:var(--g);letter-spacing:4px;margin-bottom:14px">06</div><div style="width:32px;height:2px;background:var(--g);border-radius:1px;margin-bottom:18px"></div><div style="font-size:17px;font-weight:700;margin-bottom:10px;line-height:1.3">Leads Qualificados</div><div style="font-size:14px;color:rgba(255,255,255,.55);line-height:1.8">Mailing pós-evento, espaço de exposição e networking com quem contrata serviços e compra equipamentos elétricos em MT.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA STRIP ═══ -->
+<div class="cta-strip">
+  <div>
+    <p>Sua marca na tabela que vai orientar a engenharia elétrica de Mato Grosso.</p>
+    <small>200 profissionais · 3 cidades · Híbrido · 23 de novembro de 2026 · Vagas limitadas.</small>
+  </div>
+  <a href="mailto:amee.mt@gmail.com?subject=Reserva de Cota — Lançamento Tabela de Honorários AMEE 2026">Reservar Cota Agora →</a>
+</div>
+
+<!-- ═══ BANNER URGÊNCIA ═══ -->
+<div class="urgencia">
+  <p>⚡ VAGAS LIMITADAS — Master: 1 · Ouro: 2 · Prata: 3 · Bronze: 5 · Apoiador: ilimitado</p>
+  <small>Patrocinadores que fecharem até 23/10/2026 têm logo exposto desde o início da divulgação no portal do CREA-MT</small>
+</div>
+
+<!-- ═══ COTAS HEADER ═══ -->
+<section id="cotas" class="sec" style="background:var(--n);padding-bottom:40px">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div class="sl" style="text-align:center">Planos de Patrocínio</div>
+      <h2>Escolha seu nível<br><span>de investimento</span></h2>
+      <div class="gline" style="margin:16px auto 16px"></div>
+      <p>Cinco planos desenhados para maximizar o retorno de cada patrocinador — da divulgação à tabela impressa distribuída após o evento</p>
+    </div>
+
+    <!-- TABELA COMPARATIVA -->
+    <div style="overflow-x:auto;margin-top:8px">
+      <table class="cmp-table">
+        <thead>
+          <tr>
+            <th style="text-align:left;color:rgba(255,255,255,.4)">Benefício</th>
+            <th class="col-master" style="color:var(--gold)">⭐ MASTER</th>
+            <th style="color:var(--ouro)">🏅 OURO</th>
+            <th style="color:var(--prata)">🥈 PRATA</th>
+            <th style="color:var(--bronze)">🥉 BRONZE</th>
+            <th style="color:#4DB6AC">🤝 APOIADOR</th>
+          </tr>
+          <tr>
+            <td></td>
+            <td class="col-master" style="text-align:center"><span class="cmp-price" style="color:var(--gold)">R$20.000</span><br><small style="color:rgba(255,255,255,.4);font-size:10px">1 vaga</small></td>
+            <td style="text-align:center"><span class="cmp-price" style="color:var(--ouro)">R$10.000</span><br><small style="color:rgba(255,255,255,.4);font-size:10px">2 vagas</small></td>
+            <td style="text-align:center"><span class="cmp-price" style="color:var(--prata)">R$5.000</span><br><small style="color:rgba(255,255,255,.4);font-size:10px">3 vagas</small></td>
+            <td style="text-align:center"><span class="cmp-price" style="color:var(--bronze)">R$2.500</span><br><small style="color:rgba(255,255,255,.4);font-size:10px">5 vagas</small></td>
+            <td style="text-align:center"><span class="cmp-price" style="color:#4DB6AC">R$1.000</span><br><small style="color:rgba(255,255,255,.4);font-size:10px">apoio</small></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Naming rights do evento</td><td class="col-master"><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Logo na tabela impressa e digital</td><td class="col-master"><span class="yes">✓ Capa</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Fala no palco</td><td class="col-master"><span class="yes">15 min · 3 cidades</span></td><td><span class="yes">10 min · 1 cidade</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Participação no painel técnico</td><td class="col-master"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Espaço de exposição</td><td class="col-master"><span class="yes">Estande · 3 cidades</span></td><td><span class="yes">Estande · 1 cidade</span></td><td><span class="yes">Mesa 2m</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Inscrições / convites</td><td class="col-master"><span class="yes">10 VIP</span></td><td><span class="yes">5</span></td><td><span class="yes">3</span></td><td><span class="yes">2</span></td><td><span class="yes">1</span></td></tr>
+          <tr><td>Logo no banner eletrônico CREA-MT</td><td class="col-master"><span class="yes">✓ Destaque</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Logo nos 500 convites eletrônicos</td><td class="col-master"><span class="yes">✓ Destaque</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Logo nos 250 folders impressos</td><td class="col-master"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Logo no site do evento</td><td class="col-master"><span class="yes">✓ Topo</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>Logo no banner físico / backdrop</td><td class="col-master"><span class="yes">✓ Grande</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Citação pelo mestre de cerimônias</td><td class="col-master"><span class="yes">✓ 3 menções</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Vídeo oficial do evento</td><td class="col-master"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Mailing pós-evento</td><td class="col-master"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Material no kit do participante</td><td class="col-master"><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td></tr>
+          <tr><td>Menção nas redes sociais</td><td class="col-master"><span class="yes">✓ Exclusivo</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- COTA MASTER -->
+<section class="qsec" style="background:linear-gradient(135deg,#102028,var(--n))">
+  <div class="sl">Cota 01</div>
+  <div class="qcard" style="background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.25);box-shadow:0 0 80px rgba(255,215,0,.08)">
+    <div class="qtop" style="background:linear-gradient(90deg,var(--gold),rgba(255,215,0,.3),transparent)"></div>
+    <div class="qh">
+      <div><div class="qlabel" style="color:var(--gold)">Cota de Patrocínio</div><div class="qlevel" style="color:var(--gold)">MASTER</div></div>
+      <div><div class="qi-label">Investimento</div><div class="qi-price">R$ 20.000</div><div style="text-align:right"><span class="vbadge" style="background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.4);color:var(--gold)">Exclusiva — 1 vaga</span></div></div>
+    </div>
+    <div class="qdiv" style="background:linear-gradient(90deg,rgba(255,215,0,.3),transparent)"></div>
+    <div class="qb" style="grid-template-columns:1fr 1fr">
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>Naming rights — co-branding no título do evento</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>Logo na capa da Tabela de Honorários impressa e digital</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>Fala de 15 min no palco — nas 3 cidades (presencial ou remoto)</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>Cadeira no painel técnico</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>Estande com montagem básica nas 3 cidades</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>10 inscrições VIP gratuitas</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>Logo em destaque no banner eletrônico do portal CREA-MT (30 dias)</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>Logo em destaque nos 500 convites eletrônicos e nos 250 folders</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>Banner físico / backdrop com logo grande</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>3 citações pelo mestre de cerimônias e sistema de som</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>Entrevista exclusiva nas redes sociais da AMEE e no vídeo oficial</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--gold)"></div><span>Mailing completo dos participantes pós-evento</span></div>
+    </div>
+    <div style="margin-top:32px;text-align:center"><a href="mailto:amee.mt@gmail.com?subject=Interesse Cota MASTER — Tabela de Honorários AMEE 2026" class="btn-green">Garantir Cota Master Agora</a></div>
+  </div>
+</section>
+
+<!-- COTA OURO -->
+<section class="qsec" style="background:linear-gradient(135deg,#1a1408,var(--p))">
+  <div class="sl">Cota 02</div>
+  <div class="qcard" style="background:rgba(255,167,38,.05);border:1px solid rgba(255,167,38,.2);box-shadow:0 0 60px rgba(255,167,38,.06)">
+    <div class="qtop" style="background:linear-gradient(90deg,var(--ouro),rgba(255,167,38,.25),transparent)"></div>
+    <div class="qh">
+      <div><div class="qlabel" style="color:var(--ouro)">Cota de Patrocínio</div><div class="qlevel" style="color:var(--ouro)">OURO</div></div>
+      <div><div class="qi-label">Investimento</div><div class="qi-price">R$ 10.000</div><div style="text-align:right"><span class="vbadge" style="background:rgba(255,167,38,.1);border:1px solid rgba(255,167,38,.35);color:var(--ouro)">Apenas 2 vagas</span></div></div>
+    </div>
+    <div class="qdiv" style="background:linear-gradient(90deg,rgba(255,167,38,.25),transparent)"></div>
+    <div class="qb" style="grid-template-columns:1fr 1fr">
+      <div class="qitem"><div class="qdot" style="background:var(--ouro)"></div><span>Logo na Tabela de Honorários impressa e digital</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--ouro)"></div><span>Fala técnica de 10 min — 1 cidade à escolha</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--ouro)"></div><span>Cadeira no painel técnico</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--ouro)"></div><span>Estande com montagem básica em 1 cidade</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--ouro)"></div><span>5 inscrições gratuitas</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--ouro)"></div><span>Logo no banner eletrônico do portal CREA-MT, convites e folders</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--ouro)"></div><span>Logo no banner físico e no site do evento</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--ouro)"></div><span>Citação pelo mestre de cerimônias</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--ouro)"></div><span>Presença no vídeo oficial e mailing pós-evento</span></div>
+      <div class="qitem"><div class="qdot" style="background:var(--ouro)"></div><span>Menção nos posts de divulgação</span></div>
+    </div>
+    <div style="margin-top:32px;text-align:center"><a href="mailto:amee.mt@gmail.com?subject=Interesse Cota OURO — Tabela de Honorários AMEE 2026" class="btn-green">Garantir Cota Ouro</a></div>
+  </div>
+</section>
+
+<!-- COTAS PRATA / BRONZE / APOIADOR -->
+<section class="sec" style="background:var(--n)">
+  <div class="sec-inner">
+    <div class="g3" style="align-items:start">
+
+      <!-- PRATA -->
+      <div style="background:rgba(207,216,220,.04);border:1px solid rgba(207,216,220,.16);border-radius:16px;padding:40px 32px;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--prata),transparent)"></div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:5px;color:var(--prata);margin-bottom:10px">COTA 03</div>
+        <div style="font-size:42px;font-weight:900;color:var(--prata);letter-spacing:-2px;line-height:.9;margin-bottom:16px">PRATA</div>
+        <div style="font-size:28px;font-weight:900;margin-bottom:4px">R$ 5.000</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:28px">Apenas 3 vagas disponíveis</div>
+        <div style="height:1px;background:rgba(207,216,220,.15);margin-bottom:24px"></div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
+          <div class="qitem"><div class="qdot" style="background:var(--prata)"></div><span>Logo na Tabela de Honorários impressa e digital</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--prata)"></div><span>Mesa de exposição 2m em 1 cidade</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--prata)"></div><span>3 inscrições gratuitas</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--prata)"></div><span>Logo no banner CREA-MT, convites, folders e site</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--prata)"></div><span>Citação pelo mestre de cerimônias</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--prata)"></div><span>Material no kit do participante</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--prata)"></div><span>Menção nas redes sociais</span></div>
+        </div>
+        <a href="mailto:amee.mt@gmail.com?subject=Interesse Cota PRATA — Tabela de Honorários AMEE 2026" style="display:block;text-align:center;background:rgba(207,216,220,.07);border:1px solid rgba(207,216,220,.25);color:var(--prata);font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:14px;border-radius:4px;text-decoration:none">Quero Cota Prata</a>
+      </div>
+
+      <!-- BRONZE -->
+      <div style="background:rgba(255,138,101,.04);border:1px solid rgba(255,138,101,.18);border-radius:16px;padding:40px 32px;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--bronze),transparent)"></div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:5px;color:var(--bronze);margin-bottom:10px">COTA 04</div>
+        <div style="font-size:42px;font-weight:900;color:var(--bronze);letter-spacing:-2px;line-height:.9;margin-bottom:16px">BRONZE</div>
+        <div style="font-size:28px;font-weight:900;margin-bottom:4px">R$ 2.500</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:28px">Apenas 5 vagas disponíveis</div>
+        <div style="height:1px;background:rgba(255,138,101,.15);margin-bottom:24px"></div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
+          <div class="qitem"><div class="qdot" style="background:var(--bronze)"></div><span>Logo nos 500 convites eletrônicos</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--bronze)"></div><span>Logo nos 250 folders impressos</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--bronze)"></div><span>Logo no banner físico e no site do evento</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--bronze)"></div><span>2 inscrições gratuitas</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--bronze)"></div><span>Material no kit do participante</span></div>
+          <div class="qitem"><div class="qdot" style="background:var(--bronze)"></div><span>Menção nas redes sociais</span></div>
+        </div>
+        <a href="mailto:amee.mt@gmail.com?subject=Interesse Cota BRONZE — Tabela de Honorários AMEE 2026" style="display:block;text-align:center;background:rgba(255,138,101,.08);border:1px solid rgba(255,138,101,.3);color:var(--bronze);font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:14px;border-radius:4px;text-decoration:none">Quero Cota Bronze</a>
+      </div>
+
+      <!-- APOIADOR -->
+      <div style="background:rgba(77,182,172,.05);border:1px solid rgba(77,182,172,.2);border-radius:16px;padding:40px 32px;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#4DB6AC,transparent)"></div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:5px;color:#4DB6AC;margin-bottom:10px">COTA 05</div>
+        <div style="font-size:36px;font-weight:900;color:#4DB6AC;letter-spacing:-1px;line-height:.9;margin-bottom:16px">APOIADOR</div>
+        <div style="font-size:28px;font-weight:900;margin-bottom:4px">R$ 1.000</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:28px">Cota de apoio — ideal para escritórios e empresas de engenharia</div>
+        <div style="height:1px;background:rgba(77,182,172,.18);margin-bottom:24px"></div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
+          <div class="qitem"><div class="qdot" style="background:#4DB6AC"></div><span>Logo no site do evento</span></div>
+          <div class="qitem"><div class="qdot" style="background:#4DB6AC"></div><span>1 convite para o evento</span></div>
+          <div class="qitem"><div class="qdot" style="background:#4DB6AC"></div><span>Menção coletiva nas redes sociais</span></div>
+        </div>
+        <a href="https://wa.me/5565984633872?text=Ol%C3%A1!%20Tenho%20interesse%20na%20Cota%20Apoiador%20do%20Lan%C3%A7amento%20da%20Tabela%20de%20Honor%C3%A1rios%20AMEE%202026" target="_blank" rel="noopener" style="display:block;text-align:center;background:rgba(77,182,172,.12);border:1px solid rgba(77,182,172,.35);color:#4DB6AC;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:14px;border-radius:4px;text-decoration:none">Quero Apoiar</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PARCEIROS ═══ -->
+<section class="sec" style="background:linear-gradient(180deg,var(--n) 0%,var(--p) 100%);position:relative;overflow:hidden">
+  <div style="position:absolute;top:-120px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse,rgba(31,200,219,.1),transparent 70%);pointer-events:none"></div>
+  <div class="sec-inner" style="position:relative">
+    <div class="sec-head">
+      <div style="display:inline-block;background:rgba(31,200,219,.12);border:1px solid rgba(31,200,219,.4);border-radius:4px;padding:7px 18px;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--g);margin-bottom:20px">⚡ Parceiros do Evento</div>
+      <h2 style="font-size:clamp(28px,4vw,52px)">Quem já está <span>com a gente</span></h2>
+      <div class="gline" style="margin:16px auto 16px"></div>
+      <p style="font-size:16px">Instituições e empresas que apoiam a valorização da engenharia elétrica em Mato Grosso. <strong style="color:var(--w)">Sua marca pode ser a próxima.</strong></p>
+    </div>
+    <div class="companies">
+      <div class="company"><div class="company-icon"><img src="logo-crea-mt.png" alt="CREA-MT" style="height:22px;width:auto;object-fit:contain;filter:brightness(0) invert(1)"/></div><div class="cn">CREA-MT</div><div class="cc">Apoio Institucional · Edital 001/2026</div><span class="status ok">Apoio institucional</span></div>
+      <div class="company"><div class="company-icon">SV</div><div class="cn">Solvaz Engenharia</div><div class="cc">Patrocínio</div><span class="status wait">Em negociação</span></div>
+    </div>
+    <div style="text-align:center;margin-top:48px">
+      <p style="font-size:14px;color:rgba(255,255,255,.55);margin-bottom:24px">É fabricante, distribuidor, concessionária ou empresa de engenharia? <strong style="color:var(--w)">Este é o seu lugar.</strong></p>
+      <a href="https://wa.me/5565984633872?text=Ol%C3%A1!%20Quero%20ser%20parceiro%2Fpatrocinador%20do%20Lan%C3%A7amento%20da%20Tabela%20de%20Honor%C3%A1rios%20AMEE%202026" target="_blank" rel="noopener" class="btn-green">Quero ser Parceiro do Evento</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTATO ═══ -->
+<section id="contato" style="position:relative;min-height:75vh;display:flex;align-items:center;overflow:hidden">
+  <img style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.22) saturate(.55)" src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1600&q=80&fit=crop" alt="Rede elétrica"/>
+  <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(28,39,51,.96) 0%,rgba(19,26,34,.82) 100%)"></div>
+  <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--g),var(--gl),var(--g))"></div>
+  <div style="position:relative;z-index:10;padding:100px 80px;width:100%;max-width:1200px;margin:0 auto">
+    <div class="sl">Contato</div>
+    <div class="g2">
+      <div>
+        <h2 style="font-size:clamp(26px,3.5vw,50px);font-weight:900;line-height:1.1;margin-bottom:16px">
+          Vamos fechar<br><span style="color:var(--g)">sua cota hoje?</span>
+        </h2>
+        <div class="gline"></div>
+        <p style="font-size:16px;color:rgba(255,255,255,.65);line-height:1.9;margin-bottom:16px;font-weight:300">
+          As vagas são limitadas e o prazo para máxima visibilidade é <strong style="color:var(--w)">23 de outubro de 2026.</strong> Após essa data, o logo do patrocinador não entrará no banner do portal do CREA-MT nem nos convites eletrônicos.
+        </p>
+        <p style="font-size:15px;color:rgba(255,255,255,.5);line-height:1.8;margin-bottom:40px">
+          Entre em contato com a AMEE para receber a proposta personalizada, o contrato e o formulário de cadastro de patrocinador.
+        </p>
+        <div class="contact-item">
+          <div class="contact-icon">🌐</div>
+          <div><div class="clabel">Site Oficial</div><div class="cval"><a href="https://www.abeemt.org.br" target="_blank" rel="noopener" style="color:var(--g);text-decoration:none">www.abeemt.org.br</a></div></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📧</div>
+          <div><div class="clabel">Email</div><div class="cval"><a href="mailto:amee.mt@gmail.com" style="color:var(--w);text-decoration:none">amee.mt@gmail.com</a></div></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📱</div>
+          <div><div class="clabel">Instagram</div><div class="cval"><a href="https://instagram.com/abee_mt" target="_blank" rel="noopener" style="color:var(--w);text-decoration:none">@abee_mt</a></div></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">💬</div>
+          <div><div class="clabel">WhatsApp Comercial</div><div class="cval"><a href="https://wa.me/5565984633872?text=Ol%C3%A1!%20Tenho%20interesse%20em%20patrocinar%20o%20Lan%C3%A7amento%20da%20Tabela%20de%20Honor%C3%A1rios%20AMEE%202026" target="_blank" rel="noopener" style="color:var(--w);text-decoration:none">(65) 98463-3872</a></div></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div><div class="clabel">Telefone AMEE</div><div class="cval"><a href="tel:+5565992812397" style="color:var(--w);text-decoration:none">(65) 99281-2397</a></div></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div><div class="clabel">Sede</div><div class="cval" style="font-size:13px;font-weight:500">Av. Historiador Rubens de Mendonça, 491 · Araés · Cuiabá-MT · CEP 78005-725</div></div>
+        </div>
+        <div style="display:flex;gap:16px;margin-top:40px;flex-wrap:wrap">
+          <a href="mailto:amee.mt@gmail.com?subject=Quero ser Patrocinador — Tabela de Honorários AMEE 2026" class="btn-green">Quero ser Patrocinador →</a>
+          <a href="https://www.abeemt.org.br" target="_blank" rel="noopener" class="btn-outline">Acessar Site Oficial</a>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:28px">
+        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(31,200,219,.25);border-radius:16px;padding:32px;width:100%;text-align:center">
+          <div style="font-size:10px;color:var(--g);letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;font-weight:700">Ficha do Evento</div>
+          <div style="font-size:18px;font-weight:800;line-height:1.3;margin-bottom:18px">Lançamento da Tabela de Honorários Profissionais da Engenharia Elétrica — AMEE 2026</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left">
+            <div><div class="clabel">Data</div><div style="font-size:14px;font-weight:600">23/11/2026</div></div>
+            <div><div class="clabel">Formato</div><div style="font-size:14px;font-weight:600">Presencial + Híbrido</div></div>
+            <div><div class="clabel">Locais</div><div style="font-size:14px;font-weight:600">Auditórios CREA-MT</div></div>
+            <div><div class="clabel">Cidades</div><div style="font-size:14px;font-weight:600">Cuiabá · Sorriso · Rondonópolis</div></div>
+            <div><div class="clabel">Público</div><div style="font-size:14px;font-weight:600">200 participantes</div></div>
+            <div><div class="clabel">Realização</div><div style="font-size:14px;font-weight:600">AMEE · CNPJ 15.081.714/0001-49</div></div>
+          </div>
+        </div>
+        <!-- Logos institucionais -->
+        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px 28px;text-align:center;width:100%">
+          <div style="font-size:10px;color:rgba(255,255,255,.35);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px">Realização & Apoio</div>
+          <div style="display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap">
+            <div style="text-align:center">
+              <span class="logo-chip"><img src="logo-abee-mt.png" alt="AMEE" style="height:40px;width:auto;object-fit:contain"/></span>
+              <div style="font-size:9px;color:rgba(255,255,255,.35);margin-top:6px">Realização</div>
+            </div>
+            <div style="text-align:center">
+              <span class="logo-chip"><img src="logo-crea-mt.png" alt="CREA-MT" style="height:38px;width:auto;object-fit:contain"/></span>
+              <div style="font-size:9px;color:rgba(255,255,255,.35);margin-top:6px">Apoio Institucional</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <span class="logo-chip"><img src="logo-abee-mt.png" alt="AMEE" style="height:40px;width:auto;object-fit:contain"/></span>
+    <div>
+      <div class="footer-name">AMEE — Associação Mato-Grossense dos Engenheiros Eletricistas</div>
+      <div class="footer-sub"><a href="https://www.abeemt.org.br" target="_blank" rel="noopener" style="color:var(--g);text-decoration:none">www.abeemt.org.br</a> · Presidente: Eng. Robson Layon Vaz</div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+    <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.3)">Apoio Institucional</div>
+    <div style="display:flex;gap:16px;align-items:center">
+      <span class="logo-chip"><img src="logo-crea-mt.png" alt="CREA-MT" style="height:32px;width:auto;object-fit:contain"/></span>
+    </div>
+    <div style="font-size:11px;color:rgba(255,255,255,.25);letter-spacing:1px">Tabela de Honorários AMEE 2026 · 23 Nov · Cuiabá · Sorriso · Rondonópolis</div>
+  </div>
+  <div class="footer-right">
+    <div class="footer-tag">Edital CREA-MT nº 001/2026</div>
+    <div class="footer-conf">Material para patrocinadores e parceiros</div>
+  </div>
+</footer>
+
+<!-- Fallback: se um logo ainda não foi enviado, mostra a sigla em vez de imagem quebrada -->
+<script>
+(function(){
+  function fix(im){
+    var s=document.createElement('span');
+    s.textContent=im.getAttribute('alt')||'LOGO';
+    s.style.cssText='font-weight:900;font-size:12px;letter-spacing:.5px;color:#1C2733;white-space:nowrap';
+    im.replaceWith(s);
+  }
+  document.querySelectorAll('img[src*="logo-"]').forEach(function(im){
+    im.addEventListener('error',function(){fix(im);});
+    if(im.complete && im.naturalWidth===0){fix(im);}
+  });
+})();
+</script>
+
+<!-- BOTÃO FLUTUANTE WHATSAPP -->
+<a href="https://wa.me/5565984633872?text=Ol%C3%A1!%20Tenho%20interesse%20em%20patrocinar%20o%20Lan%C3%A7amento%20da%20Tabela%20de%20Honor%C3%A1rios%20AMEE%202026" target="_blank" rel="noopener" aria-label="Falar no WhatsApp"
+   style="position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;align-items:center;gap:10px;background:#25D366;color:#fff;padding:14px 22px 14px 18px;border-radius:50px;text-decoration:none;font-weight:800;font-size:14px;box-shadow:0 8px 28px rgba(37,211,102,.45)">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg"><path d="M17.5 14.4c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35zM12 2A10 10 0 0 0 3.48 17.17L2 22l4.95-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-2.97-.4-4.25-1.16l-.3-.18-2.94.77.79-2.86-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg>
+  Fale conosco
+</a>
+
+</body>
+</html>

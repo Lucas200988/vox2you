@@ -1,8 +1,12 @@
 # Tabela de Honorários AMEE 2026 — Site do evento (estático)
 
-Página de divulgação e captação de patrocínio do **Lançamento da Tabela de
-Honorários Profissionais da Engenharia Elétrica — AMEE 2026**, realizado pela
-AMEE com apoio do CREA-MT (Edital de Parceria nº 001/2026).
+Site do **Lançamento da Tabela de Honorários Profissionais da Engenharia
+Elétrica — AMEE 2026**, realizado pela AMEE com apoio (e subsídio) do CREA-MT
+(Edital de Parceria nº 001/2026).
+
+O foco do site é **inscrição de participantes** (R$ 20 simbólicos, com
+churrasco de confraternização). A captação de patrocínio é secundária e fica
+em uma página separada.
 
 Segue as mesmas diretrizes do site do Fórum BESS (`../forum-bess`): HTML único,
 sem build, mesma estrutura, mas com identidade própria (Montserrat, grafite + ciano), nav fixa
@@ -19,14 +23,33 @@ com logos AMEE e CREA-MT, cotas de patrocínio, contato e botão de WhatsApp.
 
 ## Arquivos
 
-- `index.html` — a página completa
+- `index.html` — página principal: inscrições (hero com R$ 20, o que está
+  incluso, programação, passo a passo, formulário, locais, FAQ, contato)
+- `patrocinio.html` — página secundária: cotas e benefícios para patrocinadores
 - `logo-abee-mt.png` — logo da AMEE/ABEE-MT
 - `logo-crea-mt.png` — logo do CREA-MT
 
 > Se algum PNG for removido, a página mostra a sigla no lugar do logo
 > (fallback automático) — não fica quebrada.
 
+## Como funciona a inscrição (sem backend)
+
+O formulário não grava nada em servidor. Ao enviar, ele abre o WhatsApp da
+AMEE com uma mensagem já preenchida (nome, e-mail, WhatsApp, perfil, registro
+CREA, polo e empresa). Há também a opção de enviar por e-mail. A pessoa faz o
+PIX de R$ 20 e manda o comprovante; a AMEE confirma a vaga manualmente.
+
+Se quiser automatizar (planilha, pagamento online), as opções mais simples são
+trocar o `<form>` por um Google Forms incorporado ou apontar o `action` para
+um serviço como Formspree.
+
 ## O que precisa ser revisado antes de publicar
+
+- **Chave PIX:** o campo `[chave PIX da AMEE — a definir]` em `index.html`
+  (procure por `pix-key`) precisa ser preenchido com a chave real.
+- **Prazo de inscrição** (16/11/2026) e **certificado de participação** são
+  propostas; confirme com a diretoria.
+- **Churrasco:** a página informa que é para participantes presenciais.
 
 - **Valores das cotas** (Master R$ 20.000 · Ouro R$ 10.000 · Prata R$ 5.000 ·
   Bronze R$ 2.500 · Apoiador R$ 1.000) são uma **proposta** calibrada para o
