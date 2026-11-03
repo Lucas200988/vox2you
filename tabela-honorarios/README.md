@@ -1,0 +1,58 @@
+# Tabela de Honorários AMEE 2026 — Site do evento (estático)
+
+Página de divulgação e captação de patrocínio do **Lançamento da Tabela de
+Honorários Profissionais da Engenharia Elétrica — AMEE 2026**, realizado pela
+AMEE com apoio do CREA-MT (Edital de Parceria nº 001/2026) e da Mútua.
+
+Segue as mesmas diretrizes do site do Fórum BESS (`../forum-bess`): HTML único,
+sem build, mesma identidade visual (Montserrat, azul-marinho + verde), nav fixa
+com logos institucionais, cotas de patrocínio, contato e botão de WhatsApp.
+
+## Dados do evento (do Plano de Trabalho)
+
+- **Data:** 23/11/2026
+- **Formato:** presencial + híbrido
+- **Locais:** auditórios do CREA-MT em Cuiabá, Sorriso e Rondonópolis
+- **Público estimado:** 200 participantes
+- **Contrapartidas ao CREA-MT:** 250 peças (folders, convites, banner eletrônico, etc.)
+- **Custo estimado:** R$ 50.000,00
+
+## Arquivos
+
+- `index.html` — a página completa
+- `logo-abee-mt.png` — logo da AMEE/ABEE-MT
+- `logo-crea-mt.png` — logo do CREA-MT
+- `logo-mutua.png` — logo da Mútua
+
+> Se algum PNG for removido, a página mostra a sigla no lugar do logo
+> (fallback automático) — não fica quebrada.
+
+## O que precisa ser revisado antes de publicar
+
+- **Valores das cotas** (Master R$ 20.000 · Ouro R$ 10.000 · Prata R$ 5.000 ·
+  Bronze R$ 2.500 · Apoiador R$ 1.000) são uma **proposta** calibrada para o
+  orçamento de R$ 50 mil do Plano de Trabalho. Ajuste conforme a diretoria.
+- **Horários da programação** são provisórios (o Plano de Trabalho define as
+  atividades, mas não os horários).
+- **Prazo de máxima visibilidade** (23/10/2026) foi fixado em 30 dias antes
+  do evento, alinhado ao banner eletrônico no portal do CREA-MT.
+- **Parceiros:** Mútua e Solvaz Engenharia aparecem como "Em negociação",
+  conforme o Plano de Trabalho. Troque para "Confirmado" quando fechar.
+
+## Como publicar na Vercel (projeto separado)
+
+1. Em [vercel.com](https://vercel.com): **Add New → Project** e importe o repositório `vox2you`.
+2. Em **Root Directory**, selecione **`tabela-honorarios`**.
+3. Em **Framework Preset**, escolha **Other** (sem build).
+4. **Deploy.**
+5. Depois: **Settings → Domains → Add** → por exemplo `honorarios.abeemt.org.br`.
+   Como o DNS do domínio já está na Vercel, o registro e o HTTPS são criados
+   automaticamente.
+
+## Contato configurado na página
+
+- E-mail: amee.mt@gmail.com
+- WhatsApp comercial: (65) 98463-3872
+- Telefone AMEE: (65) 99281-2397
+- Instagram: @abee_mt
+- Site: www.abeemt.org.br
