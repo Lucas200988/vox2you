@@ -4,8 +4,10 @@ Site do **Lançamento da Tabela de Honorários Profissionais da Engenharia
 Elétrica — AMEE 2026**, realizado pela AMEE com apoio (e subsídio) do CREA-MT
 (Edital de Parceria nº 001/2026).
 
-O foco do site é **inscrição de participantes** (R$ 20 simbólicos, com
-churrasco de confraternização). A captação de patrocínio é secundária e fica
+O foco do site é **inscrição de participantes** (R$ 20 simbólicos). O
+lançamento é em 23/11, Dia do Engenheiro Eletricista, e a página trabalha a
+comemoração da data com confraternização e networking em cada polo; o
+churrasco é citado apenas para Cuiabá. A captação de patrocínio é secundária e fica
 em uma página separada.
 
 Segue as mesmas diretrizes do site do Fórum BESS (`../forum-bess`): HTML único,
@@ -43,7 +45,8 @@ Inscrição e pagamento dos R$ 20 acontecem lá. O site não guarda dados.
 
 - **Prazo de inscrição** (16/11/2026) e **certificado de participação** são
   propostas; confirme com a diretoria.
-- **Churrasco:** a página informa que é para participantes presenciais.
+- **Churrasco:** só em Cuiabá, como está na página. Sorriso e Rondonópolis
+  têm confraternização e networking.
 
 - **Valores das cotas** (Master R$ 20.000 · Ouro R$ 10.000 · Prata R$ 5.000 ·
   Bronze R$ 2.500 · Apoiador R$ 1.000) são uma **proposta** calibrada para o
