@@ -48,9 +48,8 @@ Inscrição e pagamento dos R$ 20 acontecem lá. O site não guarda dados.
 - **Churrasco:** só em Cuiabá, como está na página. Sorriso e Rondonópolis
   têm confraternização e networking.
 
-- **Valores das cotas** (Master R$ 20.000 · Ouro R$ 10.000 · Prata R$ 5.000 ·
-  Bronze R$ 2.500 · Apoiador R$ 1.000) são uma **proposta** calibrada para o
-  orçamento de R$ 50 mil do Plano de Trabalho. Ajuste conforme a diretoria.
+- **Patrocínio:** cota única de R$ 1.000 (definida pela organização). Os
+  benefícios listados na página são proposta; ajuste conforme a diretoria.
 - **Horários da programação** são provisórios (o Plano de Trabalho define as
   atividades, mas não os horários).
 - **Prazo de máxima visibilidade** (23/10/2026) foi fixado em 30 dias antes
