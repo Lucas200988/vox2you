@@ -24,7 +24,7 @@ com logos AMEE e CREA-MT, cotas de patrocínio, contato e botão de WhatsApp.
 ## Arquivos
 
 - `index.html` — página principal: inscrições (hero com R$ 20, o que está
-  incluso, programação, passo a passo, formulário, locais, FAQ, contato)
+  incluso, programação, passo a passo, botão para a plataforma, locais, FAQ, contato)
 - `patrocinio.html` — página secundária: cotas e benefícios para patrocinadores
 - `logo-abee-mt.png` — logo da AMEE/ABEE-MT
 - `logo-crea-mt.png` — logo do CREA-MT
@@ -32,20 +32,15 @@ com logos AMEE e CREA-MT, cotas de patrocínio, contato e botão de WhatsApp.
 > Se algum PNG for removido, a página mostra a sigla no lugar do logo
 > (fallback automático) — não fica quebrada.
 
-## Como funciona a inscrição (sem backend)
+## Como funciona a inscrição
 
-O formulário não grava nada em servidor. Ao enviar, ele abre o WhatsApp da
-AMEE com uma mensagem já preenchida (nome, e-mail, WhatsApp, perfil, registro
-CREA, polo e empresa). Há também a opção de enviar por e-mail. A pessoa faz o
-PIX de R$ 20 e manda o comprovante; a AMEE confirma a vaga manualmente.
+Todos os botões de inscrição levam para a plataforma oficial do evento:
+https://eventos.softaliza.com.br/lancamento-da-tabela-de-honorarios-profissionais-da-engenharia-eletrica
 
-Se quiser automatizar (planilha, pagamento online), as opções mais simples são
-trocar o `<form>` por um Google Forms incorporado ou apontar o `action` para
-um serviço como Formspree.
+Inscrição e pagamento dos R$ 20 acontecem lá. O site não guarda dados.
 
 ## O que precisa ser revisado antes de publicar
 
-- **Chave PIX:** CNPJ da AMEE, 15.081.714/0001-49 (já preenchido).
 - **Prazo de inscrição** (16/11/2026) e **certificado de participação** são
   propostas; confirme com a diretoria.
 - **Churrasco:** a página informa que é para participantes presenciais.
