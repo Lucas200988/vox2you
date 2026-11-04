@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"/>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Mono:wght@500&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:970px;height:150px;overflow:hidden;background:#fff}
+.b{width:970px;height:150px;display:grid;grid-template-columns:150px 1fr 250px;background:#fff;border:1px solid #d8dde6;font-family:"Source Sans 3",sans-serif;color:#16213a;position:relative}
+.b::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:#f2b705}
+.logos{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border-right:1px solid #d8dde6;background:#f3f5f8}
+.logos img{height:40px;width:auto}
+.logos img.crea{height:28px}
+.mid{padding:20px 28px 18px;display:flex;flex-direction:column;justify-content:center;gap:6px;
+  background:repeating-linear-gradient(0deg,transparent 0 31px,rgba(29,78,154,.06) 31px 32px),repeating-linear-gradient(90deg,transparent 0 31px,rgba(29,78,154,.06) 31px 32px)}
+.eye{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#1d4e9a;font-weight:500}
+h1{font-family:"Archivo",sans-serif;font-size:27px;font-weight:800;line-height:1.05;letter-spacing:-.01em}
+.sub{font-size:14px;color:#4c5872;line-height:1.3}
+.right{background:#16213a;color:#fff;padding:18px 22px;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.date{display:flex;align-items:baseline;gap:8px}
+.date .big{font-family:"IBM Plex Mono",monospace;font-size:32px;font-weight:500;letter-spacing:-.04em;line-height:1}
+.date .sm{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.7);line-height:1.3}
+.cta{background:#f2b705;color:#16213a;font-family:"Archivo",sans-serif;font-weight:700;font-size:14px;padding:9px 14px;border-radius:3px;display:flex;justify-content:space-between;align-items:center}
+.cta span{font-family:"IBM Plex Mono",monospace;font-weight:500}
+</style></head><body>
+<div class="b">
+  <div class="logos"><img src="../logo-abee-mt.png" alt="AMEE"/><img class="crea" src="../logo-crea-mt.png" alt="CREA-MT"/></div>
+  <div class="mid">
+    <div class="eye">Dia do Engenheiro Eletricista · Apoio CREA-MT</div>
+    <h1>Lançamento da Tabela de Honorários<br>da Engenharia Elétrica · AMEE 2026</h1>
+    <div class="sub">Cuiabá, Sorriso e Rondonópolis, nos auditórios do CREA-MT, e online. Palestra, painel técnico, tabela impressa e confraternização.</div>
+  </div>
+  <div class="right">
+    <div class="date"><span class="big">23.11</span><span class="sm">Segunda-feira<br>18h · presencial<br>e online</span></div>
+    <div class="cta">Inscreva-se <span>R$ 20</span></div>
+  </div>
+</div>
+</body></html>
