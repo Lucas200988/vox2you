@@ -2,667 +2,223 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Inscrições — Lançamento da Tabela de Honorários da Engenharia Elétrica 2026 · AMEE</title>
-<meta name="description" content="Inscreva-se no Lançamento da Tabela de Honorários Profissionais da Engenharia Elétrica — AMEE 2026. 23 de novembro em Cuiabá, Sorriso e Rondonópolis, presencial e online. Inscrição simbólica de R$ 20. Confraternização e networking na comemoração do Dia do Engenheiro Eletricista. Apoio CREA-MT."/>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--g:#1FC8DB;--gl:#5EEAD4;--p:#1C2733;--n:#131A22;--gr:#F1F5F7;--w:#fff;--gold:#FFD700;--dia:#B9F2FF;--ouro:#FFA726;--prata:#CFD8DC;--bronze:#FF8A65}
-html{scroll-behavior:smooth}
-body{font-family:'Montserrat',system-ui,sans-serif;background:var(--n);color:var(--w);overflow-x:hidden;-webkit-font-smoothing:antialiased;padding-top:60px}
-img{display:block;max-width:100%}
-a{color:inherit}
-section{position:relative}
-
-/* NAV */
-#nav{position:fixed;top:0;left:0;right:0;z-index:999;background:rgba(19,26,34,0.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(31,200,219,0.25);height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;gap:16px}
-#nav .logos{display:flex;align-items:center;gap:20px}
-#nav .logo-pill{display:flex;align-items:center;gap:8px;text-decoration:none}
-#nav .logo-chip{background:#fff;border-radius:7px;padding:4px 8px;display:flex;align-items:center;justify-content:center}
-#nav .logo-img{height:26px;width:auto;object-fit:contain;display:block}
-#nav .logo-img.abee{height:30px}
-#nav .pname{font-size:11px;font-weight:700;color:rgba(255,255,255,.8)}
-.logo-chip{background:#fff;border-radius:8px;padding:8px 12px;display:inline-flex;align-items:center;justify-content:center}
-#nav .sep{width:1px;height:24px;background:rgba(255,255,255,.1)}
-#nav .nav-links{display:flex;gap:22px;align-items:center}
-#nav .nav-links a{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.6);text-decoration:none}
-#nav .nav-links a:hover{color:var(--g)}
-#nav .nav-cta{background:linear-gradient(135deg,var(--g),var(--gl));color:var(--n);font-weight:800;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 24px;border-radius:4px;text-decoration:none;white-space:nowrap;box-shadow:0 4px 16px rgba(31,200,219,.3);border:none;cursor:pointer;font-family:inherit}
-@media(max-width:1024px){#nav .nav-links{display:none}}
-@media(max-width:768px){#nav{padding:0 20px}#nav .pname,#nav .sep{display:none}#nav .logos{gap:10px}}
-
-/* HEROES */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
-.hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.35) saturate(.7)}
-.hero-ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(19,26,34,.2) 0%,rgba(28,39,51,.5) 40%,rgba(19,26,34,.97) 100%)}
-.hero-top{position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--g),var(--gl),var(--g))}
-.hero-content{position:relative;z-index:10;padding:80px 64px 100px;max-width:1040px}
-.tag{display:inline-block;background:rgba(31,200,219,.1);border:1px solid rgba(31,200,219,.4);border-radius:2px;padding:6px 16px;font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--g)}
-.gline{width:48px;height:4px;background:linear-gradient(90deg,var(--g),var(--gl));border-radius:2px;margin-bottom:32px}
-.sl{font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:48px}
-.sl.d{color:rgba(28,39,51,.3)}
-
-/* BOTÕES */
-.btn-green{background:linear-gradient(135deg,var(--g),var(--gl));color:var(--n);font-weight:800;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:16px 40px;border-radius:4px;text-decoration:none;display:inline-block;box-shadow:0 8px 32px rgba(31,200,219,.3);border:none;cursor:pointer;font-family:inherit}
-.btn-outline{border:2px solid var(--g);color:var(--g);font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:14px 32px;border-radius:4px;text-decoration:none;display:inline-block;background:transparent}
-
-/* DATE CHIPS */
-.dates{display:flex;gap:20px;flex-wrap:wrap;margin-top:40px}
-.dchip{background:rgba(255,255,255,.06);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:20px 28px}
-.dchip .day{font-size:38px;font-weight:900;line-height:1}
-.dchip .mo{font-size:12px;font-weight:700;color:var(--g);letter-spacing:2px}
-.dchip .yr{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:1px}
-.dchip .city{font-size:13px;color:rgba(255,255,255,.6);margin-top:6px;font-weight:500}
-.dchip .venue{font-size:11px;color:rgba(255,255,255,.4);margin-top:3px}
-
-/* GRID HELPERS */
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-
-/* SECTIONS PADS */
-.sec{padding:100px 80px}
-.sec-inner{max-width:1200px;margin:0 auto}
-.sec-head{text-align:center;margin-bottom:72px}
-.sec-head h2{font-size:clamp(26px,3.5vw,48px);font-weight:900;margin-bottom:16px}
-.sec-head h2 span{color:var(--g)}
-.sec-head p{font-size:15px;color:rgba(255,255,255,.55);max-width:580px;margin:0 auto;line-height:1.8}
-.sec-head .gline{margin:16px auto 0}
-
-/* CTA FLUTUANTE */
-.cta-strip{background:linear-gradient(90deg,var(--g),var(--gl));padding:24px 80px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
-.cta-strip p{font-size:clamp(13px,2vw,17px);font-weight:800;color:var(--n)}
-.cta-strip small{font-size:12px;font-weight:600;color:rgba(19,26,34,.65);display:block;margin-top:4px}
-.cta-strip a{background:var(--n);color:var(--w);font-weight:800;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:14px 32px;border-radius:4px;text-decoration:none;white-space:nowrap;flex-shrink:0}
-
-/* CARDS */
-.card-dark{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:36px 28px}
-.card-light{background:var(--w);border-radius:12px;padding:36px 28px;box-shadow:0 4px 24px rgba(28,39,51,.08)}
-.card-light .metric{font-size:11px;font-weight:700;color:var(--g);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
-.card-light .ctitle{font-size:17px;font-weight:700;color:var(--p);margin-bottom:10px}
-.card-light .cdesc{font-size:14px;color:#718096;line-height:1.7}
-.card-light .cicon{font-size:30px;margin-bottom:16px}
-.card-light{border-bottom:4px solid var(--g)}
-
-/* STAT BOX */
-.sbox{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:24px}
-.sbox .v{font-size:30px;font-weight:900;color:var(--g);line-height:1}
-.sbox .u{font-size:11px;color:rgba(255,255,255,.4);margin-top:3px}
-.sbox .l{font-size:12px;color:rgba(255,255,255,.6);margin-top:8px;line-height:1.5}
-
-/* BARS */
-.brow{margin-bottom:20px}
-.brow .bh{display:flex;justify-content:space-between;margin-bottom:7px}
-.brow .bn{font-size:13px;color:rgba(255,255,255,.8);font-weight:500}
-.brow .bp{font-size:13px;color:var(--g);font-weight:700}
-.brow .bt{background:rgba(255,255,255,.06);border-radius:4px;height:7px}
-.brow .bf{height:100%;background:linear-gradient(90deg,var(--g),var(--gl));border-radius:4px}
-
-/* FLOW */
-.flow{display:flex;flex-direction:column;align-items:center}
-.fnode{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:13px 26px;min-width:300px}
-.fnode.hl{background:rgba(31,200,219,.1);border-color:rgba(31,200,219,.45);box-shadow:0 0 40px rgba(31,200,219,.15)}
-.fnode .fi{font-size:20px}
-.fnode .fl{font-size:13px;font-weight:500;color:rgba(255,255,255,.8)}
-.fnode.hl .fl{color:var(--g);font-weight:700}
-.farr{width:2px;height:18px;background:rgba(255,255,255,.12);border-radius:1px}
-
-/* TIMELINE */
-.tl-item{display:grid;grid-template-columns:110px 1fr;gap:28px}
-.tl-meta{text-align:right;padding-top:4px}
-.tl-phase{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--g);text-transform:uppercase}
-.tl-date{font-size:12px;color:#718096;margin-top:4px}
-.tl-body{border-left:2px solid #E2E8F0;padding-left:28px;padding-bottom:36px;position:relative}
-.tl-body.act{border-left-color:var(--g)}
-.tl-body::before{content:'';position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:#CBD5E0;border:2px solid #CBD5E0}
-.tl-body.act::before{background:var(--g);border-color:var(--g)}
-.tl-title{font-size:15px;font-weight:700;color:var(--p);margin-bottom:6px}
-.tl-desc{font-size:13px;color:#718096;line-height:1.7}
-
-/* AGENDA */
-.agenda-item{display:flex;gap:24px;align-items:flex-start;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.06)}
-.agenda-item:last-child{border-bottom:none}
-.a-time{font-size:13px;font-weight:700;color:var(--g);min-width:80px;padding-top:2px}
-.a-type{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border-radius:3px;white-space:nowrap}
-.a-type.key{background:rgba(31,200,219,.15);color:var(--g)}
-.a-type.pan{background:rgba(130,177,255,.12);color:#82B1FF}
-.a-type.net{background:rgba(255,193,7,.1);color:#FFC107}
-.a-type.wkp{background:rgba(255,138,101,.1);color:#FF8A65}
-.a-body{flex:1}
-.a-title{font-size:15px;font-weight:700;margin-bottom:4px}
-.a-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6}
-
-/* COMPARATIVO COTAS */
-.cmp-table{width:100%;border-collapse:collapse;font-size:13px}
-.cmp-table th{padding:16px 20px;text-align:center;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;border-bottom:2px solid rgba(255,255,255,.08)}
-.cmp-table td{padding:14px 20px;text-align:center;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;color:rgba(255,255,255,.7)}
-.cmp-table tr:last-child td{border-bottom:none}
-.cmp-table td:first-child{text-align:left;font-weight:600;color:rgba(255,255,255,.85)}
-.cmp-table .yes{color:var(--g);font-size:16px}
-.cmp-table .no{color:rgba(255,255,255,.2);font-size:16px}
-.cmp-table .col-master{background:rgba(255,215,0,.05)}
-.cmp-table .col-dia{background:rgba(185,242,255,.03)}
-.cmp-price{font-size:16px;font-weight:900}
-
-/* QUOTA CARDS */
-.qsec{padding:72px 80px;border-top:1px solid rgba(255,255,255,.04)}
-.qcard{max-width:1000px;margin:0 auto;border-radius:16px;padding:56px 60px;position:relative;overflow:hidden}
-.qcard .qtop{position:absolute;top:0;left:0;right:0;height:3px}
-.qcard .qh{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:start;margin-bottom:40px}
-.qcard .qlabel{font-size:10px;font-weight:700;letter-spacing:6px;text-transform:uppercase;margin-bottom:10px}
-.qcard .qlevel{font-size:clamp(40px,5vw,68px);font-weight:900;line-height:.95;letter-spacing:-2px}
-.qcard .qi-label{font-size:10px;color:rgba(255,255,255,.35);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;text-align:right}
-.qcard .qi-price{font-size:clamp(26px,3.5vw,44px);font-weight:900;text-align:right}
-.qcard .vbadge{display:inline-block;border-radius:4px;padding:4px 12px;font-size:11px;font-weight:700;margin-top:8px}
-.qcard .qdiv{height:1px;margin-bottom:36px}
-.qcard .qb{display:grid;gap:12px 36px}
-.qcard .qitem{display:flex;align-items:flex-start;gap:12px}
-.qcard .qdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:7px}
-.qcard .qitem span{font-size:14px;color:rgba(255,255,255,.75);line-height:1.6}
-.qitem{display:flex;align-items:flex-start;gap:12px}
-.qdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:7px}
-.qitem span{font-size:14px;color:rgba(255,255,255,.75);line-height:1.6}
-
-/* CONTATO */
-.contact-item{display:flex;align-items:center;gap:18px;margin-bottom:20px}
-.contact-icon{width:44px;height:44px;flex-shrink:0;background:rgba(31,200,219,.08);border:1px solid rgba(31,200,219,.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
-.clabel{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:2px;text-transform:uppercase;margin-bottom:2px}
-.cval{font-size:15px;font-weight:600}
-
-/* URGÊNCIA */
-.urgencia{background:linear-gradient(90deg,var(--g),var(--gl));padding:22px 80px;text-align:center}
-.urgencia p{font-size:clamp(13px,1.8vw,17px);font-weight:800;color:var(--n);margin-bottom:4px}
-.urgencia small{font-size:12px;color:rgba(19,26,34,.65);font-weight:600}
-
-/* INSIGHT BOX */
-.insight{background:rgba(31,200,219,.07);border:1px solid rgba(31,200,219,.22);border-radius:10px;padding:24px 28px;margin-top:32px}
-.insight .itag{font-size:11px;font-weight:700;color:var(--g);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
-.insight p{font-size:14px;color:rgba(255,255,255,.8);line-height:1.7}
-
-/* ROI BOX */
-.roi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.06);border-radius:12px;overflow:hidden;margin-top:40px}
-.roi-item{background:var(--p);padding:32px 24px;text-align:center}
-.roi-item .rv{font-size:clamp(28px,3vw,40px);font-weight:900;color:var(--g);line-height:1}
-.roi-item .rl{font-size:12px;color:rgba(255,255,255,.55);margin-top:10px;line-height:1.5}
-
-/* MT STATS */
-.mt-stats{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.mt-stat{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:22px 18px}
-.mt-stat .v{font-size:24px;font-weight:900;color:var(--g);line-height:1}
-.mt-stat .u{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px}
-.mt-stat .l{font-size:12px;color:rgba(255,255,255,.6);margin-top:7px}
-
-/* CITY CARDS */
-.cities{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.city-card{background:var(--w);border-radius:10px;padding:20px;box-shadow:0 2px 12px rgba(28,39,51,.07);border-left:4px solid var(--g)}
-.city-card .cc-name{font-size:11px;font-weight:700;color:var(--g);letter-spacing:2px;margin-bottom:6px}
-.city-card .cc-date{font-size:15px;font-weight:700;color:var(--p)}
-.city-card .cc-desc{font-size:13px;color:#718096;margin-top:4px;line-height:1.5}
-
-/* TOPICS */
-.topics{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
-.topic{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:24px 16px;text-align:center}
-.topic .ti{font-size:26px;margin-bottom:10px}
-.topic .tn{font-size:12px;font-weight:700;margin-bottom:6px}
-.topic .td{font-size:11px;color:rgba(255,255,255,.4);line-height:1.5}
-
-/* COMPANIES / PARCEIROS */
-.companies{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:640px;margin:0 auto}
-.company{padding:28px 18px;text-align:center;background:rgba(255,255,255,.04);border:1px solid rgba(31,200,219,.12);border-radius:12px;position:relative;overflow:hidden;transition:.2s}
-.company::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--g),var(--gl));opacity:.65}
-.company:hover{background:rgba(31,200,219,.06);border-color:rgba(31,200,219,.35);transform:translateY(-3px)}
-.company-icon{width:56px;height:56px;background:rgba(31,200,219,.1);border:1px solid rgba(31,200,219,.28);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--g);margin:0 auto 14px;padding:0 6px}
-.company .cn{font-size:13px;font-weight:800;margin-bottom:4px}
-.company .cc{font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.5px}
-.company .status{display:inline-block;margin-top:10px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border-radius:3px}
-.company .status.ok{background:rgba(31,200,219,.15);color:var(--g)}
-.company .status.wait{background:rgba(255,193,7,.1);color:#FFC107}
-
-/* NUM GRID */
-.numgrid{display:grid;grid-template-columns:repeat(4,1fr)}
-.numitem{padding:56px 36px;text-align:center;border-right:1px solid rgba(255,255,255,.07)}
-.numitem:last-child{border-right:none}
-.numitem .big{font-size:clamp(46px,5vw,68px);font-weight:900;color:var(--g);line-height:1}
-.numitem .nm{font-size:17px;font-weight:700;margin-top:14px;margin-bottom:6px}
-.numitem .ns{font-size:13px;color:rgba(255,255,255,.4)}
-
-/* FOOTER */
-footer{background:#0C1118;padding:44px 80px;border-top:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
-.footer-brand{display:flex;align-items:center;gap:16px}
-.footer-name{font-size:13px;font-weight:700;color:rgba(255,255,255,.8)}
-.footer-sub{font-size:11px;color:rgba(255,255,255,.35);margin-top:2px}
-.footer-right{text-align:right}
-.footer-tag{font-size:11px;color:var(--g);letter-spacing:2px;text-transform:uppercase;font-weight:700}
-.footer-conf{font-size:11px;color:rgba(255,255,255,.25);margin-top:4px}
-
-/* RESPONSIVE */
-@media(max-width:900px){
-  .g2,.g3,.g4,.g2.flip{grid-template-columns:1fr!important}
-  .sec{padding:72px 28px}
-  .hero-content{padding:60px 28px 80px}
-  .numgrid{grid-template-columns:1fr 1fr}
-  .numitem{border-right:none;border-bottom:1px solid rgba(255,255,255,.07)}
-  .topics{grid-template-columns:repeat(2,1fr)}
-  .companies{grid-template-columns:1fr}
-  .cities{grid-template-columns:1fr}
-  .cta-strip{padding:20px 28px}
-  .urgencia{padding:20px 28px}
-  .qcard{padding:36px 24px}
-  .qsec{padding:48px 28px}
-  footer{padding:36px 28px;flex-direction:column;text-align:center}
-  .footer-right{text-align:center}
-  .cmp-table{font-size:11px}
-  .cmp-table th,.cmp-table td{padding:10px 10px}
-  .roi-grid{grid-template-columns:1fr 1fr}
-  .g2>*,.g3>*,.g4>*,.sec-inner,.hero-content{min-width:0;max-width:100%}
-  .fnode{min-width:0;width:100%}
-  .sbox .v{font-size:22px}
-  .sbox,.mt-stat{min-width:0;padding:18px 14px}
-  .mt-stat .v{font-size:20px}
-  .sbox>*,.mt-stat>*{overflow-wrap:anywhere}
-  .dchip{flex:1 1 140px}
-  section>div[style*="padding:100px 80px"]{padding:72px 28px!important}
-  h1,h2{overflow-wrap:anywhere}
-}
-
-/* ===== INSCRIÇÕES ===== */
-.price-pill{display:inline-flex;align-items:baseline;gap:10px;background:rgba(31,200,219,.1);border:1px solid rgba(31,200,219,.4);border-radius:12px;padding:14px 22px;margin-bottom:28px}
-.price-pill .pp-lbl{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--g)}
-.price-pill .pp-val{font-size:clamp(30px,4vw,46px);font-weight:900;line-height:1}
-.price-pill .pp-sub{font-size:12px;color:rgba(255,255,255,.55)}
-.incl{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.incl-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:28px 24px;display:flex;gap:16px;align-items:flex-start}
-.incl-item .ii{font-size:28px;flex-shrink:0}
-.incl-item .it{font-size:15px;font-weight:700;margin-bottom:6px}
-.incl-item .id{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6}
-.form-card{background:var(--w);color:var(--n);border-radius:16px;padding:40px;box-shadow:0 24px 80px rgba(0,0,0,.35)}
-.form-card h3{font-size:22px;font-weight:900;color:var(--p);margin-bottom:6px}
-.form-card .fsub{font-size:13px;color:#718096;margin-bottom:24px;line-height:1.6}
-.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.fgrid .full{grid-column:1/-1}
-.flabel{display:block;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--p);margin-bottom:6px}
-.finput,.fselect{width:100%;font-family:inherit;font-size:14px;padding:12px 14px;border:1.5px solid #D5DCE3;border-radius:8px;background:#fff;color:var(--n);outline:none}
-.finput:focus,.fselect:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(31,200,219,.2)}
-.fradio{display:flex;gap:10px;flex-wrap:wrap}
-.fradio label{flex:1;min-width:120px;border:1.5px solid #D5DCE3;border-radius:8px;padding:12px 14px;font-size:13px;font-weight:600;color:var(--p);cursor:pointer;display:flex;gap:8px;align-items:center}
-.fradio input{accent-color:var(--g)}
-.fradio label:has(input:checked){border-color:var(--g);background:rgba(31,200,219,.08)}
-.fsubmit{width:100%;margin-top:20px;background:linear-gradient(135deg,var(--g),var(--gl));color:var(--n);font-weight:800;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:16px;border-radius:8px;border:none;cursor:pointer;font-family:inherit;box-shadow:0 8px 24px rgba(31,200,219,.3)}
-.fnote{font-size:12px;color:#718096;margin-top:14px;line-height:1.6;text-align:center}
-.pay-box{background:rgba(31,200,219,.06);border:1px dashed rgba(31,200,219,.45);border-radius:10px;padding:18px 20px;margin-top:18px}
-.pay-box .pt{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#0A8FA0;margin-bottom:6px}
-.pay-box p{font-size:13px;color:#4A5568;line-height:1.6}
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.step{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:28px 22px}
-.step .sn{font-size:11px;font-weight:800;letter-spacing:4px;color:var(--g);margin-bottom:12px}
-.step .st{font-size:15px;font-weight:700;margin-bottom:8px}
-.step .sd{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6}
-.faq{max-width:820px;margin:0 auto}
-.faq details{border-bottom:1px solid rgba(255,255,255,.08);padding:18px 0}
-.faq summary{cursor:pointer;font-size:15px;font-weight:700;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:'+';color:var(--g);font-size:22px;font-weight:300}
-.faq details[open] summary::after{content:'–'}
-.faq p{font-size:14px;color:rgba(255,255,255,.55);line-height:1.8;margin-top:10px}
-.spon-strip{background:rgba(255,255,255,.03);border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);padding:36px 80px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
-.spon-strip p{font-size:15px;color:rgba(255,255,255,.7)}
-.spon-strip p strong{color:var(--w)}
-@media(max-width:900px){.incl,.steps{grid-template-columns:1fr}.fgrid{grid-template-columns:1fr}.form-card{padding:28px 20px}.spon-strip{padding:28px}}
-</style>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Tabela de Honorários AMEE 2026</title>
+<meta name="description" content="Lançamento da Tabela de Honorários Profissionais da Engenharia Elétrica, AMEE 2026. 23 de novembro, Dia do Engenheiro Eletricista, em Cuiabá, Sorriso e Rondonópolis, presencial e online. Inscrição de R$ 20 com apoio do CREA-MT."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Mono:wght@500&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-<!-- NAV FIXA -->
-<nav id="nav">
-  <div class="logos">
-    <a href="https://www.abeemt.org.br" target="_blank" rel="noopener" class="logo-pill">
-      <span class="logo-chip"><img class="logo-img abee" src="logo-abee-mt.png" alt="AMEE"/></span>
-    </a>
-    <div class="sep"></div>
-    <span class="logo-pill">
-      <span class="logo-chip"><img class="logo-img crea" src="logo-crea-mt.png" alt="CREA-MT"/></span>
-    </span>
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand">
+      <a href="https://www.abeemt.org.br" target="_blank" rel="noopener"><img src="logo-abee-mt.png" alt="AMEE, Associação Mato-Grossense dos Engenheiros Eletricistas"/></a>
+      <span class="sep"></span>
+      <img src="logo-crea-mt.png" alt="CREA-MT"/>
+    </div>
+    <nav class="nav" aria-label="Seções">
+      <a href="#tabela">A tabela</a>
+      <a href="#programacao">Programação</a>
+      <a href="#locais">Locais</a>
+      <a href="#inscricao">Inscrição</a>
+      <a href="#duvidas">Dúvidas</a>
+      <a href="patrocinio">Patrocínio</a>
+    </nav>
+    <a class="btn sm" href="https://eventos.softaliza.com.br/lancamento-da-tabela-de-honorarios-profissionais-da-engenharia-eletrica" target="_blank" rel="noopener">Inscreva-se</a>
   </div>
-  <div class="nav-links">
-    <a href="#evento">O Evento</a>
-    <a href="#programacao">Programação</a>
-    <a href="#locais">Locais</a>
-    <a href="#faq">Dúvidas</a>
-    <a href="patrocinio.html">Patrocínio</a>
-  </div>
-  <a href="https://eventos.softaliza.com.br/lancamento-da-tabela-de-honorarios-profissionais-da-engenharia-eletrica" target="_blank" rel="noopener" class="nav-cta">✅ Inscreva-se · R$ 20</a>
-</nav>
+</header>
 
-<!-- ═══ HERO ═══ -->
 <section class="hero">
-  <img class="hero-bg" src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1920&q=85&fit=crop" alt="Engenharia Elétrica"/>
-  <div class="hero-ov"></div>
-  <div class="hero-top"></div>
-  <div class="hero-content">
-    <div class="tag" style="margin-bottom:20px">23 de Novembro · Dia do Engenheiro Eletricista · Inscrições Abertas</div>
-    <h1 style="font-size:clamp(32px,5.2vw,68px);font-weight:900;line-height:1.05;letter-spacing:-1px;margin-bottom:12px">
-      LANÇAMENTO DA<br>
-      <span style="color:var(--g)">TABELA DE HONORÁRIOS</span><br>
-      DA ENGENHARIA ELÉTRICA
-    </h1>
-    <p style="font-size:clamp(14px,2vw,24px);font-weight:300;color:rgba(255,255,255,.65);letter-spacing:3px;text-transform:uppercase;margin-bottom:20px">AMEE 2026 — Mato Grosso</p>
-    <div class="price-pill">
-      <span class="pp-lbl">Inscrição</span>
-      <span class="pp-val">R$ 20</span>
-      <span class="pp-sub">valor simbólico · subsidiado pelo CREA-MT · confraternização inclusa</span>
-    </div>
-    <p style="font-size:15px;color:rgba(255,255,255,.5);margin-bottom:8px;max-width:640px;line-height:1.8">
-      Conheça em primeira mão a referência de precificação dos serviços de engenharia elétrica em Mato Grosso, <strong style="color:var(--g)">receba a tabela em formato digital e impresso</strong> e comemore o <strong style="color:var(--w)">Dia do Engenheiro Eletricista</strong> numa noite de confraternização e networking com a categoria.
-    </p>
-    <div class="dates">
-      <div class="dchip">
-        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px"><span class="day">23</span><div><div class="mo">NOV</div><div class="yr">2026</div></div></div>
-        <div class="city">📍 Cuiabá, MT</div>
-        <div class="venue">Auditório CREA-MT · Sede</div>
+  <div class="wrap">
+    <div class="hero-text">
+      <span class="eyebrow">Dia do Engenheiro Eletricista · Apoio CREA-MT · Edital nº 001/2026</span>
+      <h1>Lançamento da Tabela de Honorários Profissionais da Engenharia Elétrica</h1>
+      <p class="lead">A AMEE apresenta à categoria a referência de precificação dos serviços de engenharia elétrica em Mato Grosso. Palestra, painel técnico, entrega da tabela impressa e confraternização pelo dia da profissão.</p>
+      <div class="datemark">
+        <span class="big">23.11</span>
+        <span class="small"><b>Segunda-feira, 2026</b>a partir das 18h · Cuiabá, Sorriso, Rondonópolis e online</span>
       </div>
-      <div class="dchip">
-        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px"><span class="day">23</span><div><div class="mo">NOV</div><div class="yr">2026</div></div></div>
-        <div class="city">📍 Sorriso, MT</div>
-        <div class="venue">Auditório CREA-MT · Inspetoria</div>
-      </div>
-      <div class="dchip">
-        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px"><span class="day">23</span><div><div class="mo">NOV</div><div class="yr">2026</div></div></div>
-        <div class="city">📍 Rondonópolis, MT</div>
-        <div class="venue">Auditório CREA-MT · Inspetoria</div>
-      </div>
-      <div class="dchip" style="border-color:rgba(31,200,219,.4);background:rgba(31,200,219,.08)">
-        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px"><span class="day" style="font-size:30px">🌐</span><div><div class="mo">ONLINE</div><div class="yr">AO VIVO</div></div></div>
-        <div class="city">Transmissão híbrida</div>
-        <div class="venue">Para todo o estado</div>
+      <div class="hero-actions">
+        <a class="btn" href="https://eventos.softaliza.com.br/lancamento-da-tabela-de-honorarios-profissionais-da-engenharia-eletrica" target="_blank" rel="noopener">Fazer inscrição · R$ 20</a>
+        <a class="arrow" href="#programacao">Ver a programação</a>
       </div>
     </div>
-    <div style="display:flex;gap:16px;margin-top:40px;flex-wrap:wrap">
-      <a href="https://eventos.softaliza.com.br/lancamento-da-tabela-de-honorarios-profissionais-da-engenharia-eletrica" target="_blank" rel="noopener" class="btn-green">Garantir Minha Vaga</a>
-      <a href="#programacao" class="btn-outline">Ver Programação</a>
-    </div>
+    <aside class="sheet" aria-label="Ficha do evento">
+      <dl>
+        <dt>Data</dt><dd>23 de novembro de 2026<small>Dia do Engenheiro Eletricista</small></dd>
+        <dt>Horário</dt><dd>18h às 23h<small>Programação provisória</small></dd>
+        <dt>Locais</dt><dd>Auditórios do CREA-MT<small>Cuiabá (sede), Sorriso e Rondonópolis (inspetorias)</small></dd>
+        <dt>Formato</dt><dd>Presencial e online<small>Transmissão ao vivo para todo o estado</small></dd>
+        <dt>Vagas</dt><dd>200<small>Presencial e online, somadas</small></dd>
+        <dt>Inscrição</dt><dd><span class="price">R$ 20</span><small>Valor simbólico, subsidiado pelo CREA-MT</small></dd>
+      </dl>
+      <div class="sheet-foot">
+        <span>Realização AMEE · Apoio CREA-MT</span>
+        <a class="arrow" href="#inscricao">Como se inscrever</a>
+      </div>
+    </aside>
   </div>
 </section>
 
-<!-- ═══ URGÊNCIA ═══ -->
-<div class="urgencia">
-  <p>⚡ VAGAS LIMITADAS — 200 participantes · auditórios do CREA-MT · R$ 20 por pessoa</p>
-  <small>Garanta sua vaga até 16/11/2026 para receber a tabela impressa e participar da confraternização do Dia do Engenheiro Eletricista</small>
-</div>
-
-<!-- ═══ O QUE ESTÁ INCLUSO ═══ -->
-<section id="evento" class="sec" style="background:var(--p)">
-  <div class="sec-inner">
-    <div class="sec-head">
-      <div class="sl" style="text-align:center">O que está incluso</div>
-      <h2>Muito mais do que<br><span>R$ 20 compram</span></h2>
-      <div class="gline" style="margin:16px auto 16px"></div>
-      <p>O evento é subsidiado pelo CREA-MT por meio do Edital de Parceria nº 001/2026. O valor simbólico garante o seu compromisso com a vaga.</p>
-    </div>
-    <div class="incl">
-      <div class="incl-item"><div class="ii">📘</div><div><div class="it">Tabela de Honorários 2026</div><div class="id">Versão impressa entregue no evento e versão digital enviada por e-mail para todos os inscritos.</div></div></div>
-      <div class="incl-item"><div class="ii">🎤</div><div><div class="it">Palestra e painel técnico</div><div class="id">Como a tabela foi construída, critérios adotados e aplicação prática em projetos, laudos, GD e consultoria.</div></div></div>
-      <div class="incl-item"><div class="ii">🎉</div><div><div class="it">Confraternização do Dia do Engenheiro Eletricista</div><div class="id">O lançamento acontece na data da categoria. Encerramento com confraternização e networking em cada polo — em Cuiabá, com churrasco.</div></div></div>
-      <div class="incl-item"><div class="ii">📜</div><div><div class="it">Certificado de participação</div><div class="id">Certificado digital emitido pela AMEE para quem participar presencialmente ou online.</div></div></div>
-      <div class="incl-item"><div class="ii">🤝</div><div><div class="it">Networking</div><div class="id">Engenheiros, empresas, concessionárias, órgãos públicos e academia no mesmo ambiente.</div></div></div>
-      <div class="incl-item"><div class="ii">🌐</div><div><div class="it">Acesso online</div><div class="id">Não pode ir até o auditório? Participe ao vivo pela transmissão e envie suas perguntas.</div></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ SOBRE A TABELA ═══ -->
-<section class="sec" style="background:var(--gr);color:var(--n)">
-  <div class="sec-inner">
-    <div class="sl d">Sobre a Tabela</div>
-    <div class="g2">
-      <div>
-        <h2 style="font-size:clamp(26px,3.5vw,46px);font-weight:900;color:var(--p);line-height:1.1;margin-bottom:16px">
-          A referência que a<br><span style="color:var(--g)">categoria esperava</span>
-        </h2>
-        <div class="gline"></div>
-        <p style="font-size:15px;color:#4A5568;line-height:1.9;margin-bottom:20px">
-          A Tabela de Honorários Profissionais da Engenharia Elétrica — AMEE 2026 estabelece <strong>critérios técnicos e econômicos que orientam a remuneração adequada</strong> dos serviços prestados pelos profissionais da área, consolidando parâmetros alinhados à realidade de Mato Grosso.
-        </p>
-        <p style="font-size:15px;color:#4A5568;line-height:1.9;margin-bottom:32px">
-          Ela promove equilíbrio nas relações contratuais, combate preços incompatíveis com a responsabilidade técnica assumida e incentiva a concorrência baseada na qualidade — com mais segurança para o profissional e para a sociedade.
-        </p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-          <div class="city-card"><div class="cc-name">PARA QUEM ORÇA</div><div class="cc-date">Referência de preço</div><div class="cc-desc">Pare de precificar no escuro: parâmetros por tipo de serviço.</div></div>
-          <div class="city-card"><div class="cc-name">PARA QUEM CONTRATA</div><div class="cc-date">Segurança técnica</div><div class="cc-desc">Entenda o que está por trás de um honorário justo.</div></div>
-        </div>
-      </div>
-      <div class="topics" style="grid-template-columns:repeat(2,1fr)">
-        <div class="topic" style="background:var(--w);border-color:#E2E8F0"><div class="ti">📐</div><div class="tn" style="color:var(--p)">Projetos Elétricos</div><div class="td" style="color:#718096">Residencial, comercial e industrial</div></div>
-        <div class="topic" style="background:var(--w);border-color:#E2E8F0"><div class="ti">☀️</div><div class="tn" style="color:var(--p)">Geração Distribuída</div><div class="td" style="color:#718096">Projetos fotovoltaicos e homologação</div></div>
-        <div class="topic" style="background:var(--w);border-color:#E2E8F0"><div class="ti">🏭</div><div class="tn" style="color:var(--p)">Subestações</div><div class="td" style="color:#718096">Projeto, adequação e comissionamento</div></div>
-        <div class="topic" style="background:var(--w);border-color:#E2E8F0"><div class="ti">⚡</div><div class="tn" style="color:var(--p)">SPDA & Aterramento</div><div class="td" style="color:#718096">Projetos, laudos e inspeções</div></div>
-        <div class="topic" style="background:var(--w);border-color:#E2E8F0"><div class="ti">📋</div><div class="tn" style="color:var(--p)">Laudos & Perícias</div><div class="td" style="color:#718096">Inspeções, vistorias e pareceres</div></div>
-        <div class="topic" style="background:var(--w);border-color:#E2E8F0"><div class="ti">🧾</div><div class="tn" style="color:var(--p)">Consultoria & ART</div><div class="td" style="color:#718096">Responsabilidade técnica e assessoria</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ PROGRAMAÇÃO ═══ -->
-<section id="programacao" class="sec" style="background:var(--n)">
-  <div class="sec-inner">
-    <div class="sl">Programação</div>
-    <div class="g2" style="gap:60px">
-      <div>
-        <h2 style="font-size:clamp(24px,3vw,42px);font-weight:900;line-height:1.1;margin-bottom:16px">
-          Uma noite para<br><span style="color:var(--g)">valorizar a profissão</span>
-        </h2>
-        <div class="gline"></div>
-        <p style="font-size:15px;color:rgba(255,255,255,.65);line-height:1.9;margin-bottom:32px">
-          Encontro técnico no fim da tarde/noite, pensado para quem está em atividade. Da abertura institucional à confraternização de encerramento, no Dia do Engenheiro Eletricista.
-        </p>
-        <div style="display:flex;flex-direction:column;gap:12px">
-          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">🎤</span> Abertura institucional com CREA-MT e Presidência da AMEE</div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">📊</span> Palestra principal: aplicação da Tabela de Honorários 2026</div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">🗣️</span> Painel técnico com especialistas do setor elétrico</div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">❓</span> Perguntas e respostas (presencial e online)</div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">📘</span> Entrega da tabela digital e impressa</div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)"><span style="font-size:18px">🎉</span> Confraternização e networking pelo Dia do Engenheiro Eletricista</div>
-        </div>
-        <div class="insight" style="margin-top:28px">
-          <div class="itag">Mesma programação nas 3 cidades + online</div>
-          <p>O evento acontece simultaneamente em <strong style="color:var(--w)">Cuiabá, Sorriso e Rondonópolis</strong>, nos auditórios do CREA-MT, com <strong style="color:var(--w)">transmissão ao vivo</strong>. Escolha o polo mais perto de você na inscrição.</p>
-        </div>
+<section id="tabela" class="section">
+  <div class="wrap">
+    <div class="label"><span class="eyebrow">A tabela</span><span class="n">Instrumento orientativo</span></div>
+    <div class="content">
+      <h2>Critérios técnicos e econômicos para a remuneração dos serviços de engenharia elétrica</h2>
+      <div class="cols">
+        <p>A Tabela de Honorários Profissionais da Engenharia Elétrica, AMEE 2026, consolida parâmetros alinhados à realidade de Mato Grosso. Ela orienta a remuneração adequada dos serviços prestados pelos profissionais da área e dá a quem contrata uma base para entender o que está por trás de um honorário: a responsabilidade técnica assumida e os custos envolvidos na execução.</p>
+        <p>O estado cresce em geração distribuída, redes de distribuição, subestações, automação e eficiência energética. Com a demanda por serviços especializados em alta, a tabela promove equilíbrio nas relações contratuais, evita preços incompatíveis com a responsabilidade técnica e incentiva a concorrência baseada na qualidade, com mais segurança para a sociedade.</p>
       </div>
       <div>
-        <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden">
-          <div style="background:rgba(31,200,219,.08);border-bottom:1px solid rgba(31,200,219,.15);padding:16px 24px;display:flex;align-items:center;gap:12px">
-            <span style="font-size:14px">📅</span>
-            <span style="font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--g)">Programação provisória — 23/11/2026</span>
-          </div>
-          <div style="padding:8px 24px">
-            <div class="agenda-item"><div class="a-time">18h00<div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:500;margin-top:2px">30 min</div></div><div class="a-body"><div style="margin-bottom:6px"><span class="a-type key">Abertura</span></div><div class="a-title">Credenciamento</div><div class="a-desc">Recepção dos inscritos e entrega do material</div></div></div>
-            <div class="agenda-item"><div class="a-time">18h30<div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:500;margin-top:2px">30 min</div></div><div class="a-body"><div style="margin-bottom:6px"><span class="a-type key">Institucional</span></div><div class="a-title">Abertura institucional</div><div class="a-desc">Representante do CREA-MT · Presidente da AMEE</div></div></div>
-            <div class="agenda-item"><div class="a-time">19h00<div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:500;margin-top:2px">1h</div></div><div class="a-body"><div style="margin-bottom:6px"><span class="a-type pan">Palestra</span></div><div class="a-title">Aplicação da Tabela de Honorários da Engenharia Elétrica 2026</div><div class="a-desc">Critérios técnicos da elaboração e impactos na atuação profissional</div></div></div>
-            <div class="agenda-item"><div class="a-time">20h00<div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:500;margin-top:2px">45 min</div></div><div class="a-body"><div style="margin-bottom:6px"><span class="a-type wkp">Painel</span></div><div class="a-title">Painel técnico — aplicação prática</div><div class="a-desc">Especialistas do setor elétrico: projetos, laudos, GD, subestações e consultoria</div></div></div>
-            <div class="agenda-item"><div class="a-time">20h45<div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:500;margin-top:2px">30 min</div></div><div class="a-body"><div style="margin-bottom:6px"><span class="a-type pan">Interação</span></div><div class="a-title">Perguntas e respostas</div><div class="a-desc">Público presencial e online</div></div></div>
-            <div class="agenda-item"><div class="a-time">21h15<div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:500;margin-top:2px">até 23h</div></div><div class="a-body"><div style="margin-bottom:6px"><span class="a-type net">Confraternização</span></div><div class="a-title">Entrega da tabela e confraternização</div><div class="a-desc">Encerramento, disponibilização da tabela e confraternização do Dia do Engenheiro Eletricista (em Cuiabá, com churrasco)</div></div></div>
-          </div>
+        <h3 style="margin-bottom:14px">Serviços cobertos pela tabela</h3>
+        <ul class="services">
+          <li>Projetos elétricos residenciais, comerciais e industriais</li>
+          <li>Geração distribuída: projetos fotovoltaicos e homologação</li>
+          <li>Subestações: projeto, adequação e comissionamento</li>
+          <li>SPDA e aterramento: projetos, laudos e inspeções</li>
+          <li>Laudos, perícias, vistorias e pareceres</li>
+          <li>Automação industrial e predial</li>
+          <li>Eficiência energética e gestão de energia</li>
+          <li>Manutenção preventiva, preditiva e corretiva</li>
+          <li>Consultoria, assessoria e responsabilidade técnica (ART)</li>
+          <li>Adequação à NR-10 e prontuário de instalações</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="incluso" class="section alt">
+  <div class="wrap">
+    <div class="label"><span class="eyebrow">O que está incluso</span><span class="n">Na inscrição de R$ 20</span></div>
+    <div class="content">
+      <h2>O evento é subsidiado pelo CREA-MT. O valor da inscrição confirma a sua vaga.</h2>
+      <ul class="rules">
+        <li><b>Tabela de Honorários 2026</b><span>Versão impressa entregue no evento aos participantes presenciais e versão digital enviada por e-mail a todos os inscritos.</span></li>
+        <li><b>Palestra e painel técnico</b><span>Como a tabela foi construída, critérios adotados e aplicação prática em projetos, laudos, geração distribuída e consultoria.</span></li>
+        <li><b>Certificado de participação</b><span>Emitido pela AMEE para participantes presenciais e online.</span></li>
+        <li><b>Confraternização do Dia do Engenheiro Eletricista</b><span>Encerramento com confraternização e networking em cada polo. Em Cuiabá, com churrasco.</span></li>
+        <li><b>Networking com a categoria</b><span>Engenheiros, empresas, concessionárias, órgãos públicos e academia no mesmo ambiente.</span></li>
+        <li><b>Acesso online</b><span>Para quem não puder ir ao auditório: transmissão ao vivo e envio de perguntas durante o evento.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="programacao" class="section">
+  <div class="wrap">
+    <div class="label"><span class="eyebrow">Programação</span><span class="n">23.11.2026 · provisória</span></div>
+    <div class="content">
+      <h2>Mesma programação nas três cidades e na transmissão online</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Horário</th><th>Atividade</th></tr></thead>
+          <tbody>
+            <tr><td class="time">18h00<small>30 min</small></td><td><b>Credenciamento</b><span class="d">Recepção dos inscritos e entrega do material.</span></td></tr>
+            <tr><td class="time">18h30<small>30 min</small></td><td><b>Abertura institucional</b><span class="d">Representante do CREA-MT e presidente da AMEE.</span></td></tr>
+            <tr><td class="time">19h00<small>60 min</small></td><td><b>Palestra: aplicação da Tabela de Honorários da Engenharia Elétrica 2026</b><span class="d">Critérios técnicos da elaboração e impactos na atuação profissional.</span></td></tr>
+            <tr><td class="time">20h00<small>45 min</small></td><td><b>Painel técnico</b><span class="d">Especialistas do setor elétrico discutem a aplicação prática em projetos, laudos, geração distribuída, subestações e consultoria.</span></td></tr>
+            <tr><td class="time">20h45<small>30 min</small></td><td><b>Perguntas e respostas</b><span class="d">Público presencial e online.</span></td></tr>
+            <tr><td class="time">21h15<small>até 23h</small></td><td><b>Entrega da tabela e confraternização</b><span class="d">Encerramento, disponibilização da tabela impressa e digital e confraternização pelo Dia do Engenheiro Eletricista.</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Os horários são provisórios e podem ser ajustados até a semana do evento. Os inscritos recebem a versão final por e-mail.</p>
+    </div>
+  </div>
+</section>
+
+<section id="locais" class="section alt">
+  <div class="wrap">
+    <div class="label"><span class="eyebrow">Locais</span><span class="n">Três polos, mesma noite</span></div>
+    <div class="content">
+      <h2>Escolha o auditório do CREA-MT mais perto de você, ou participe online</h2>
+      <div class="cities">
+        <div class="city"><span class="eyebrow">Polo 1</span><h3>Cuiabá</h3><p>Auditório do CREA-MT, sede. Capital e polo institucional. A transmissão principal parte daqui.</p><span class="tag">Confraternização com churrasco</span></div>
+        <div class="city"><span class="eyebrow">Polo 2</span><h3>Sorriso</h3><p>Auditório do CREA-MT, inspetoria. Médio-norte, capital nacional do agronegócio e polo de geração distribuída.</p><span class="tag">Confraternização e networking</span></div>
+        <div class="city"><span class="eyebrow">Polo 3</span><h3>Rondonópolis</h3><p>Auditório do CREA-MT, inspetoria. Segundo polo econômico do estado e maior hub agroindustrial.</p><span class="tag">Confraternização e networking</span></div>
+      </div>
+      <p class="muted">Participantes online acompanham a transmissão ao vivo e recebem a tabela em formato digital.</p>
+    </div>
+  </div>
+</section>
+
+<section id="inscricao" class="section">
+  <div class="wrap">
+    <div class="label"><span class="eyebrow">Inscrição</span><span class="n">Plataforma oficial</span></div>
+    <div class="content">
+      <h2>Inscrição pela plataforma do evento, em poucos minutos</h2>
+      <div class="reg">
+        <div class="reg-main">
+          <ol class="steps">
+            <li><div><b>Acesse a plataforma</b><span>O botão ao lado leva à página oficial do evento, no sistema de inscrições da Softaliza.</span></div></li>
+            <li><div><b>Preencha seus dados</b><span>Nome, contato e o polo onde vai participar: Cuiabá, Sorriso, Rondonópolis ou online.</span></div></li>
+            <li><div><b>Pague R$ 20</b><span>O pagamento é feito na própria plataforma. A confirmação chega no seu e-mail.</span></div></li>
+            <li><div><b>Compareça em 23 de novembro</b><span>Apresente o nome no credenciamento, receba a tabela e participe da confraternização.</span></div></li>
+          </ol>
+        </div>
+        <div class="reg-side">
+          <span class="eyebrow">Inscrição</span>
+          <span class="price">R$ 20</span>
+          <p>Valor simbólico. O restante do custo é subsidiado pelo CREA-MT por meio do Edital de Parceria nº 001/2026.</p>
+          <a class="btn" href="https://eventos.softaliza.com.br/lancamento-da-tabela-de-honorarios-profissionais-da-engenharia-eletrica" target="_blank" rel="noopener">Inscrever-se agora</a>
+          <small>Vagas limitadas a 200 participantes. Dúvidas com a plataforma: WhatsApp (65) 98463-3872.</small>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ COMO FUNCIONA ═══ -->
-<section class="sec" style="background:var(--p)">
-  <div class="sec-inner">
-    <div class="sec-head">
-      <div class="sl" style="text-align:center">Como participar</div>
-      <h2>4 passos para<br><span>garantir sua vaga</span></h2>
-      <div class="gline" style="margin:16px auto 0"></div>
-    </div>
-    <div class="steps">
-      <div class="step"><div class="sn">01</div><div class="st">Acesse a plataforma</div><div class="sd">Clique em "Inscrever-se" e você será levado à página oficial do evento na Softaliza.</div></div>
-      <div class="step"><div class="sn">02</div><div class="st">Preencha seus dados</div><div class="sd">Nome, contato e o polo onde vai participar: Cuiabá, Sorriso, Rondonópolis ou online.</div></div>
-      <div class="step"><div class="sn">03</div><div class="st">Pague R$ 20</div><div class="sd">Pagamento na própria plataforma. A confirmação chega no seu e-mail.</div></div>
-      <div class="step"><div class="sn">04</div><div class="st">Compareça no dia 23/11</div><div class="sd">Apresente o nome no credenciamento, receba a tabela e aproveite a confraternização.</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ INSCRIÇÃO ═══ -->
-<section id="inscricao" style="position:relative;overflow:hidden">
-  <img style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.18) saturate(.5)" src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&q=80&fit=crop" alt="Evento"/>
-  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(28,39,51,.6) 0%,rgba(19,26,34,.95) 100%)"></div>
-  <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--g),var(--gl),var(--g))"></div>
-  <div style="position:relative;z-index:10;padding:100px 80px;max-width:1200px;margin:0 auto">
-    <div class="g2" style="align-items:start">
-      <div>
-        <div class="sl">Inscrição</div>
-        <h2 style="font-size:clamp(26px,3.5vw,50px);font-weight:900;line-height:1.1;margin-bottom:16px">
-          Garanta sua vaga<br><span style="color:var(--g)">por apenas R$ 20</span>
-        </h2>
-        <div class="gline"></div>
-        <p style="font-size:16px;color:rgba(255,255,255,.65);line-height:1.9;margin-bottom:24px;font-weight:300">
-          Vagas limitadas a <strong style="color:var(--w)">200 participantes</strong> nos três auditórios. O valor simbólico cobre a confirmação da vaga; o restante é subsidiado pelo CREA-MT. Inscrição e pagamento pela plataforma oficial.
-        </p>
-        <div class="incl-item" style="margin-bottom:12px"><div class="ii">📘</div><div><div class="it">Tabela impressa + digital</div><div class="id">Entregue no evento e por e-mail</div></div></div>
-        <div class="incl-item" style="margin-bottom:12px"><div class="ii">🎉</div><div><div class="it">Confraternização e networking</div><div class="id">Comemoração do Dia do Engenheiro Eletricista em cada polo</div></div></div>
-        <div class="incl-item" style="margin-bottom:12px"><div class="ii">📜</div><div><div class="it">Certificado de participação</div><div class="id">Emitido pela AMEE</div></div></div>
-        <div class="insight">
-          <div class="itag">Prefere falar com alguém?</div>
-          <p>Tire dúvidas pelo WhatsApp da AMEE: <a href="https://wa.me/5565984633872?text=Ol%C3%A1!%20Tenho%20uma%20d%C3%BAvida%20sobre%20o%20Lan%C3%A7amento%20da%20Tabela%20de%20Honor%C3%A1rios%20AMEE%202026" target="_blank" rel="noopener" style="color:var(--g);font-weight:700;text-decoration:none">(65) 98463-3872</a></p>
-        </div>
+<section id="duvidas" class="section alt">
+  <div class="wrap">
+    <div class="label"><span class="eyebrow">Dúvidas frequentes</span></div>
+    <div class="content">
+      <div class="faq">
+        <details open><summary>Por que a inscrição custa só R$ 20?</summary><p>O evento é subsidiado pelo CREA-MT por meio do Edital de Seleção Pública de Projetos de Parceria nº 001/2026. O valor simbólico serve para confirmar a vaga e dimensionar o material impresso e a confraternização.</p></details>
+        <details><summary>Quem pode participar?</summary><p>Profissionais da engenharia elétrica e de outras modalidades, empresas de serviços técnicos, concessionárias, órgãos públicos, docentes, pesquisadores e estudantes. Não é preciso ser associado da AMEE.</p></details>
+        <details><summary>Participando online eu recebo a tabela?</summary><p>Sim. A versão digital é enviada por e-mail a todos os inscritos. A versão impressa e a confraternização são para os participantes presenciais.</p></details>
+        <details><summary>Vai ter churrasco?</summary><p>Em Cuiabá, sim. Em Sorriso e Rondonópolis o encerramento é com confraternização e networking entre os participantes.</p></details>
+        <details><summary>Por que no dia 23 de novembro?</summary><p>23 de novembro é o Dia do Engenheiro Eletricista. A AMEE escolheu a data para unir o lançamento da tabela, instrumento de valorização profissional, à comemoração da categoria.</p></details>
+        <details><summary>Tem certificado?</summary><p>Sim. A AMEE emite certificado digital de participação para inscritos presenciais e online.</p></details>
+        <details><summary>Posso trocar de polo depois de inscrito?</summary><p>Pode, desde que haja vaga no polo desejado. Avise pela plataforma ou pelo WhatsApp até 16 de novembro.</p></details>
       </div>
-      <div class="form-card">
-        <h3>Inscrição oficial</h3>
-        <div class="fsub">As inscrições são feitas na plataforma de eventos Softaliza. Você preenche seus dados, escolhe o polo (Cuiabá, Sorriso, Rondonópolis ou online) e paga os R$ 20 por lá, em poucos minutos.</div>
-        <div style="background:rgba(31,200,219,.06);border:1px solid rgba(31,200,219,.3);border-radius:12px;padding:24px;text-align:center;margin-bottom:18px">
-          <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#0A8FA0;margin-bottom:8px">Inscrição</div>
-          <div style="font-size:44px;font-weight:900;color:var(--p);line-height:1">R$ 20</div>
-          <div style="font-size:12px;color:#718096;margin-top:6px">valor simbólico · subsidiado pelo CREA-MT · confraternização inclusa</div>
-        </div>
-        <a href="https://eventos.softaliza.com.br/lancamento-da-tabela-de-honorarios-profissionais-da-engenharia-eletrica" target="_blank" rel="noopener" class="fsubmit" style="display:block;text-align:center;text-decoration:none;margin-top:0">Inscrever-se agora →</a>
-        <div class="fnote">Você será levado para eventos.softaliza.com.br, a plataforma oficial de inscrições do evento.</div>
-        <div class="pay-box">
-          <div class="pt">💠 Pagamento</div>
-          <p>O pagamento de R$ 20,00 é feito na própria plataforma no momento da inscrição.<br>Dúvidas ou dificuldade com a plataforma? Fale com a AMEE pelo WhatsApp <a href="https://wa.me/5565984633872?text=Ol%C3%A1!%20Preciso%20de%20ajuda%20com%20a%20inscri%C3%A7%C3%A3o%20no%20Lan%C3%A7amento%20da%20Tabela%20de%20Honor%C3%A1rios%20AMEE%202026" target="_blank" rel="noopener" style="color:#0A8FA0;font-weight:700">(65) 98463-3872</a>.</p>
-        </div>
+      <div class="box">
+        <p><strong>Sua empresa quer apoiar o evento?</strong> Há uma cota única de patrocínio, de R$ 1.000, com a marca na tabela digital, nos folders, nos convites e nos três auditórios.</p>
+        <a class="btn ghost" href="patrocinio">Ver a cota de patrocínio</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ LOCAIS ═══ -->
-<section id="locais" class="sec" style="background:var(--gr);color:var(--n)">
-  <div class="sec-inner">
-    <div class="sec-head">
-      <div class="sl d" style="text-align:center">Onde</div>
-      <h2 style="color:var(--p)">3 cidades, <span>1 noite</span></h2>
-      <div class="gline" style="margin:16px auto 16px"></div>
-      <p style="color:#718096">Escolha o auditório do CREA-MT mais próximo de você. Todos os polos têm a mesma programação, a tabela impressa e a confraternização de encerramento.</p>
-    </div>
-    <div class="cities">
-      <div class="city-card" style="padding:28px"><div class="cc-name">CUIABÁ</div><div class="cc-date">Auditório CREA-MT · Sede</div><div class="cc-desc">Capital do estado e polo institucional. Transmissão principal parte daqui. <strong>Confraternização com churrasco.</strong></div><a href="https://eventos.softaliza.com.br/lancamento-da-tabela-de-honorarios-profissionais-da-engenharia-eletrica" target="_blank" rel="noopener" style="display:inline-block;margin-top:14px;font-size:12px;font-weight:700;color:#0A8FA0;text-decoration:none;letter-spacing:1px">INSCREVER EM CUIABÁ →</a></div>
-      <div class="city-card" style="padding:28px"><div class="cc-name">SORRISO</div><div class="cc-date">Auditório CREA-MT · Inspetoria</div><div class="cc-desc">Médio-norte, capital nacional do agronegócio e polo de GD. Confraternização e networking.</div><a href="https://eventos.softaliza.com.br/lancamento-da-tabela-de-honorarios-profissionais-da-engenharia-eletrica" target="_blank" rel="noopener" style="display:inline-block;margin-top:14px;font-size:12px;font-weight:700;color:#0A8FA0;text-decoration:none;letter-spacing:1px">INSCREVER EM SORRISO →</a></div>
-      <div class="city-card" style="padding:28px"><div class="cc-name">RONDONÓPOLIS</div><div class="cc-date">Auditório CREA-MT · Inspetoria</div><div class="cc-desc">Segundo polo econômico do estado e maior hub agroindustrial. Confraternização e networking.</div><a href="https://eventos.softaliza.com.br/lancamento-da-tabela-de-honorarios-profissionais-da-engenharia-eletrica" target="_blank" rel="noopener" style="display:inline-block;margin-top:14px;font-size:12px;font-weight:700;color:#0A8FA0;text-decoration:none;letter-spacing:1px">INSCREVER EM RONDONÓPOLIS →</a></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ FAQ ═══ -->
-<section id="faq" class="sec" style="background:var(--n)">
-  <div class="sec-inner">
-    <div class="sec-head">
-      <div class="sl" style="text-align:center">Dúvidas frequentes</div>
-      <h2>Perguntas <span>& respostas</span></h2>
-      <div class="gline" style="margin:16px auto 0"></div>
-    </div>
-    <div class="faq">
-      <details open><summary>Por que a inscrição custa só R$ 20?</summary><p>O evento é subsidiado pelo CREA-MT por meio do Edital de Parceria nº 001/2026. O valor simbólico serve para confirmar a vaga e dimensionar o material impresso e a confraternização.</p></details>
-      <details><summary>Quem pode participar?</summary><p>Profissionais da engenharia elétrica e de outras modalidades, empresas de serviços técnicos, concessionárias, órgãos públicos, docentes, pesquisadores e estudantes. Não é preciso ser associado da AMEE.</p></details>
-      <details><summary>Participando online eu recebo a tabela?</summary><p>Sim. A versão digital é enviada por e-mail a todos os inscritos. A versão impressa e a confraternização são para os participantes presenciais.</p></details>
-      <details><summary>Vai ter churrasco?</summary><p>Em Cuiabá, sim: a confraternização do Dia do Engenheiro Eletricista no polo da capital é com churrasco. Em Sorriso e Rondonópolis o encerramento é com confraternização e networking entre os participantes.</p></details>
-      <details><summary>Por que no dia 23 de novembro?</summary><p>23 de novembro é o Dia do Engenheiro Eletricista. A AMEE escolheu a data para unir o lançamento da tabela, instrumento de valorização profissional, à comemoração da categoria.</p></details>
-      <details><summary>Como faço a inscrição e o pagamento?</summary><p>Na plataforma oficial do evento: <a href="https://eventos.softaliza.com.br/lancamento-da-tabela-de-honorarios-profissionais-da-engenharia-eletrica" target="_blank" rel="noopener" style="color:var(--g);font-weight:700">eventos.softaliza.com.br</a>. Você preenche os dados, escolhe o polo e paga os R$ 20 por lá. A confirmação chega no seu e-mail. Dificuldades? WhatsApp (65) 98463-3872.</p></details>
-      <details><summary>Tem certificado?</summary><p>Sim. A AMEE emite certificado digital de participação para inscritos presenciais e online.</p></details>
-      <details><summary>Posso trocar de polo depois de inscrito?</summary><p>Pode, desde que haja vaga no polo desejado. Avise pela plataforma ou pelo WhatsApp até 16/11/2026.</p></details>
-      <details><summary>Minha empresa quer apoiar o evento. Como faz?</summary><p>Temos uma cota única de patrocínio, de R$ 1.000, com exposição da marca na tabela digital, nos folders, nos convites e nos 3 auditórios. Veja a <a href="patrocinio.html" style="color:var(--g);font-weight:700">página de patrocínio</a>.</p></details>
+<section id="contato" class="section">
+  <div class="wrap">
+    <div class="label"><span class="eyebrow">Contato</span><span class="n">Organização</span></div>
+    <div class="content">
+      <ul class="contact">
+        <li><span>WhatsApp</span><a href="https://wa.me/5565984633872?text=Ol%C3%A1!%20Tenho%20uma%20d%C3%BAvida%20sobre%20o%20Lan%C3%A7amento%20da%20Tabela%20de%20Honor%C3%A1rios%20AMEE%202026" target="_blank" rel="noopener">(65) 98463-3872</a></li>
+        <li><span>Telefone</span><a href="tel:+5565992812397">(65) 99281-2397</a></li>
+        <li><span>E-mail</span><a href="mailto:amee.mt@gmail.com">amee.mt@gmail.com</a></li>
+        <li><span>Instagram</span><a href="https://instagram.com/abee_mt" target="_blank" rel="noopener">@abee_mt</a></li>
+        <li><span>Site</span><a href="https://www.abeemt.org.br" target="_blank" rel="noopener">www.abeemt.org.br</a></li>
+        <li><span>Sede</span><div>Av. Historiador Rubens de Mendonça, 491, Araés, Cuiabá-MT, CEP 78005-725</div></li>
+      </ul>
     </div>
   </div>
 </section>
 
-<!-- ═══ CTA FINAL ═══ -->
-<div class="cta-strip">
-  <div>
-    <p>Vagas limitadas. Garanta a sua por R$ 20.</p>
-    <small>23 de novembro de 2026 · Cuiabá, Sorriso e Rondonópolis · Presencial e online · Dia do Engenheiro Eletricista.</small>
-  </div>
-  <a href="https://eventos.softaliza.com.br/lancamento-da-tabela-de-honorarios-profissionais-da-engenharia-eletrica" target="_blank" rel="noopener">Quero me inscrever →</a>
-</div>
-
-<!-- ═══ PATROCÍNIO (secundário) ═══ -->
-<div class="spon-strip">
-  <p>🤝 <strong>Sua empresa quer apoiar a valorização da engenharia elétrica?</strong> Com uma cota única de R$ 1.000, sua marca entra na tabela digital, nos folders, nos convites e nos 3 auditórios.</p>
-  <a href="patrocinio.html" class="btn-outline">Patrocinar por R$ 1.000</a>
-</div>
-
-<!-- ═══ CONTATO ═══ -->
-<section id="contato" class="sec" style="background:var(--p)">
-  <div class="sec-inner">
-    <div class="g2">
-      <div>
-        <div class="sl">Contato</div>
-        <h2 style="font-size:clamp(26px,3.5vw,46px);font-weight:900;line-height:1.1;margin-bottom:16px">Fale com a<br><span style="color:var(--g)">organização</span></h2>
-        <div class="gline"></div>
-        <div class="contact-item"><div class="contact-icon">💬</div><div><div class="clabel">WhatsApp</div><div class="cval"><a href="https://wa.me/5565984633872?text=Ol%C3%A1!%20Tenho%20uma%20d%C3%BAvida%20sobre%20o%20Lan%C3%A7amento%20da%20Tabela%20de%20Honor%C3%A1rios%20AMEE%202026" target="_blank" rel="noopener" style="color:var(--w);text-decoration:none">(65) 98463-3872</a></div></div></div>
-        <div class="contact-item"><div class="contact-icon">📞</div><div><div class="clabel">Telefone AMEE</div><div class="cval"><a href="tel:+5565992812397" style="color:var(--w);text-decoration:none">(65) 99281-2397</a></div></div></div>
-        <div class="contact-item"><div class="contact-icon">📧</div><div><div class="clabel">E-mail</div><div class="cval"><a href="mailto:amee.mt@gmail.com" style="color:var(--w);text-decoration:none">amee.mt@gmail.com</a></div></div></div>
-        <div class="contact-item"><div class="contact-icon">📱</div><div><div class="clabel">Instagram</div><div class="cval"><a href="https://instagram.com/abee_mt" target="_blank" rel="noopener" style="color:var(--w);text-decoration:none">@abee_mt</a></div></div></div>
-        <div class="contact-item"><div class="contact-icon">📍</div><div><div class="clabel">Sede AMEE</div><div class="cval" style="font-size:13px;font-weight:500">Av. Historiador Rubens de Mendonça, 491 · Araés · Cuiabá-MT · CEP 78005-725</div></div></div>
-      </div>
-      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:28px;text-align:center">
-        <div style="font-size:10px;color:rgba(255,255,255,.35);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px">Realização & Apoio</div>
-        <div style="display:flex;justify-content:center;align-items:center;gap:24px;flex-wrap:wrap">
-          <div style="text-align:center"><span class="logo-chip"><img src="logo-abee-mt.png" alt="AMEE" style="height:44px;width:auto;object-fit:contain"/></span><div style="font-size:9px;color:rgba(255,255,255,.35);margin-top:6px">Realização</div></div>
-          <div style="text-align:center"><span class="logo-chip"><img src="logo-crea-mt.png" alt="CREA-MT" style="height:40px;width:auto;object-fit:contain"/></span><div style="font-size:9px;color:rgba(255,255,255,.35);margin-top:6px">Apoio Institucional · Edital 001/2026</div></div>
-        </div>
-      </div>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="logos">
+      <img src="logo-abee-mt.png" alt="AMEE"/>
+      <img src="logo-crea-mt.png" alt="CREA-MT"/>
     </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-brand">
-    <span class="logo-chip"><img src="logo-abee-mt.png" alt="AMEE" style="height:40px;width:auto;object-fit:contain"/></span>
-    <div>
-      <div class="footer-name">AMEE — Associação Mato-Grossense dos Engenheiros Eletricistas</div>
-      <div class="footer-sub"><a href="https://www.abeemt.org.br" target="_blank" rel="noopener" style="color:var(--g);text-decoration:none">www.abeemt.org.br</a> · Presidente: Eng. Robson Layon Vaz</div>
-    </div>
-  </div>
-  <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
-    <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.3)">Apoio Institucional</div>
-    <span class="logo-chip"><img src="logo-crea-mt.png" alt="CREA-MT" style="height:32px;width:auto;object-fit:contain"/></span>
-    <div style="font-size:11px;color:rgba(255,255,255,.25);letter-spacing:1px">Tabela de Honorários AMEE 2026 · 23 Nov · Cuiabá · Sorriso · Rondonópolis</div>
-  </div>
-  <div class="footer-right">
-    <div class="footer-tag">Inscrições abertas</div>
-    <div class="footer-conf"><a href="patrocinio.html" style="color:rgba(255,255,255,.4);text-decoration:none">Página de patrocínio →</a></div>
+    <div>AMEE, Associação Mato-Grossense dos Engenheiros Eletricistas · CNPJ 15.081.714/0001-49 · Presidente: Eng. Robson Layon Vaz</div>
+    <div>Realização AMEE · Apoio CREA-MT, Edital nº 001/2026 · <a href="patrocinio">Patrocínio</a></div>
   </div>
 </footer>
-
-<script>
-(function(){
-  // Fallback de logos
-  function fix(im){var s=document.createElement('span');s.textContent=im.getAttribute('alt')||'LOGO';s.style.cssText='font-weight:900;font-size:12px;letter-spacing:.5px;color:#1C2733;white-space:nowrap';im.replaceWith(s);}
-  document.querySelectorAll('img[src*="logo-"]').forEach(function(im){im.addEventListener('error',function(){fix(im);});if(im.complete&&im.naturalWidth===0){fix(im);}});
-
-})();
-</script>
-
-<!-- BOTÃO FLUTUANTE WHATSAPP -->
-<a href="https://eventos.softaliza.com.br/lancamento-da-tabela-de-honorarios-profissionais-da-engenharia-eletrica" target="_blank" rel="noopener" aria-label="Inscrever-se"
-   style="position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--g),var(--gl));color:var(--n);padding:14px 22px 14px 18px;border-radius:50px;text-decoration:none;font-weight:800;font-size:14px;box-shadow:0 8px 28px rgba(31,200,219,.45)">
-  <svg style="display:none" width="24" height="24" viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg"><path d="M17.5 14.4c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35zM12 2A10 10 0 0 0 3.48 17.17L2 22l4.95-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-2.97-.4-4.25-1.16l-.3-.18-2.94.77.79-2.86-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg>
-  ✅ Inscreva-se · R$ 20
-</a>
 
 </body>
 </html>

@@ -11,8 +11,9 @@ churrasco é citado apenas para Cuiabá. A captação de patrocínio é secundá
 em uma página separada.
 
 Segue as mesmas diretrizes do site do Fórum BESS (`../forum-bess`): HTML único,
-sem build, mesma estrutura, mas com identidade própria (Montserrat, grafite + ciano), nav fixa
-com logos AMEE e CREA-MT, cotas de patrocínio, contato e botão de WhatsApp.
+sem build, identidade própria de documento institucional (fundo claro, Archivo + Source
+Sans + IBM Plex Mono, azul e amarelo dos logos AMEE/CREA), CSS compartilhado em
+`style.css`, header com logos AMEE e CREA-MT, cotas de patrocínio, contato e botão de WhatsApp.
 
 ## Dados do evento (do Plano de Trabalho)
 
@@ -27,7 +28,8 @@ com logos AMEE e CREA-MT, cotas de patrocínio, contato e botão de WhatsApp.
 
 - `index.html` — página principal: inscrições (hero com R$ 20, o que está
   incluso, programação, passo a passo, botão para a plataforma, locais, FAQ, contato)
-- `patrocinio.html` — página secundária: cotas e benefícios para patrocinadores
+- `patrocinio.html` — página secundária: cota única de R$ 1.000 e contrapartidas
+- `style.css` — estilos compartilhados pelas duas páginas
 - `logo-abee-mt.png` — logo da AMEE/ABEE-MT
 - `logo-crea-mt.png` — logo do CREA-MT
 
