@@ -45,8 +45,7 @@ um serviço como Formspree.
 
 ## O que precisa ser revisado antes de publicar
 
-- **Chave PIX:** o campo `[chave PIX da AMEE — a definir]` em `index.html`
-  (procure por `pix-key`) precisa ser preenchido com a chave real.
+- **Chave PIX:** CNPJ da AMEE, 15.081.714/0001-49 (já preenchido).
 - **Prazo de inscrição** (16/11/2026) e **certificado de participação** são
   propostas; confirme com a diretoria.
 - **Churrasco:** a página informa que é para participantes presenciais.
