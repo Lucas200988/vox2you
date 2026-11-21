@@ -1,7 +1,7 @@
-# Tabela de Honorários AMEE 2026 — Site do evento (estático)
+# Tabela de Honorários ABEE-MT 2026 — Site do evento (estático)
 
 Site do **Lançamento da Tabela de Honorários Profissionais da Engenharia
-Elétrica — AMEE 2026**, realizado pela AMEE com apoio (e subsídio) do CREA-MT
+Elétrica — ABEE-MT 2026**, realizado pela ABEE-MT com apoio (e subsídio) do CREA-MT
 (Edital de Parceria nº 001/2026).
 
 O foco do site é **inscrição de participantes** (R$ 20 simbólicos). O
@@ -12,8 +12,8 @@ em uma página separada.
 
 Segue as mesmas diretrizes do site do Fórum BESS (`../forum-bess`): HTML único,
 sem build, identidade própria de documento institucional (fundo claro, Archivo + Source
-Sans + IBM Plex Mono, azul e amarelo dos logos AMEE/CREA), CSS compartilhado em
-`style.css`, header com logos AMEE e CREA-MT, cotas de patrocínio, contato e botão de WhatsApp.
+Sans + IBM Plex Mono, azul e amarelo dos logos ABEE-MT/CREA), CSS compartilhado em
+`style.css`, header com logos ABEE-MT e CREA-MT, cotas de patrocínio, contato e botão de WhatsApp.
 
 ## Dados do evento (do Plano de Trabalho)
 
@@ -30,7 +30,7 @@ Sans + IBM Plex Mono, azul e amarelo dos logos AMEE/CREA), CSS compartilhado em
   incluso, programação, passo a passo, botão para a plataforma, locais, FAQ, contato)
 - `patrocinio.html` — página secundária: cota única de R$ 1.000 e contrapartidas
 - `style.css` — estilos compartilhados pelas duas páginas
-- `logo-abee-mt.png` — logo da AMEE/ABEE-MT
+- `logo-abee-mt.png` — logo da ABEE-MT
 - `logo-crea-mt.png` — logo do CREA-MT
 
 > Se algum PNG for removido, a página mostra a sigla no lugar do logo
@@ -74,6 +74,6 @@ Inscrição e pagamento dos R$ 20 acontecem lá. O site não guarda dados.
 
 - E-mail: amee.mt@gmail.com
 - WhatsApp comercial: (65) 98463-3872
-- Telefone AMEE: (65) 99281-2397
+- Telefone ABEE-MT: (65) 99281-2397
 - Instagram: @abee_mt
 - Site: www.abeemt.org.br
