@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Mono:wght@500&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="_base.css"/>
+<style>
+/* Escala: 1px = 1mm. Backdrop 3000 x 2000 mm. Margem de segurança 100 mm. */
+@page{size:3000mm 2000mm;margin:0}
+@media print{html{zoom:3.7795275}}
+html,body{width:3000px;height:2000px}
+.b{width:3000px;height:2000px;position:relative;display:grid;grid-template-rows:1fr 400px;background:#fff}
+.ybar{position:absolute;top:0;left:0;right:0;height:24px}
+.top{padding:140px 160px 90px;display:grid;grid-template-columns:1fr 720px;gap:120px;align-items:center}
+.hello{font-size:64px;color:#1d4e9a}
+h1{font-size:190px;margin:30px 0 40px;max-width:none;line-height:.98}
+h1 small{display:block;font-size:80px;font-weight:700;color:#4c5872;letter-spacing:0;margin-bottom:24px;line-height:1.1}
+.hash{font-size:64px;color:#16213a;margin-top:30px}
+.qr{display:flex;flex-direction:column;align-items:center;gap:36px;text-align:center}
+.qr .frame{background:#fff;border:6px solid #16213a;border-radius:24px;padding:48px}
+.qr img{width:560px;height:560px;display:block}
+.qr .t{font-size:52px;font-weight:600;color:#16213a;line-height:1.25}
+.qr .u{font-size:54px;color:#1d4e9a}
+.bot{background:#16213a;color:#fff;padding:0 160px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:120px}
+.lbl{font-family:"IBM Plex Mono",monospace;font-size:32px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:22px;display:block}
+.logo-box{background:#fff;border-radius:16px;padding:36px 56px;display:flex;align-items:center;justify-content:center}
+.logo-box img{height:190px;width:auto}
+.logo-box.crea img{height:160px}
+.mid{text-align:center}
+.mid .n{font-size:46px;font-family:"Archivo",sans-serif;font-weight:700}
+.mid .s{font-size:38px;color:rgba(255,255,255,.7);margin-top:12px}
+</style></head><body><div class="b"><div class="ybar"></div>
+<div class="top grid">
+  <div>
+    <div class="hello mono">Bem-vindo · Dia do Engenheiro Eletricista</div>
+    <h1 class="disp"><small>Lançamento da</small>Tabela de Honorários da Engenharia Elétrica</h1>
+    <div class="hash mono">#DiaDoEngenheiroEletricista · #ABEEMT</div>
+  </div>
+  <div class="qr">
+    <div class="frame"><img src="qr-abeemt.svg" alt="QR code para www.abeemt.org.br"/></div>
+    <div class="t">Conheça a ABEE-MT e associe-se</div>
+    <div class="u mono">www.abeemt.org.br</div>
+  </div>
+</div>
+<div class="bot">
+  <div><span class="lbl">Realização</span><div class="logo-box"><img src="../logo-abee-mt.png" alt="ABEE-MT"/></div></div>
+  <div class="mid"><div class="n">Associação Brasileira de Engenheiros Eletricistas de Mato Grosso</div><div class="s">@abee_mt · Mato Grosso · 2026</div></div>
+  <div><span class="lbl">Apoio institucional</span><div class="logo-box crea"><img src="../logo-crea-mt.png" alt="CREA-MT"/></div></div>
+</div></div></body></html>
